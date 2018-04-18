@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'dummy_data.dart';
 
@@ -27,6 +29,13 @@ class ChatItem extends StatelessWidget {
 
   ChatItem(this._chatModel);
 
+  Future<Null> showMyDialog(BuildContext context, String text) {
+    AlertDialog alertDialog = new AlertDialog(
+      title: new Text(text),
+    );
+    return showDialog(context: context, child: alertDialog);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Column(
@@ -54,6 +63,9 @@ class ChatItem extends StatelessWidget {
             ),
           ),
           trailing: new Text(_chatModel.time),
+          onTap: () {
+            showMyDialog(context, _chatModel.name);
+          },
         ),
         new Divider(
           color: Colors.grey,
