@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'dummy_data.dart';
+import 'user_chat.dart';
 
 class ChatScreen extends StatelessWidget {
   var chatList = getDummyData();
@@ -64,7 +65,11 @@ class ChatItem extends StatelessWidget {
           ),
           trailing: new Text(_chatModel.time),
           onTap: () {
-            showMyDialog(context, _chatModel.name);
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new UserChatScreen(_chatModel.name)));
+            //showMyDialog(context, _chatModel.name);
           },
         ),
         new Divider(
