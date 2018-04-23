@@ -1,4 +1,3 @@
-/*
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'chat_screen.dart';
@@ -69,10 +68,9 @@ class RandomWordState extends State<RandomWords> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      */
-/* appBar: new AppBar(
+ appBar: new AppBar(
         title: new Text('Startup Name Generator'),
-      ),*//*
+      ),
 
       body: new Center(
         child: _buildSuggestions(),
@@ -86,4 +84,3 @@ class RandomWordState extends State<RandomWords> {
     return new ListTile(title: new Text(index.toString(), style: _biggerfonts));
   }
 }
-*/
