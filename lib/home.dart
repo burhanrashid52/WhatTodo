@@ -21,7 +21,7 @@ class _HomeState extends State<HomeScreen> {
   }
 
   void updateTasks() {
-     AppDatabase.get().getTasks().then((tasks) {
+    AppDatabase.get().getTasks().then((tasks) {
       if (tasks == null) return;
       setState(() {
         taskList.clear();
@@ -43,7 +43,6 @@ class _HomeState extends State<HomeScreen> {
         ),
         backgroundColor: Colors.orange,
         onPressed: () async {
-
           bool isDataChanged = await Navigator.push(
             context,
             new MaterialPageRoute<bool>(
@@ -74,11 +73,20 @@ class _HomeState extends State<HomeScreen> {
 
 class TaskRow extends StatelessWidget {
   final Tasks tasks;
+  String time = "";
 
-  TaskRow(this.tasks);
+  TaskRow(this.tasks) {
+    DateTime date = new DateTime.fromMillisecondsSinceEpoch(tasks.scheduleDate);
+    this.time = "${date.day}/${date.month}/${date.year}";
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Text(tasks.title);
+    return new Column(
+      children: <Widget>[
+        new Text(tasks.title, style: new TextStyle(fontSize: 16.0)),
+        new Text(time),
+      ],
+    );
   }
 }
