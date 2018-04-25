@@ -16,36 +16,55 @@ class _AddTaskState extends State<AddTaskScreen> {
       appBar: new AppBar(
         title: new Text("Add Task"),
       ),
-      body: new Container(
-        child: new Column(
-          children: <Widget>[
-            new Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: new TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      text = value;
-                    });
-                  },
-                  decoration: new InputDecoration(hintText: "Title")),
-            ),
-            new Text(text),
-            new Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: new RaisedButton(
-                  child: new Text("Save"),
-                  onPressed: () {
-                    var id = new DateTime.now().millisecondsSinceEpoch;
-                    var task = new Tasks(id: id, title: text);
-                    AppDatabase.get().updateTask(task).then((book) {
-                      print(book);
-                      Navigator.pop(context,true);
-                    });
-                  }),
-            )
-          ],
-        ),
+      body: new ListView(
+        children: <Widget>[
+          new Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: new TextField(
+                onChanged: (value) {
+                  setState(() {
+                    text = value;
+                  });
+                },
+                decoration: new InputDecoration(hintText: "Title")),
+          ),
+          new ListTile(
+            leading: new Icon(Icons.calendar_today),
+            title: new Text("Due Date"),
+            subtitle: new Text("Apr 25"),
+          ),
+          new ListTile(
+            leading: new Icon(Icons.flag),
+            title: new Text("Priority"),
+            subtitle: new Text("Priority 3"),
+          ),
+          new ListTile(
+            leading: new Icon(Icons.label),
+            title: new Text("Lables"),
+            subtitle: new Text("@Movies"),
+          ),
+          new ListTile(
+            leading: new Icon(Icons.mode_comment),
+            title: new Text("Comments"),
+            subtitle: new Text("No Comments"),
+          ),
+          new ListTile(
+            leading: new Icon(Icons.timer),
+            title: new Text("Reminder"),
+            subtitle: new Text("No Reminder"),
+          )
+        ],
       ),
+      floatingActionButton: new FloatingActionButton(
+          child: new Icon(Icons.send, color: Colors.white),
+          onPressed: () {
+            var id = new DateTime.now().millisecondsSinceEpoch;
+            var task = new Tasks(id: id, title: text);
+            AppDatabase.get().updateTask(task).then((book) {
+              print(book);
+              Navigator.pop(context, true);
+            });
+          }),
     );
   }
 }

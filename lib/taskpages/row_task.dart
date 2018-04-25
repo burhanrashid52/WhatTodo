@@ -26,7 +26,7 @@ class TaskRow extends StatelessWidget {
               new Expanded(
                   child: new Column(
                 children: <Widget>[
-                  new Text(tasks.title, style: new TextStyle(fontSize: 18.0)),
+                  new Text(tasks.title, style: new TextStyle(fontSize: 16.0)),
                   new Text(_getFormattedDate(tasks.scheduleDate)),
                 ],
               ))
