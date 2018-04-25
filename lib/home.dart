@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/taskpages/add_task.dart';
+import 'package:flutter_app/taskpages/row_task.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -64,29 +65,9 @@ class _HomeState extends State<HomeScreen> {
         child: new ListView.builder(
             itemCount: taskList.length,
             itemBuilder: (BuildContext context, int index) {
-              return TaskRow(taskList[index]);
+              return new TaskRow(taskList[index]);
             }),
       ),
-    );
-  }
-}
-
-class TaskRow extends StatelessWidget {
-  final Tasks tasks;
-  String time = "";
-
-  TaskRow(this.tasks) {
-    DateTime date = new DateTime.fromMillisecondsSinceEpoch(tasks.scheduleDate);
-    this.time = "${date.day}/${date.month}/${date.year}";
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Column(
-      children: <Widget>[
-        new Text(tasks.title, style: new TextStyle(fontSize: 16.0)),
-        new Text(time),
-      ],
     );
   }
 }
