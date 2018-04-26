@@ -13,7 +13,17 @@ class Tasks {
   int id, dueDate;
   Status priority;
 
-  Tasks(
+  Tasks.create(
+      {@required this.title,
+      this.comment = "",
+      this.dueDate = -1,
+      this.priority = Status.PRIORITY_4}) {
+    if (this.dueDate == -1) {
+      this.dueDate = new DateTime.now().millisecondsSinceEpoch;
+    }
+  }
+
+  Tasks.update(
       {@required this.id,
       @required this.title,
       this.comment = "",
@@ -25,7 +35,7 @@ class Tasks {
   }
 
   Tasks.fromMap(Map<String, dynamic> map)
-      : this(
+      : this.update(
           id: map[dbId],
           title: map[dbTitle],
           comment: map[ddComment],

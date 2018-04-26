@@ -75,12 +75,8 @@ class _AddTaskState extends State<AddTaskScreen> {
       floatingActionButton: new FloatingActionButton(
           child: new Icon(Icons.send, color: Colors.white),
           onPressed: () {
-            var id = new DateTime.now().millisecondsSinceEpoch;
-            var task = new Tasks(
-                id: id,
-                title: text,
-                dueDate: dueDate,
-                priority: priorityStatus);
+            var task = new Tasks.create(
+                title: text, dueDate: dueDate, priority: priorityStatus);
             AppDatabase.get().updateTask(task).then((book) {
               print(book);
               Navigator.pop(context, true);

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_app/models/Project.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -28,18 +29,35 @@ class AppDatabase {
     // Get a location using path_provider
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "tasks.db");
-    _database = await openDatabase(path, version: 1,
+    _database = await openDatabase(path, version: 4,
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
-      await db.execute("CREATE TABLE ${Tasks.tblTask} ("
-          "${Tasks.dbId} INTEGER PRIMARY KEY,"
-          "${Tasks.dbTitle} TEXT,"
-          "${Tasks.ddComment} TEXT,"
-          "${Tasks.dbDueDate} LONG,"
-          "${Tasks.dbPriority} LONG"
-          ")");
+      await _createTaskTable(db);
+      await _createProjectTable(db);
+    }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
+      await db.execute("DROP TABLE ${Tasks.tblTask}");
+      await db.execute("DROP TABLE ${Project.tblProject}");
+      await _createTaskTable(db);
+      await _createProjectTable(db);
     });
     didInit = true;
+  }
+
+  Future _createProjectTable(Database db) {
+    return db.execute("CREATE TABLE ${Project.tblProject} ("
+        "${Project.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "${Project.dbName} TEXT,"
+        "${Project.dbColorName} TEXT,"
+        "${Project.dbColorCode} TEXT);");
+  }
+
+  Future _createTaskTable(Database db) {
+    return db.execute("CREATE TABLE ${Tasks.tblTask} ("
+        "${Tasks.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "${Tasks.dbTitle} TEXT,"
+        "${Tasks.ddComment} TEXT,"
+        "${Tasks.dbDueDate} LONG,"
+        "${Tasks.dbPriority} LONG);");
   }
 
   Future<List<Tasks>> getTasks() async {
