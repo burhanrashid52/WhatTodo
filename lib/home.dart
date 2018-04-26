@@ -33,7 +33,7 @@ class _HomeState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Title"),
+        title: new Text("Today"),
       ),
       floatingActionButton: new FloatingActionButton(
         child: new Icon(

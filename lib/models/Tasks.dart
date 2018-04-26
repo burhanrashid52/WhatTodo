@@ -1,22 +1,26 @@
 import 'package:meta/meta.dart';
+import 'Priority.dart';
 
 class Tasks {
   static final tblTask = "Tasks";
   static final dbId = "id";
   static final dbTitle = "title";
-  static final dbDescription = "description";
-  static final dbScheduleDate = "scheduleDate";
+  static final ddComment = "comment";
+  static final dbDueDate = "dueDate";
+  static final dbPriority = "priority";
 
-  String title, description;
-  int id, scheduleDate;
+  String title, comment;
+  int id, dueDate;
+  Status priority;
 
   Tasks(
       {@required this.id,
       @required this.title,
-      this.description = "",
-      this.scheduleDate = -1}) {
-    if (this.scheduleDate == -1) {
-      this.scheduleDate = new DateTime.now().millisecondsSinceEpoch;
+      this.comment = "",
+      this.dueDate = -1,
+      this.priority = Status.PRIORITY_4}) {
+    if (this.dueDate == -1) {
+      this.dueDate = new DateTime.now().millisecondsSinceEpoch;
     }
   }
 
@@ -24,7 +28,8 @@ class Tasks {
       : this(
           id: map[dbId],
           title: map[dbTitle],
-          description: map[dbDescription],
-          scheduleDate: map[dbScheduleDate],
+          comment: map[ddComment],
+          dueDate: map[dbDueDate],
+          priority: Status.values[map[dbPriority]],
         );
 }

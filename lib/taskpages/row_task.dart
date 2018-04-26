@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/Tasks.dart';
+import 'package:flutter_app/models/Priority.dart';
 
 class TaskRow extends StatelessWidget {
   final Tasks tasks;
@@ -16,8 +17,8 @@ class TaskRow extends StatelessWidget {
           decoration: new BoxDecoration(
             border: new Border(
               left: new BorderSide(
-                width: 5.0,
-                color: Colors.red,
+                width: 4.0,
+                color: priorityColor[tasks.priority.index],
               ),
             ),
           ),
@@ -27,7 +28,7 @@ class TaskRow extends StatelessWidget {
                   child: new Column(
                 children: <Widget>[
                   new Text(tasks.title, style: new TextStyle(fontSize: 16.0)),
-                  new Text(_getFormattedDate(tasks.scheduleDate)),
+                  new Text(_getFormattedDate(tasks.dueDate)),
                 ],
               ))
             ],

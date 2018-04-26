@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/models/Priority.dart';
 import 'package:flutter_app/models/Tasks.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -9,6 +12,8 @@ class AddTaskScreen extends StatefulWidget {
 
 class _AddTaskState extends State<AddTaskScreen> {
   String text = "";
+  int dueDate = new DateTime.now().millisecondsSinceEpoch;
+  Status priorityStatus = Status.PRIORITY_4;
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +36,15 @@ class _AddTaskState extends State<AddTaskScreen> {
           new ListTile(
             leading: new Icon(Icons.calendar_today),
             title: new Text("Due Date"),
-            subtitle: new Text("Apr 25"),
+            subtitle: new Text(_getFormattedDate(dueDate)),
+            onTap: () {
+              _selectDate(context);
+            },
           ),
           new ListTile(
             leading: new Icon(Icons.flag),
             title: new Text("Priority"),
-            subtitle: new Text("Priority 3"),
+            subtitle: new Text(priorityText[priorityStatus.index]),
           ),
           new ListTile(
             leading: new Icon(Icons.label),
@@ -59,7 +67,7 @@ class _AddTaskState extends State<AddTaskScreen> {
           child: new Icon(Icons.send, color: Colors.white),
           onPressed: () {
             var id = new DateTime.now().millisecondsSinceEpoch;
-            var task = new Tasks(id: id, title: text);
+            var task = new Tasks(id: id, title: text, dueDate: dueDate);
             AppDatabase.get().updateTask(task).then((book) {
               print(book);
               Navigator.pop(context, true);
@@ -67,4 +75,37 @@ class _AddTaskState extends State<AddTaskScreen> {
           }),
     );
   }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime(2015, 8),
+        lastDate: new DateTime(2101));
+    if (picked != null) {
+      setState(() {
+        dueDate = picked.millisecondsSinceEpoch;
+      });
+    }
+  }
+
+  String _getFormattedDate(int dueDate) {
+    DateTime date = new DateTime.fromMillisecondsSinceEpoch(dueDate);
+    return "${monthsNames[date.month - 1]}  ${date.day}";
+  }
 }
+
+var monthsNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "July",
+  "Aug",
+  "Sept",
+  "Oct",
+  "Nov",
+  "Dec"
+];

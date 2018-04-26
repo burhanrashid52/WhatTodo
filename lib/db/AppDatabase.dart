@@ -34,8 +34,9 @@ class AppDatabase {
       await db.execute("CREATE TABLE ${Tasks.tblTask} ("
           "${Tasks.dbId} INTEGER PRIMARY KEY,"
           "${Tasks.dbTitle} TEXT,"
-          "${Tasks.dbDescription} TEXT,"
-          "${Tasks.dbScheduleDate} LONG"
+          "${Tasks.ddComment} TEXT,"
+          "${Tasks.dbDueDate} LONG,"
+          "${Tasks.dbPriority} LONG"
           ")");
     });
     didInit = true;
@@ -58,9 +59,9 @@ class AppDatabase {
     await db.inTransaction(() async {
       await db.rawInsert('INSERT OR REPLACE INTO '
           '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks
-          .dbDescription},${Tasks.dbScheduleDate})'
+          .ddComment},${Tasks.dbDueDate},${Tasks.dbPriority})'
           ' VALUES(${task.id}, "${task.title}", "${task
-          .description}", ${task.scheduleDate})');
+          .comment}", ${task.dueDate},${task.priority.index})');
     });
   }
 }
