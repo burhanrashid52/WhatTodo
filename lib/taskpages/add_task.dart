@@ -45,6 +45,15 @@ class _AddTaskState extends State<AddTaskScreen> {
             leading: new Icon(Icons.flag),
             title: new Text("Priority"),
             subtitle: new Text(priorityText[priorityStatus.index]),
+            onTap: () {
+              _showPriorityDialog(context).then((status) {
+                if (status != null) {
+                  setState(() {
+                    priorityStatus = status;
+                  });
+                }
+              });
+            },
           ),
           new ListTile(
             leading: new Icon(Icons.label),
@@ -67,7 +76,11 @@ class _AddTaskState extends State<AddTaskScreen> {
           child: new Icon(Icons.send, color: Colors.white),
           onPressed: () {
             var id = new DateTime.now().millisecondsSinceEpoch;
-            var task = new Tasks(id: id, title: text, dueDate: dueDate);
+            var task = new Tasks(
+                id: id,
+                title: text,
+                dueDate: dueDate,
+                priority: priorityStatus);
             AppDatabase.get().updateTask(task).then((book) {
               print(book);
               Navigator.pop(context, true);
@@ -92,6 +105,47 @@ class _AddTaskState extends State<AddTaskScreen> {
   String _getFormattedDate(int dueDate) {
     DateTime date = new DateTime.fromMillisecondsSinceEpoch(dueDate);
     return "${monthsNames[date.month - 1]}  ${date.day}";
+  }
+
+  Future<Status> _showPriorityDialog(BuildContext context) async {
+    return await showDialog<Status>(
+        context: context,
+        builder: (BuildContext context) {
+          return new SimpleDialog(
+            title: const Text('Select Priority'),
+            children: <Widget>[
+              buildContainer(Status.PRIORITY_1),
+              buildContainer(Status.PRIORITY_2),
+              buildContainer(Status.PRIORITY_3),
+              buildContainer(Status.PRIORITY_4),
+            ],
+          );
+        });
+  }
+
+  GestureDetector buildContainer(Status status) {
+    return new GestureDetector(
+        onTap: () {
+          Navigator.pop(context, status);
+        },
+        child: new Container(
+            color: status == priorityStatus ? Colors.grey : Colors.white,
+            child: new Container(
+              margin: const EdgeInsets.symmetric(vertical: 2.0),
+              decoration: new BoxDecoration(
+                border: new Border(
+                  left: new BorderSide(
+                    width: 6.0,
+                    color: priorityColor[status.index],
+                  ),
+                ),
+              ),
+              child: new Container(
+                margin: const EdgeInsets.all(12.0),
+                child: new Text(priorityText[status.index],
+                    style: new TextStyle(fontSize: 18.0)),
+              ),
+            )));
   }
 }
 
