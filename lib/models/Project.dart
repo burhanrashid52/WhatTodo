@@ -21,15 +21,14 @@ class Project {
       this.colorCode = colorCode;
     }
     if (colorName != "") {
-      this.colorCode = colorCode;
+      this.colorName = colorName;
     }
   }
 
-  Project.fromMap(Map<String, dynamic> map) {
-    Project.update(
-        id: map[dbId],
-        name: map[dbName],
-        colorCode: map[dbColorCode],
-        colorName: map[dbColorName]);
-  }
+  Project.fromMap(Map<String, dynamic> map)
+      : this.update(
+            id: map[dbId],
+            name: map[dbName],
+            colorCode: map[dbColorCode],
+            colorName: map[dbColorName]);
 }

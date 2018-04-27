@@ -8,6 +8,7 @@ class Tasks {
   static final ddComment = "comment";
   static final dbDueDate = "dueDate";
   static final dbPriority = "priority";
+  static final dbProjectID = "projectId";
 
   String title, comment;
   int id, dueDate;

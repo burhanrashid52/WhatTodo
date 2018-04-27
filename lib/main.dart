@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/home.dart';
-import 'package:flutter_app/taskpages/add_task.dart';
+import 'package:flutter_app/pages/home/home.dart';
+import 'package:flutter_app/pages/tasks/add_task.dart';
 
 void main() => runApp(new MyApp());
 

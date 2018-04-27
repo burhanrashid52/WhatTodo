@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/models/Tasks.dart';
-import 'package:flutter_app/taskpages/add_task.dart';
-import 'package:flutter_app/taskpages/row_task.dart';
+import 'package:flutter_app/pages/home/side_drawer.dart';
+import 'package:flutter_app/pages/tasks/add_task.dart';
+import 'package:flutter_app/pages/tasks/row_task.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
-  List<Tasks> taskList = new List();
+  final List<Tasks> taskList = new List();
 
   @override
   void initState() {
@@ -53,12 +54,7 @@ class _HomeState extends State<HomeScreen> {
           }
         },
       ),
-      drawer: new Drawer(
-        child: new ListView(
-          padding: const EdgeInsets.all(16.0),
-          children: <Widget>[new DrawerHeader(child: new CircleAvatar())],
-        ),
-      ),
+      drawer: new SideDrawer(),
       body: new Container(
         child: new ListView.builder(
             itemCount: taskList.length,

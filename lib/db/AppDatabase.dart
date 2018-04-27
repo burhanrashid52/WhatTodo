@@ -29,7 +29,7 @@ class AppDatabase {
     // Get a location using path_provider
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "tasks.db");
-    _database = await openDatabase(path, version: 4,
+    _database = await openDatabase(path, version: 5,
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
       await _createTaskTable(db);
@@ -44,11 +44,17 @@ class AppDatabase {
   }
 
   Future _createProjectTable(Database db) {
-    return db.execute("CREATE TABLE ${Project.tblProject} ("
-        "${Project.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "${Project.dbName} TEXT,"
-        "${Project.dbColorName} TEXT,"
-        "${Project.dbColorCode} TEXT);");
+    return db.transaction((Transaction txn) async {
+      txn.execute("CREATE TABLE ${Project.tblProject} ("
+          "${Project.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
+          "${Project.dbName} TEXT,"
+          "${Project.dbColorName} TEXT,"
+          "${Project.dbColorCode} TEXT);");
+      txn.rawInsert('INSERT INTO '
+          '${Project.tblProject}(${Project.dbId},${Project.dbName},${Project
+          .dbColorName},${Project.dbColorCode})'
+          ' VALUES(1, "Inbox", "Grey", "808080");');
+    });
   }
 
   Future _createTaskTable(Database db) {
@@ -71,11 +77,22 @@ class AppDatabase {
     return tasks;
   }
 
-  /// Inserts or replaces the book.
+  Future<List<Project>> getProjects() async {
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM ${Project.tblProject}');
+    List<Project> projects = new List();
+    for (Map<String, dynamic> item in result) {
+      var myProject = new Project.fromMap(item);
+      projects.add(myProject);
+    }
+    return projects;
+  }
+
+  /// Inserts or replaces the task.
   Future updateTask(Tasks task) async {
     var db = await _getDb();
-    await db.inTransaction(() async {
-      await db.rawInsert('INSERT OR REPLACE INTO '
+    await db.transaction((Transaction txn) async {
+      await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks
           .ddComment},${Tasks.dbDueDate},${Tasks.dbPriority})'
           ' VALUES(${task.id}, "${task.title}", "${task
