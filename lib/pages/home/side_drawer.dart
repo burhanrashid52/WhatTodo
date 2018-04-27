@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/models/Project.dart';
+import 'package:flutter_app/pages/projects/add_project.dart';
 
 class SideDrawer extends StatefulWidget {
   @override
@@ -44,7 +45,7 @@ class _SideDrawerState extends State<SideDrawer> {
             leading: new Icon(Icons.calendar_today),
             title: new Text("Today"),
           ),
-          buildExpansionTile(Icons.book, "Project"),
+          buildExpansionTile(Icons.book, "Projects"),
           buildExpansionTile(Icons.label, "Labels")
         ],
       ),
@@ -54,8 +55,9 @@ class _SideDrawerState extends State<SideDrawer> {
   ExpansionTile buildExpansionTile(IconData icon, String projectName) {
     return new ExpansionTile(
       leading: new Icon(icon),
-      title: new Text(projectName,style: new TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold)),
-      children: buildProjects(),
+      title: new Text(projectName,
+          style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+      children: projectName == "Projects" ? buildProjects() : buildLabels(),
     );
   }
 
@@ -63,6 +65,26 @@ class _SideDrawerState extends State<SideDrawer> {
     List<Widget> projectWidgetList = new List();
     projectList
         .forEach((project) => projectWidgetList.add(new ProjectRow(project)));
+    projectWidgetList.add(new ListTile(
+      leading: new Icon(Icons.add),
+      title: new Text("Add Project"),
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.push(context,
+            new MaterialPageRoute(builder: (context) => new AddProject()));
+      },
+    ));
+    return projectWidgetList;
+  }
+
+  List<Widget> buildLabels() {
+    List<Widget> projectWidgetList = new List();
+    projectList
+        .forEach((project) => projectWidgetList.add(new ProjectRow(project)));
+    projectWidgetList.add(new ListTile(
+      leading: new Icon(Icons.add),
+      title: new Text("Add Label"),
+    ));
     return projectWidgetList;
   }
 }
