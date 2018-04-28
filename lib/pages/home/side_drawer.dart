@@ -52,9 +52,7 @@ class _SideDrawerState extends State<SideDrawer> {
             accountName: new Text("Burhanuddin Rashid"),
             accountEmail: new Text("burhanrashid52@gmail.com"),
             currentAccountPicture: new CircleAvatar(
-              backgroundColor: Theme
-                  .of(context)
-                  .accentColor,
+              backgroundColor: Theme.of(context).accentColor,
               child: new Text("B", style: new TextStyle(color: Colors.white)),
             ),
           ),
@@ -106,8 +104,7 @@ class _SideDrawerState extends State<SideDrawer> {
 
   List<Widget> buildLabels() {
     List<Widget> projectWidgetList = new List();
-    labelList
-        .forEach((label) => projectWidgetList.add(new LabelRow(label)));
+    labelList.forEach((label) => projectWidgetList.add(new LabelRow(label)));
     projectWidgetList.add(new ListTile(
         leading: new Icon(Icons.add),
         title: new Text("Add Label"),
@@ -134,7 +131,13 @@ class ProjectRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new ListTile(
-      onTap: () {},
+      onTap: () {
+        AppDatabase.get().deleteProject(project.id).then((value) {
+          print("Success :" + value);
+          if (value != null) {
+          }
+        });
+      },
       leading: new Container(
         width: 24.0,
         height: 24.0,

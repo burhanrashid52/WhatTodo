@@ -13,7 +13,7 @@ class Project {
   Project.create(this.name, this.colorValue, this.colorName);
 
   Project.update(
-      {@required this.id, name = "", colorCode = "", colorName = ""}) {
+      {@required this.id, name, colorCode = "", colorName = ""}) {
     if (name != "") {
       this.name = name;
     }

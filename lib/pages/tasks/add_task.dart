@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/models/Priority.dart';
+import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 
@@ -15,6 +16,8 @@ class _AddTaskState extends State<AddTaskScreen> {
   String text = "";
   int dueDate = new DateTime.now().millisecondsSinceEpoch;
   Status priorityStatus = Status.PRIORITY_4;
+  Project currentSelectedProject = new Project.update(
+      id: 1, name: "Inbox", colorName: "Grey", colorCode: Colors.grey.value);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,17 @@ class _AddTaskState extends State<AddTaskScreen> {
                     text = value;
                   });
                 },
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
                 decoration: new InputDecoration(hintText: "Title")),
+          ),
+          new ListTile(
+            leading: new Icon(Icons.book),
+            title: new Text("Project"),
+            subtitle: new Text(currentSelectedProject.name),
+            onTap: () {
+              _showProjectsDialog(context);
+            },
           ),
           new ListTile(
             leading: new Icon(Icons.calendar_today),
@@ -76,12 +89,17 @@ class _AddTaskState extends State<AddTaskScreen> {
       floatingActionButton: new FloatingActionButton(
           child: new Icon(Icons.send, color: Colors.white),
           onPressed: () {
-            var task = new Tasks.create(
-                title: text, dueDate: dueDate, priority: priorityStatus);
-            AppDatabase.get().updateTask(task).then((book) {
-              print(book);
-              Navigator.pop(context, true);
-            });
+            if (text != "") {
+              var task = new Tasks.create(
+                  title: text,
+                  dueDate: dueDate,
+                  priority: priorityStatus,
+                  projectId: currentSelectedProject.id);
+              AppDatabase.get().updateTask(task).then((book) {
+                print(book);
+                Navigator.pop(context, true);
+              });
+            }
           }),
     );
   }
@@ -118,6 +136,41 @@ class _AddTaskState extends State<AddTaskScreen> {
             ],
           );
         });
+  }
+
+  Future<Status> _showProjectsDialog(BuildContext context) async {
+    return AppDatabase.get().getProjects().then((projects) {
+      showDialog<Status>(
+          context: context,
+          builder: (BuildContext context) {
+            return new SimpleDialog(
+              title: const Text('Select Project'),
+              children: buildProjects(projects),
+            );
+          });
+    });
+  }
+
+  List<Widget> buildProjects(List<Project> projectList) {
+    List<Widget> projects = new List();
+    projectList.forEach((project) {
+      projects.add(new ListTile(
+        leading: new Container(
+          width: 12.0,
+          height: 12.0,
+          child: new CircleAvatar(
+            backgroundColor: new Color(project.colorValue),
+          ),
+        ),
+        title: new Text(project.name),
+        onTap: () {
+          setState(() {
+            currentSelectedProject = project;
+          });
+        },
+      ));
+    });
+    return projects;
   }
 
   GestureDetector buildContainer(Status status) {

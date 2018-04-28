@@ -75,7 +75,10 @@ class AppDatabase {
         "${Tasks.dbTitle} TEXT,"
         "${Tasks.ddComment} TEXT,"
         "${Tasks.dbDueDate} LONG,"
-        "${Tasks.dbPriority} LONG);");
+        "${Tasks.dbPriority} LONG,"
+        "${Tasks.dbProjectID} INTEGER,"
+        "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project
+        .tblProject}(${Project.dbId}) ON DELETE CASCADE;");
   }
 
   Future<List<Tasks>> getTasks() async {
@@ -142,6 +145,14 @@ class AppDatabase {
           .dbColorCode},${Label.dbColorName})'
           ' VALUES("${label.name}", ${label
           .colorValue}, "${label.colorName}")');
+    });
+  }
+
+  Future deleteProject(int projectID) async {
+    var db = await _getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawDelete('DELETE FROM ${Project.tblProject} WHERE ${Project
+          .dbId}==$projectID;');
     });
   }
 }

@@ -11,11 +11,12 @@ class Tasks {
   static final dbProjectID = "projectId";
 
   String title, comment;
-  int id, dueDate;
+  int id, dueDate, projectId;
   Status priority;
 
   Tasks.create(
       {@required this.title,
+      @required this.projectId,
       this.comment = "",
       this.dueDate = -1,
       this.priority = Status.PRIORITY_4}) {
@@ -27,6 +28,7 @@ class Tasks {
   Tasks.update(
       {@required this.id,
       @required this.title,
+      @required this.projectId,
       this.comment = "",
       this.dueDate = -1,
       this.priority = Status.PRIORITY_4}) {
@@ -39,6 +41,7 @@ class Tasks {
       : this.update(
           id: map[dbId],
           title: map[dbTitle],
+          projectId: map[dbPriority],
           comment: map[ddComment],
           dueDate: map[dbDueDate],
           priority: Status.values[map[dbPriority]],
