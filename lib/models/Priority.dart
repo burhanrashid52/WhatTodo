@@ -11,5 +11,4 @@ enum Status {
   PRIORITY_4,
 }
 
-var priorityColor = [Colors.red, Colors.orange, Colors.yellow, Colors.white];
 var priorityText = ["Priority 1", "Priority 2", "Priority 3", "Priority 4"];

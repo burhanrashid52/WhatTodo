@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/models/Priority.dart';
+import 'package:flutter_app/utils/color_utils.dart';
 
 class TaskRow extends StatelessWidget {
   final Tasks tasks;
+  static final date_label = "Date";
 
   TaskRow(this.tasks);
 
@@ -28,7 +30,10 @@ class TaskRow extends StatelessWidget {
                   child: new Column(
                 children: <Widget>[
                   new Text(tasks.title, style: new TextStyle(fontSize: 16.0)),
-                  new Text(_getFormattedDate(tasks.dueDate)),
+                  new Text(
+                    _getFormattedDate(tasks.dueDate),
+                    key: new Key(date_label),
+                  ),
                 ],
               ))
             ],

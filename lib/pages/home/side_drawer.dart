@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
+import 'package:flutter_app/pages/labels/add_label.dart';
 import 'package:flutter_app/pages/projects/add_project.dart';
 
 class SideDrawer extends StatefulWidget {
@@ -10,15 +12,32 @@ class SideDrawer extends StatefulWidget {
 
 class _SideDrawerState extends State<SideDrawer> {
   final List<Project> projectList = new List();
+  final List<Label> labelList = new List();
 
   @override
   void initState() {
     super.initState();
+    updateProjects();
+    updateLabels();
+  }
+
+  void updateProjects() {
     AppDatabase.get().getProjects().then((projects) {
       if (projects != null) {
         setState(() {
           projectList.clear();
           projectList.addAll(projects);
+        });
+      }
+    });
+  }
+
+  void updateLabels() {
+    AppDatabase.get().getLabels().then((projects) {
+      if (projects != null) {
+        setState(() {
+          labelList.clear();
+          labelList.addAll(projects);
         });
       }
     });
@@ -33,7 +52,9 @@ class _SideDrawerState extends State<SideDrawer> {
             accountName: new Text("Burhanuddin Rashid"),
             accountEmail: new Text("burhanrashid52@gmail.com"),
             currentAccountPicture: new CircleAvatar(
-              backgroundColor: Theme.of(context).accentColor,
+              backgroundColor: Theme
+                  .of(context)
+                  .accentColor,
               child: new Text("B", style: new TextStyle(color: Colors.white)),
             ),
           ),
@@ -68,10 +89,16 @@ class _SideDrawerState extends State<SideDrawer> {
     projectWidgetList.add(new ListTile(
       leading: new Icon(Icons.add),
       title: new Text("Add Project"),
-      onTap: () {
+      onTap: () async {
         Navigator.pop(context);
-        Navigator.push(context,
-            new MaterialPageRoute(builder: (context) => new AddProject()));
+        bool isDataChanged = await Navigator.push(
+            context,
+            new MaterialPageRoute<bool>(
+                builder: (context) => new AddProject()));
+
+        if (isDataChanged) {
+          updateProjects();
+        }
       },
     ));
     return projectWidgetList;
@@ -79,12 +106,22 @@ class _SideDrawerState extends State<SideDrawer> {
 
   List<Widget> buildLabels() {
     List<Widget> projectWidgetList = new List();
-    projectList
-        .forEach((project) => projectWidgetList.add(new ProjectRow(project)));
+    labelList
+        .forEach((label) => projectWidgetList.add(new LabelRow(label)));
     projectWidgetList.add(new ListTile(
-      leading: new Icon(Icons.add),
-      title: new Text("Add Label"),
-    ));
+        leading: new Icon(Icons.add),
+        title: new Text("Add Label"),
+        onTap: () async {
+          Navigator.pop(context);
+          bool isDataChanged = await Navigator.push(
+              context,
+              new MaterialPageRoute<bool>(
+                  builder: (context) => new AddLabel()));
+
+          if (isDataChanged) {
+            updateLabels();
+          }
+        }));
     return projectWidgetList;
   }
 }
@@ -106,7 +143,36 @@ class ProjectRow extends StatelessWidget {
       trailing: Container(
         height: 10.0,
         width: 10.0,
-        child: new CircleAvatar(),
+        child: new CircleAvatar(
+          backgroundColor: new Color(project.colorValue),
+        ),
+      ),
+    );
+  }
+}
+
+class LabelRow extends StatelessWidget {
+  final Label label;
+
+  LabelRow(this.label);
+
+  @override
+  Widget build(BuildContext context) {
+    return new ListTile(
+      onTap: () {},
+      leading: new Container(
+        width: 24.0,
+        height: 24.0,
+      ),
+      title: new Text("@ ${label.name}"),
+      trailing: Container(
+        height: 10.0,
+        width: 10.0,
+        child: new Icon(
+          Icons.label,
+          size: 16.0,
+          color: new Color(label.colorValue),
+        ),
       ),
     );
   }

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -29,16 +31,18 @@ class AppDatabase {
     // Get a location using path_provider
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "tasks.db");
-    _database = await openDatabase(path, version: 5,
+    _database = await openDatabase(path, version: 6,
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
       await _createTaskTable(db);
       await _createProjectTable(db);
+      await _createLabelTable(db);
     }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
       await db.execute("DROP TABLE ${Tasks.tblTask}");
       await db.execute("DROP TABLE ${Project.tblProject}");
       await _createTaskTable(db);
       await _createProjectTable(db);
+      await _createLabelTable(db);
     });
     didInit = true;
   }
@@ -49,12 +53,20 @@ class AppDatabase {
           "${Project.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
           "${Project.dbName} TEXT,"
           "${Project.dbColorName} TEXT,"
-          "${Project.dbColorCode} TEXT);");
+          "${Project.dbColorCode} INTEGER);");
       txn.rawInsert('INSERT INTO '
           '${Project.tblProject}(${Project.dbId},${Project.dbName},${Project
           .dbColorName},${Project.dbColorCode})'
-          ' VALUES(1, "Inbox", "Grey", "808080");');
+          ' VALUES(1, "Inbox", "Grey", ${Colors.grey.value});');
     });
+  }
+
+  Future _createLabelTable(Database db) {
+    return db.execute("CREATE TABLE ${Label.tblLabel} ("
+        "${Label.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "${Label.dbName} TEXT,"
+        "${Label.dbColorName} TEXT,"
+        "${Label.dbColorCode} INTEGER);");
   }
 
   Future _createTaskTable(Database db) {
@@ -88,6 +100,17 @@ class AppDatabase {
     return projects;
   }
 
+  Future<List<Label>> getLabels() async {
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
+    List<Label> projects = new List();
+    for (Map<String, dynamic> item in result) {
+      var myProject = new Label.fromMap(item);
+      projects.add(myProject);
+    }
+    return projects;
+  }
+
   /// Inserts or replaces the task.
   Future updateTask(Tasks task) async {
     var db = await _getDb();
@@ -97,6 +120,28 @@ class AppDatabase {
           .ddComment},${Tasks.dbDueDate},${Tasks.dbPriority})'
           ' VALUES(${task.id}, "${task.title}", "${task
           .comment}", ${task.dueDate},${task.priority.index})');
+    });
+  }
+
+  Future updateProject(Project project) async {
+    var db = await _getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawInsert('INSERT OR REPLACE INTO '
+          '${Project.tblProject}(${Project.dbId},${Project.dbName},${Project
+          .dbColorCode},${Project.dbColorName})'
+          ' VALUES(${project.id},"${project.name}", ${project
+          .colorValue}, "${project.colorName}")');
+    });
+  }
+
+  Future updateLabels(Label label) async {
+    var db = await _getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawInsert('INSERT OR REPLACE INTO '
+          '${Label.tblLabel}(${Label.dbName},${Label
+          .dbColorCode},${Label.dbColorName})'
+          ' VALUES("${label.name}", ${label
+          .colorValue}, "${label.colorName}")');
     });
   }
 }

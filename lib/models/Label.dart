@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 
-class Project {
-  static final tblProject = "projects";
+class Label {
+  static final tblLabel = "labels";
   static final dbId = "id";
   static final dbName = "name";
   static final dbColorCode = "colorCode";
@@ -10,10 +10,9 @@ class Project {
   int id, colorValue;
   String name, colorName;
 
-  Project.create(this.name, this.colorValue, this.colorName);
+  Label.create(this.name, this.colorValue, this.colorName);
 
-  Project.update(
-      {@required this.id, name = "", colorCode = "", colorName = ""}) {
+  Label.update({@required this.id, name = "", colorCode = "", colorName = ""}) {
     if (name != "") {
       this.name = name;
     }
@@ -25,7 +24,7 @@ class Project {
     }
   }
 
-  Project.fromMap(Map<String, dynamic> map)
+  Label.fromMap(Map<String, dynamic> map)
       : this.update(
             id: map[dbId],
             name: map[dbName],
