@@ -5,12 +5,12 @@ class Tasks {
   static final tblTask = "Tasks";
   static final dbId = "id";
   static final dbTitle = "title";
-  static final ddComment = "comment";
+  static final dbComment = "comment";
   static final dbDueDate = "dueDate";
   static final dbPriority = "priority";
   static final dbProjectID = "projectId";
 
-  String title, comment;
+  String title, comment, projectName = "";
   int id, dueDate, projectId;
   Status priority;
 
@@ -41,8 +41,8 @@ class Tasks {
       : this.update(
           id: map[dbId],
           title: map[dbTitle],
-          projectId: map[dbPriority],
-          comment: map[ddComment],
+          projectId: map[dbProjectID],
+          comment: map[dbComment],
           dueDate: map[dbDueDate],
           priority: Status.values[map[dbPriority]],
         );

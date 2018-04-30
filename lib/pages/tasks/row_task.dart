@@ -30,6 +30,8 @@ class TaskRow extends StatelessWidget {
                   child: new Column(
                 children: <Widget>[
                   new Text(tasks.title, style: new TextStyle(fontSize: 16.0)),
+                  new Text(tasks.projectName,
+                      style: new TextStyle(fontSize: 16.0)),
                   new Text(
                     _getFormattedDate(tasks.dueDate),
                     key: new Key(date_label),

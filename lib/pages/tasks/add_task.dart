@@ -143,10 +143,11 @@ class _AddTaskState extends State<AddTaskScreen> {
       showDialog<Status>(
           context: context,
           builder: (BuildContext context) {
-            return new SimpleDialog(
-              title: const Text('Select Project'),
-              children: buildProjects(projects),
-            );
+            return new AlertDialog(
+                title: const Text('Select Project'),
+                content: new ListView(
+                  children: buildProjects(projects),
+                ));
           });
     });
   }

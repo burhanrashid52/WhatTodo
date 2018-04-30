@@ -34,15 +34,15 @@ class AppDatabase {
     _database = await openDatabase(path, version: 6,
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
-      await _createTaskTable(db);
       await _createProjectTable(db);
       await _createLabelTable(db);
+      await _createTaskTable(db);
     }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
       await db.execute("DROP TABLE ${Tasks.tblTask}");
       await db.execute("DROP TABLE ${Project.tblProject}");
-      await _createTaskTable(db);
       await _createProjectTable(db);
       await _createLabelTable(db);
+      await _createTaskTable(db);
     });
     didInit = true;
   }
@@ -73,20 +73,25 @@ class AppDatabase {
     return db.execute("CREATE TABLE ${Tasks.tblTask} ("
         "${Tasks.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
         "${Tasks.dbTitle} TEXT,"
-        "${Tasks.ddComment} TEXT,"
+        "${Tasks.dbComment} TEXT,"
         "${Tasks.dbDueDate} LONG,"
         "${Tasks.dbPriority} LONG,"
-        "${Tasks.dbProjectID} INTEGER,"
+        "${Tasks.dbProjectID} LONG,"
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project
-        .tblProject}(${Project.dbId}) ON DELETE CASCADE;");
+        .tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
 
   Future<List<Tasks>> getTasks() async {
     var db = await _getDb();
-    var result = await db.rawQuery('SELECT * FROM ${Tasks.tblTask}');
+    var result = await db
+        .rawQuery('SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project
+        .dbName} FROM ${Project.tblProject} INNER JOIN ${Tasks
+        .tblTask} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project
+        .tblProject}.${Project.dbId};');
     List<Tasks> tasks = new List();
     for (Map<String, dynamic> item in result) {
       var myTask = new Tasks.fromMap(item);
+      myTask.projectName = item[Project.dbName];
       tasks.add(myTask);
     }
     return tasks;
@@ -120,8 +125,9 @@ class AppDatabase {
     await db.transaction((Transaction txn) async {
       await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks
-          .ddComment},${Tasks.dbDueDate},${Tasks.dbPriority})'
-          ' VALUES(${task.id}, "${task.title}", "${task
+          .dbProjectID},${Tasks.dbComment},${Tasks.dbDueDate},${Tasks
+          .dbPriority})'
+          ' VALUES(${task.id}, "${task.title}", ${task.projectId},"${task
           .comment}", ${task.dueDate},${task.priority.index})');
     });
   }
