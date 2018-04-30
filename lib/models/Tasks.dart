@@ -10,8 +10,8 @@ class Tasks {
   static final dbPriority = "priority";
   static final dbProjectID = "projectId";
 
-  String title, comment, projectName = "";
-  int id, dueDate, projectId;
+  String title, comment, projectName, labelNames;
+  int id, dueDate, projectId, projectColor;
   Status priority;
 
   Tasks.create(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Priority.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/models/Tasks.dart';
@@ -18,6 +19,7 @@ class _AddTaskState extends State<AddTaskScreen> {
   Status priorityStatus = Status.PRIORITY_4;
   Project currentSelectedProject = new Project.update(
       id: 1, name: "Inbox", colorName: "Grey", colorCode: Colors.grey.value);
+  List<Label> selectedLabelList = new List();
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +72,14 @@ class _AddTaskState extends State<AddTaskScreen> {
             },
           ),
           new ListTile(
-            leading: new Icon(Icons.label),
-            title: new Text("Lables"),
-            subtitle: new Text("@Movies"),
-          ),
+              leading: new Icon(Icons.label),
+              title: new Text("Lables"),
+              subtitle: new Text(selectedLabelList.length == 0
+                  ? "No Label"
+                  : getDisplayLabels()),
+              onTap: () {
+                _showLabelsDialog(context);
+              }),
           new ListTile(
             leading: new Icon(Icons.mode_comment),
             title: new Text("Comments"),
@@ -90,18 +96,33 @@ class _AddTaskState extends State<AddTaskScreen> {
           child: new Icon(Icons.send, color: Colors.white),
           onPressed: () {
             if (text != "") {
+              List<int> labelIds = new List();
+              selectedLabelList.forEach((label) {
+                labelIds.add(label.id);
+              });
               var task = new Tasks.create(
                   title: text,
                   dueDate: dueDate,
                   priority: priorityStatus,
                   projectId: currentSelectedProject.id);
-              AppDatabase.get().updateTask(task).then((book) {
+              AppDatabase
+                  .get()
+                  .updateTask(task, labelIDs: labelIds)
+                  .then((book) {
                 print(book);
                 Navigator.pop(context, true);
               });
             }
           }),
     );
+  }
+
+  String getDisplayLabels() {
+    List<String> selectedLabelNameList = new List();
+    selectedLabelList.forEach((label) {
+      selectedLabelNameList.add("@${label.name}");
+    });
+    return selectedLabelNameList.join("  ");
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -146,7 +167,23 @@ class _AddTaskState extends State<AddTaskScreen> {
             return new AlertDialog(
                 title: const Text('Select Project'),
                 content: new ListView(
+                  shrinkWrap: true,
                   children: buildProjects(projects),
+                ));
+          });
+    });
+  }
+
+  Future<Status> _showLabelsDialog(BuildContext context) async {
+    return AppDatabase.get().getLabels().then((label) {
+      showDialog<Status>(
+          context: context,
+          builder: (BuildContext context) {
+            return new AlertDialog(
+                title: const Text('Select Labels'),
+                content: new ListView(
+                  shrinkWrap: true,
+                  children: buildLabels(label),
                 ));
           });
     });
@@ -168,6 +205,27 @@ class _AddTaskState extends State<AddTaskScreen> {
           setState(() {
             currentSelectedProject = project;
           });
+          Navigator.pop(context);
+        },
+      ));
+    });
+    return projects;
+  }
+
+  List<Widget> buildLabels(List<Label> labelList) {
+    List<Widget> projects = new List();
+    labelList.forEach((label) {
+      projects.add(new ListTile(
+        leading: new Icon(Icons.label,
+            color: new Color(label.colorValue), size: 18.0),
+        title: new Text(label.name),
+        onTap: () {
+          setState(() {
+            if (!selectedLabelList.contains(label)) {
+              selectedLabelList.add(label);
+            }
+          });
+          Navigator.pop(context);
         },
       ));
     });

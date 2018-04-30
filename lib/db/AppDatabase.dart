@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
+import 'package:flutter_app/models/TaskLabels.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,14 +36,15 @@ class AppDatabase {
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
       await _createProjectTable(db);
-      await _createLabelTable(db);
       await _createTaskTable(db);
+      await _createLabelTable(db);
     }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
       await db.execute("DROP TABLE ${Tasks.tblTask}");
       await db.execute("DROP TABLE ${Project.tblProject}");
+      await db.execute("DROP TABLE ${TaskLabels.tblTaskLabel}");
       await _createProjectTable(db);
-      await _createLabelTable(db);
       await _createTaskTable(db);
+      await _createLabelTable(db);
     });
     didInit = true;
   }
@@ -62,11 +64,21 @@ class AppDatabase {
   }
 
   Future _createLabelTable(Database db) {
-    return db.execute("CREATE TABLE ${Label.tblLabel} ("
-        "${Label.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "${Label.dbName} TEXT,"
-        "${Label.dbColorName} TEXT,"
-        "${Label.dbColorCode} INTEGER);");
+    return db.transaction((Transaction txn) {
+      txn.execute("CREATE TABLE ${Label.tblLabel} ("
+          "${Label.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
+          "${Label.dbName} TEXT,"
+          "${Label.dbColorName} TEXT,"
+          "${Label.dbColorCode} INTEGER);");
+      txn.execute("CREATE TABLE ${TaskLabels.tblTaskLabel} ("
+          "${TaskLabels.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
+          "${TaskLabels.dbTaskId} INTEGER,"
+          "${TaskLabels.dbLabelId} INTEGER,"
+          "FOREIGN KEY(${TaskLabels.dbTaskId}) REFERENCES ${Tasks
+          .tblTask}(${Tasks.dbId}) ON DELETE CASCADE,"
+          "FOREIGN KEY(${TaskLabels.dbLabelId}) REFERENCES ${Label
+          .tblLabel}(${Label.dbId}) ON DELETE CASCADE);");
+    });
   }
 
   Future _createTaskTable(Database db) {
@@ -85,13 +97,24 @@ class AppDatabase {
     var db = await _getDb();
     var result = await db
         .rawQuery('SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project
-        .dbName} FROM ${Project.tblProject} INNER JOIN ${Tasks
-        .tblTask} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project
+        .dbName},${Project.tblProject}.${Project
+        .dbColorCode},group_concat(${Label.tblLabel}.${Label
+        .dbName}) as labelNames '
+            'FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels
+        .tblTaskLabel} ON ${TaskLabels
+        .tblTaskLabel}.${TaskLabels.dbId}=${Tasks.tblTask}.${Tasks.dbId} '
+            'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label
+        .dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbId} '
+            'INNER JOIN ${Project.tblProject} ON ${Tasks
+        .tblTask}.${Tasks.dbProjectID} = ${Project
         .tblProject}.${Project.dbId};');
+
     List<Tasks> tasks = new List();
     for (Map<String, dynamic> item in result) {
       var myTask = new Tasks.fromMap(item);
       myTask.projectName = item[Project.dbName];
+      myTask.projectColor = item[Project.dbColorCode];
+      myTask.labelNames = item["labelNames"];
       tasks.add(myTask);
     }
     return tasks;
@@ -120,15 +143,23 @@ class AppDatabase {
   }
 
   /// Inserts or replaces the task.
-  Future updateTask(Tasks task) async {
+  Future updateTask(Tasks task, {List<int> labelIDs}) async {
     var db = await _getDb();
     await db.transaction((Transaction txn) async {
-      await txn.rawInsert('INSERT OR REPLACE INTO '
+      int id = await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks
           .dbProjectID},${Tasks.dbComment},${Tasks.dbDueDate},${Tasks
           .dbPriority})'
           ' VALUES(${task.id}, "${task.title}", ${task.projectId},"${task
           .comment}", ${task.dueDate},${task.priority.index})');
+      if (id > 0 && labelIDs != null && labelIDs.length > 0) {
+        labelIDs.forEach((labelId) {
+          txn.rawInsert('INSERT OR REPLACE INTO '
+              '${TaskLabels.tblTaskLabel}(${TaskLabels.dbId},${TaskLabels
+              .dbTaskId},${TaskLabels.dbLabelId})'
+              ' VALUES(null, $id, $labelId)');
+        });
+      }
     });
   }
 
