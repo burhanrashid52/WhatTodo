@@ -34,18 +34,18 @@ class AppDatabase {
     String path = join(documentsDirectory.path, "tasks.db");
     _database = await openDatabase(path, version: 6,
         onCreate: (Database db, int version) async {
-          // When creating the db, create the table
-          await _createProjectTable(db);
-          await _createTaskTable(db);
-          await _createLabelTable(db);
-        }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
-          await db.execute("DROP TABLE ${Tasks.tblTask}");
-          await db.execute("DROP TABLE ${Project.tblProject}");
-          await db.execute("DROP TABLE ${TaskLabels.tblTaskLabel}");
-          await _createProjectTable(db);
-          await _createTaskTable(db);
-          await _createLabelTable(db);
-        });
+      // When creating the db, create the table
+      await _createProjectTable(db);
+      await _createTaskTable(db);
+      await _createLabelTable(db);
+    }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
+      await db.execute("DROP TABLE ${Tasks.tblTask}");
+      await db.execute("DROP TABLE ${Project.tblProject}");
+      await db.execute("DROP TABLE ${TaskLabels.tblTaskLabel}");
+      await _createProjectTable(db);
+      await _createTaskTable(db);
+      await _createLabelTable(db);
+    });
     didInit = true;
   }
 
@@ -100,14 +100,14 @@ class AppDatabase {
         .dbName},${Project.tblProject}.${Project
         .dbColorCode},group_concat(${Label.tblLabel}.${Label
         .dbName}) as labelNames '
-        'FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels
+            'FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels
         .tblTaskLabel} ON ${TaskLabels
-        .tblTaskLabel}.${TaskLabels.dbId}=${Tasks.tblTask}.${Tasks.dbId} '
-        'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label
-        .dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbId} '
-        'INNER JOIN ${Project.tblProject} ON ${Tasks
+        .tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
+            'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label
+        .dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
+            'INNER JOIN ${Project.tblProject} ON ${Tasks
         .tblTask}.${Tasks.dbProjectID} = ${Project
-        .tblProject}.${Project.dbId};');
+        .tblProject}.${Project.dbId} GROUP BY ${Tasks.tblTask}.${Tasks.dbId};');
 
     List<Tasks> tasks = new List();
     for (Map<String, dynamic> item in result) {
@@ -115,7 +115,9 @@ class AppDatabase {
       myTask.projectName = item[Project.dbName];
       myTask.projectColor = item[Project.dbColorCode];
       var labelComma = item["labelNames"];
-      myTask.labelNames = "@${labelComma.replaceAll(",", ",@")}".split(",").join(" ");
+      if (labelComma != null) {
+        myTask.labelList = labelComma.toString().split(",");
+      }
       tasks.add(myTask);
     }
     return tasks;

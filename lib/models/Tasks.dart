@@ -10,9 +10,10 @@ class Tasks {
   static final dbPriority = "priority";
   static final dbProjectID = "projectId";
 
-  String title, comment, projectName, labelNames;
+  String title, comment, projectName;
   int id, dueDate, projectId, projectColor;
   Status priority;
+  List<String> labelList = new List();
 
   Tasks.create(
       {@required this.title,

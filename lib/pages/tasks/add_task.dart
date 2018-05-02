@@ -7,6 +7,7 @@ import 'package:flutter_app/models/Priority.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/utils/color_utils.dart';
+import 'package:flutter_app/utils/date_util.dart';
 
 class AddTaskScreen extends StatefulWidget {
   @override
@@ -52,7 +53,7 @@ class _AddTaskState extends State<AddTaskScreen> {
           new ListTile(
             leading: new Icon(Icons.calendar_today),
             title: new Text("Due Date"),
-            subtitle: new Text(_getFormattedDate(dueDate)),
+            subtitle: new Text(getFormattedDate(dueDate)),
             onTap: () {
               _selectDate(context);
             },
@@ -136,11 +137,6 @@ class _AddTaskState extends State<AddTaskScreen> {
         dueDate = picked.millisecondsSinceEpoch;
       });
     }
-  }
-
-  String _getFormattedDate(int dueDate) {
-    DateTime date = new DateTime.fromMillisecondsSinceEpoch(dueDate);
-    return "${monthsNames[date.month - 1]}  ${date.day}";
   }
 
   Future<Status> _showPriorityDialog(BuildContext context) async {
@@ -257,18 +253,3 @@ class _AddTaskState extends State<AddTaskScreen> {
             )));
   }
 }
-
-var monthsNames = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "July",
-  "Aug",
-  "Sept",
-  "Oct",
-  "Nov",
-  "Dec"
-];
