@@ -24,6 +24,8 @@ class Label {
     }
   }
 
+  bool operator ==(o) => o is Label && o.id == id;
+
   Label.fromMap(Map<String, dynamic> map)
       : this.update(
             id: map[dbId],

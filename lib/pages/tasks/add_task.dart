@@ -215,10 +215,15 @@ class _AddTaskState extends State<AddTaskScreen> {
         leading: new Icon(Icons.label,
             color: new Color(label.colorValue), size: 18.0),
         title: new Text(label.name),
+        trailing: selectedLabelList.contains(label)
+            ? new Icon(Icons.close)
+            : new Container(),
         onTap: () {
           setState(() {
             if (!selectedLabelList.contains(label)) {
               selectedLabelList.add(label);
+            } else {
+              selectedLabelList.remove(label);
             }
           });
           Navigator.pop(context);

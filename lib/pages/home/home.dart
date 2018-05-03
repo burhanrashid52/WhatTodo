@@ -55,12 +55,15 @@ class _HomeState extends State<HomeScreen> {
         },
       ),
       drawer: new SideDrawer(),
-      body: new Container(
-        child: new ListView.builder(
-            itemCount: taskList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return new TaskRow(taskList[index]);
-            }),
+      body: new Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: new Container(
+          child: new ListView.builder(
+              itemCount: taskList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return new TaskRow(taskList[index]);
+              }),
+        ),
       ),
     );
   }

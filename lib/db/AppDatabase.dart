@@ -107,7 +107,39 @@ class AppDatabase {
         .dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
             'INNER JOIN ${Project.tblProject} ON ${Tasks
         .tblTask}.${Tasks.dbProjectID} = ${Project
-        .tblProject}.${Project.dbId} GROUP BY ${Tasks.tblTask}.${Tasks.dbId};');
+        .tblProject}.${Project.dbId} GROUP BY ${Tasks.tblTask}.${Tasks
+        .dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
+
+    List<Tasks> tasks = new List();
+    for (Map<String, dynamic> item in result) {
+      var myTask = new Tasks.fromMap(item);
+      myTask.projectName = item[Project.dbName];
+      myTask.projectColor = item[Project.dbColorCode];
+      var labelComma = item["labelNames"];
+      if (labelComma != null) {
+        myTask.labelList = labelComma.toString().split(",");
+      }
+      tasks.add(myTask);
+    }
+    return tasks;
+  }
+
+  Future<List<Tasks>> getTasksByProject(int projectId) async {
+    var db = await _getDb();
+    var result = await db
+        .rawQuery('SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project
+        .dbName},${Project.tblProject}.${Project
+        .dbColorCode},group_concat(${Label.tblLabel}.${Label
+        .dbName}) as labelNames '
+            'FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels
+        .tblTaskLabel} ON ${TaskLabels
+        .tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
+            'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label
+        .dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
+            'INNER JOIN ${Project.tblProject} ON ${Tasks
+        .tblTask}.${Tasks.dbProjectID} = $projectId GROUP BY ${Tasks
+        .tblTask}.${Tasks
+        .dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
 
     List<Tasks> tasks = new List();
     for (Map<String, dynamic> item in result) {

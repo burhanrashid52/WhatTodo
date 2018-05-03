@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
+import 'package:flutter_app/pages/home/home.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
 import 'package:flutter_app/pages/projects/add_project.dart';
 
@@ -64,6 +65,10 @@ class _SideDrawerState extends State<SideDrawer> {
             leading: new Icon(Icons.calendar_today),
             title: new Text("Today"),
           ),
+          new ListTile(
+            leading: new Icon(Icons.calendar_today),
+            title: new Text("Next 7 Days"),
+          ),
           buildExpansionTile(Icons.book, "Projects"),
           buildExpansionTile(Icons.label, "Labels")
         ],
@@ -82,8 +87,8 @@ class _SideDrawerState extends State<SideDrawer> {
 
   List<Widget> buildProjects() {
     List<Widget> projectWidgetList = new List();
-    projectList
-        .forEach((project) => projectWidgetList.add(new ProjectRow(project)));
+    projectList.forEach((project) => projectWidgetList
+        .add(new ProjectRow(project)));
     projectWidgetList.add(new ListTile(
       leading: new Icon(Icons.add),
       title: new Text("Add Project"),
@@ -123,8 +128,11 @@ class _SideDrawerState extends State<SideDrawer> {
   }
 }
 
+//typedef void ProjectSelection(int projectId);
+
 class ProjectRow extends StatelessWidget {
   final Project project;
+ // final VoidCallback projectSelection;
 
   ProjectRow(this.project);
 
@@ -132,11 +140,11 @@ class ProjectRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return new ListTile(
       onTap: () {
-        AppDatabase.get().deleteProject(project.id).then((value) {
+       // projectSelection(project.id);
+        /* AppDatabase.get().deleteProject(project.id).then((value) {
           print("Success :" + value);
-          if (value != null) {
-          }
-        });
+          if (value != null) {}
+        });*/
       },
       leading: new Container(
         width: 24.0,
