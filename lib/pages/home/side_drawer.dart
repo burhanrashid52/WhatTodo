@@ -2,18 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
-import 'package:flutter_app/pages/home/home.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
 import 'package:flutter_app/pages/projects/add_project.dart';
 
 class SideDrawer extends StatefulWidget {
+  ProjectSelection projectSelection;
+
+  SideDrawer({this.projectSelection});
+
   @override
-  _SideDrawerState createState() => new _SideDrawerState();
+  _SideDrawerState createState() => new _SideDrawerState(projectSelection);
 }
 
 class _SideDrawerState extends State<SideDrawer> {
   final List<Project> projectList = new List();
   final List<Label> labelList = new List();
+  ProjectSelection projectSelectionListener;
+
+  _SideDrawerState(this.projectSelectionListener);
 
   @override
   void initState() {
@@ -23,7 +29,7 @@ class _SideDrawerState extends State<SideDrawer> {
   }
 
   void updateProjects() {
-    AppDatabase.get().getProjects().then((projects) {
+    AppDatabase.get().getProjects(isInboxVisible:   false).then((projects) {
       if (projects != null) {
         setState(() {
           projectList.clear();
@@ -58,13 +64,22 @@ class _SideDrawerState extends State<SideDrawer> {
             ),
           ),
           new ListTile(
-            leading: new Icon(Icons.inbox),
-            title: new Text("Inbox"),
-          ),
+              leading: new Icon(Icons.inbox),
+              title: new Text("Inbox"),
+              onTap: () {
+                if (projectSelectionListener != null) {
+                  var project = Project.update(
+                      id: 1,
+                      name: "Inbox",
+                      colorCode: Colors.grey.value,
+                      colorName: "Grey");
+                  projectSelectionListener(project);
+                  Navigator.pop(context);
+                }
+              }),
           new ListTile(
-            leading: new Icon(Icons.calendar_today),
-            title: new Text("Today"),
-          ),
+              leading: new Icon(Icons.calendar_today),
+              title: new Text("Today")),
           new ListTile(
             leading: new Icon(Icons.calendar_today),
             title: new Text("Next 7 Days"),
@@ -87,8 +102,13 @@ class _SideDrawerState extends State<SideDrawer> {
 
   List<Widget> buildProjects() {
     List<Widget> projectWidgetList = new List();
-    projectList.forEach((project) => projectWidgetList
-        .add(new ProjectRow(project)));
+    projectList.forEach((project) => projectWidgetList.add(new ProjectRow(
+          project,
+          projectSelection: (selectedProject) {
+            projectSelectionListener(selectedProject);
+            Navigator.pop(context);
+          },
+        )));
     projectWidgetList.add(new ListTile(
       leading: new Icon(Icons.add),
       title: new Text("Add Project"),
@@ -128,23 +148,19 @@ class _SideDrawerState extends State<SideDrawer> {
   }
 }
 
-//typedef void ProjectSelection(int projectId);
-
 class ProjectRow extends StatelessWidget {
   final Project project;
- // final VoidCallback projectSelection;
+  final ProjectSelection projectSelection;
 
-  ProjectRow(this.project);
+  ProjectRow(this.project, {this.projectSelection});
 
   @override
   Widget build(BuildContext context) {
     return new ListTile(
       onTap: () {
-       // projectSelection(project.id);
-        /* AppDatabase.get().deleteProject(project.id).then((value) {
-          print("Success :" + value);
-          if (value != null) {}
-        });*/
+        if (projectSelection != null) {
+          projectSelection(project);
+        }
       },
       leading: new Container(
         width: 24.0,
@@ -188,3 +204,5 @@ class LabelRow extends StatelessWidget {
     );
   }
 }
+
+typedef void ProjectSelection(Project project);

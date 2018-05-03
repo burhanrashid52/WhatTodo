@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
@@ -12,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
   final List<Tasks> taskList = new List();
+  String homeTitle = "Today";
 
   @override
   void initState() {
@@ -30,11 +32,22 @@ class _HomeState extends State<HomeScreen> {
     });
   }
 
+  void updateTasksByProject(Project project) {
+    AppDatabase.get().getTasksByProject(project.id).then((tasks) {
+      if (tasks == null) return;
+      setState(() {
+        homeTitle = project.name;
+        taskList.clear();
+        taskList.addAll(tasks);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Today"),
+        title: new Text(homeTitle),
       ),
       floatingActionButton: new FloatingActionButton(
         child: new Icon(
@@ -54,7 +67,9 @@ class _HomeState extends State<HomeScreen> {
           }
         },
       ),
-      drawer: new SideDrawer(),
+      drawer: new SideDrawer(projectSelection: (project) {
+        updateTasksByProject(project);
+      }),
       body: new Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: new Container(

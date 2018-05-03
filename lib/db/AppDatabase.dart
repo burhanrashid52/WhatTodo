@@ -110,18 +110,7 @@ class AppDatabase {
         .tblProject}.${Project.dbId} GROUP BY ${Tasks.tblTask}.${Tasks
         .dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
 
-    List<Tasks> tasks = new List();
-    for (Map<String, dynamic> item in result) {
-      var myTask = new Tasks.fromMap(item);
-      myTask.projectName = item[Project.dbName];
-      myTask.projectColor = item[Project.dbColorCode];
-      var labelComma = item["labelNames"];
-      if (labelComma != null) {
-        myTask.labelList = labelComma.toString().split(",");
-      }
-      tasks.add(myTask);
-    }
-    return tasks;
+    return bindData(result);
   }
 
   Future<List<Tasks>> getTasksByProject(int projectId) async {
@@ -137,10 +126,17 @@ class AppDatabase {
             'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label
         .dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
             'INNER JOIN ${Project.tblProject} ON ${Tasks
-        .tblTask}.${Tasks.dbProjectID} = $projectId GROUP BY ${Tasks
+        .tblTask}.${Tasks.dbProjectID} = ${Project.tblProject}.${Project
+        .dbId} WHERE ${Tasks.tblTask}.${Tasks
+        .dbProjectID}=$projectId GROUP BY ${Tasks
         .tblTask}.${Tasks
-        .dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
+        .dbId} ORDER BY ${Tasks.tblTask}.${Tasks
+        .dbDueDate} ASC;');
 
+    return bindData(result);
+  }
+
+  List<Tasks> bindData(List<Map<String, dynamic>> result) {
     List<Tasks> tasks = new List();
     for (Map<String, dynamic> item in result) {
       var myTask = new Tasks.fromMap(item);
@@ -155,9 +151,11 @@ class AppDatabase {
     return tasks;
   }
 
-  Future<List<Project>> getProjects() async {
+  Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
     var db = await _getDb();
-    var result = await db.rawQuery('SELECT * FROM ${Project.tblProject}');
+    var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";
+    var result =
+        await db.rawQuery('SELECT * FROM ${Project.tblProject} $whereClause');
     List<Project> projects = new List();
     for (Map<String, dynamic> item in result) {
       var myProject = new Project.fromMap(item);
