@@ -7,19 +7,22 @@ import 'package:flutter_app/pages/projects/add_project.dart';
 
 class SideDrawer extends StatefulWidget {
   ProjectSelection projectSelection;
+  LabelSelection labelSelection;
 
-  SideDrawer({this.projectSelection});
+  SideDrawer({this.projectSelection, this.labelSelection});
 
   @override
-  _SideDrawerState createState() => new _SideDrawerState(projectSelection);
+  _SideDrawerState createState() =>
+      new _SideDrawerState(projectSelection, labelSelection);
 }
 
 class _SideDrawerState extends State<SideDrawer> {
   final List<Project> projectList = new List();
   final List<Label> labelList = new List();
   ProjectSelection projectSelectionListener;
+  LabelSelection labelSelectionListener;
 
-  _SideDrawerState(this.projectSelectionListener);
+  _SideDrawerState(this.projectSelectionListener, this.labelSelectionListener);
 
   @override
   void initState() {
@@ -29,7 +32,7 @@ class _SideDrawerState extends State<SideDrawer> {
   }
 
   void updateProjects() {
-    AppDatabase.get().getProjects(isInboxVisible:   false).then((projects) {
+    AppDatabase.get().getProjects(isInboxVisible: false).then((projects) {
       if (projects != null) {
         setState(() {
           projectList.clear();
@@ -129,7 +132,11 @@ class _SideDrawerState extends State<SideDrawer> {
 
   List<Widget> buildLabels() {
     List<Widget> projectWidgetList = new List();
-    labelList.forEach((label) => projectWidgetList.add(new LabelRow(label)));
+    labelList.forEach((label) =>
+        projectWidgetList.add(new LabelRow(label, labelSelection: (label) {
+          labelSelectionListener(label);
+          Navigator.pop(context);
+        })));
     projectWidgetList.add(new ListTile(
         leading: new Icon(Icons.add),
         title: new Text("Add Label"),
@@ -180,13 +187,18 @@ class ProjectRow extends StatelessWidget {
 
 class LabelRow extends StatelessWidget {
   final Label label;
+  final LabelSelection labelSelection;
 
-  LabelRow(this.label);
+  LabelRow(this.label, {this.labelSelection});
 
   @override
   Widget build(BuildContext context) {
     return new ListTile(
-      onTap: () {},
+      onTap: () {
+        if (labelSelection != null) {
+          labelSelection(label);
+        }
+      },
       leading: new Container(
         width: 24.0,
         height: 24.0,
@@ -206,3 +218,4 @@ class LabelRow extends StatelessWidget {
 }
 
 typedef void ProjectSelection(Project project);
+typedef void LabelSelection(Label label);

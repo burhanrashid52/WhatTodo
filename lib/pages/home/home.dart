@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
@@ -17,7 +18,6 @@ class _HomeState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     updateTasks();
     super.initState();
   }
@@ -37,6 +37,17 @@ class _HomeState extends State<HomeScreen> {
       if (tasks == null) return;
       setState(() {
         homeTitle = project.name;
+        taskList.clear();
+        taskList.addAll(tasks);
+      });
+    });
+  }
+
+  void updateTasksByLabel(Label label) {
+    AppDatabase.get().getTasksByLabel(label.name).then((tasks) {
+      if (tasks == null) return;
+      setState(() {
+        homeTitle = label.name;
         taskList.clear();
         taskList.addAll(tasks);
       });
@@ -67,9 +78,14 @@ class _HomeState extends State<HomeScreen> {
           }
         },
       ),
-      drawer: new SideDrawer(projectSelection: (project) {
-        updateTasksByProject(project);
-      }),
+      drawer: new SideDrawer(
+        projectSelection: (project) {
+          updateTasksByProject(project);
+        },
+        labelSelection: (label) {
+          updateTasksByLabel(label);
+        },
+      ),
       body: new Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: new Container(
