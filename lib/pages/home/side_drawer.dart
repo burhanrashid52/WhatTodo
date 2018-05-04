@@ -8,12 +8,13 @@ import 'package:flutter_app/pages/projects/add_project.dart';
 class SideDrawer extends StatefulWidget {
   ProjectSelection projectSelection;
   LabelSelection labelSelection;
+  DateSelection dateSelection;
 
-  SideDrawer({this.projectSelection, this.labelSelection});
+  SideDrawer({this.projectSelection, this.labelSelection, this.dateSelection});
 
   @override
   _SideDrawerState createState() =>
-      new _SideDrawerState(projectSelection, labelSelection);
+      new _SideDrawerState(projectSelection, labelSelection, dateSelection);
 }
 
 class _SideDrawerState extends State<SideDrawer> {
@@ -21,8 +22,10 @@ class _SideDrawerState extends State<SideDrawer> {
   final List<Label> labelList = new List();
   ProjectSelection projectSelectionListener;
   LabelSelection labelSelectionListener;
+  DateSelection dateSelectionListener;
 
-  _SideDrawerState(this.projectSelectionListener, this.labelSelectionListener);
+  _SideDrawerState(this.projectSelectionListener, this.labelSelectionListener,
+      this.dateSelectionListener);
 
   @override
   void initState() {
@@ -81,9 +84,37 @@ class _SideDrawerState extends State<SideDrawer> {
                 }
               }),
           new ListTile(
+              onTap: () {
+                var dateTime = new DateTime.now();
+                var taskStartTime =
+                    new DateTime(dateTime.year, dateTime.month, dateTime.day)
+                        .millisecondsSinceEpoch;
+                var taskEndTime = new DateTime(
+                        dateTime.year, dateTime.month, dateTime.day, 23, 59)
+                    .millisecondsSinceEpoch;
+
+                if (dateSelectionListener != null) {
+                  dateSelectionListener(taskStartTime, taskEndTime);
+                }
+                Navigator.pop(context);
+              },
               leading: new Icon(Icons.calendar_today),
               title: new Text("Today")),
           new ListTile(
+            onTap: () {
+              var dateTime = new DateTime.now();
+              var taskStartTime =
+                  new DateTime(dateTime.year, dateTime.month, dateTime.day)
+                      .millisecondsSinceEpoch;
+              var taskEndTime = new DateTime(
+                      dateTime.year, dateTime.month, dateTime.day + 7, 23, 59)
+                  .millisecondsSinceEpoch;
+
+              if (dateSelectionListener != null) {
+                dateSelectionListener(taskStartTime, taskEndTime);
+              }
+              Navigator.pop(context);
+            },
             leading: new Icon(Icons.calendar_today),
             title: new Text("Next 7 Days"),
           ),
@@ -219,3 +250,4 @@ class LabelRow extends StatelessWidget {
 
 typedef void ProjectSelection(Project project);
 typedef void LabelSelection(Label label);
+typedef void DateSelection(int startDate, int endDate);

@@ -15,15 +15,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeState extends State<HomeScreen> {
   final List<Tasks> taskList = new List();
   String homeTitle = "Today";
+  int taskStartTime, taskEndTime;
 
   @override
   void initState() {
-    updateTasks();
+    var dateTime = new DateTime.now();
+    taskStartTime = new DateTime(dateTime.year, dateTime.month, dateTime.day)
+        .millisecondsSinceEpoch;
+    taskEndTime =
+        new DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
+            .millisecondsSinceEpoch;
+    updateTasks(taskStartTime, taskEndTime);
     super.initState();
   }
 
-  void updateTasks() {
-    AppDatabase.get().getTasks().then((tasks) {
+  void updateTasks(int taskStartTime, int taskEndTime) {
+    AppDatabase
+        .get()
+        .getTasks(startDate: taskStartTime, endDate: taskEndTime)
+        .then((tasks) {
       if (tasks == null) return;
       setState(() {
         taskList.clear();
@@ -74,7 +84,7 @@ class _HomeState extends State<HomeScreen> {
           );
 
           if (isDataChanged) {
-            updateTasks();
+            updateTasks(taskStartTime, taskEndTime);
           }
         },
       ),
@@ -84,6 +94,14 @@ class _HomeState extends State<HomeScreen> {
         },
         labelSelection: (label) {
           updateTasksByLabel(label);
+        },
+        dateSelection: (startTime, endTime) {
+          var dayInMillis = 86340000;
+          homeTitle =
+              endTime - startTime > dayInMillis ? "Next 7 Days" : "Today";
+          taskStartTime = startTime;
+          taskEndTime = endTime;
+          updateTasks(startTime, endTime);
         },
       ),
       body: new Padding(

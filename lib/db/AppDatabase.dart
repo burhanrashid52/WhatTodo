@@ -93,8 +93,12 @@ class AppDatabase {
         .tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
 
-  Future<List<Tasks>> getTasks() async {
+  Future<List<Tasks>> getTasks({int startDate = 0, int endDate = 0}) async {
     var db = await _getDb();
+    var whereClause = startDate > 0 && endDate > 0
+        ? "WHERE ${Tasks.tblTask}.${Tasks
+        .dbDueDate} BETWEEN $startDate AND $endDate"
+        : "";
     var result = await db
         .rawQuery('SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project
         .dbName},${Project.tblProject}.${Project
@@ -107,7 +111,8 @@ class AppDatabase {
         .dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
             'INNER JOIN ${Project.tblProject} ON ${Tasks
         .tblTask}.${Tasks.dbProjectID} = ${Project
-        .tblProject}.${Project.dbId} GROUP BY ${Tasks.tblTask}.${Tasks
+        .tblProject}.${Project.dbId} $whereClause GROUP BY ${Tasks
+        .tblTask}.${Tasks
         .dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
 
     return bindData(result);
