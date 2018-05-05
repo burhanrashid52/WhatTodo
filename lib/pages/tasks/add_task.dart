@@ -6,6 +6,7 @@ import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Priority.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/models/Tasks.dart';
+import 'package:flutter_app/pages/tasks/add_comment.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';
 
@@ -85,6 +86,9 @@ class _AddTaskState extends State<AddTaskScreen> {
             leading: new Icon(Icons.mode_comment),
             title: new Text("Comments"),
             subtitle: new Text("No Comments"),
+            onTap: (){
+              showCommentDialog(context);
+            },
           ),
           new ListTile(
             leading: new Icon(Icons.timer),
