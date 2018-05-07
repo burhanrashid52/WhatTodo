@@ -22,26 +22,34 @@ class _AddTaskState extends State<AddTaskScreen> {
   Project currentSelectedProject = new Project.update(
       id: 1, name: "Inbox", colorName: "Grey", colorCode: Colors.grey.value);
   List<Label> selectedLabelList = new List();
+  GlobalKey<ScaffoldState> _scaffoldState = new GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> _formState = new GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: _scaffoldState,
       appBar: new AppBar(
         title: new Text("Add Task"),
       ),
       body: new ListView(
         children: <Widget>[
-          new Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: new TextField(
-                onChanged: (value) {
-                  setState(() {
+          new Form(
+            child: new Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: new TextFormField(
+                  validator: (value) {
+                    var msg = value.isEmpty ? "Title Cannot be Empty" : null;
+                    return msg;
+                  },
+                  onSaved: (value) {
                     text = value;
-                  });
-                },
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                decoration: new InputDecoration(hintText: "Title")),
+                  },
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  decoration: new InputDecoration(hintText: "Title")),
+            ),
+            key: _formState,
           ),
           new ListTile(
             leading: new Icon(Icons.book),
@@ -86,21 +94,25 @@ class _AddTaskState extends State<AddTaskScreen> {
             leading: new Icon(Icons.mode_comment),
             title: new Text("Comments"),
             subtitle: new Text("No Comments"),
-            onTap: (){
-              showCommentDialog(context);
+            onTap: () {
+              _showSnackbar("Comming Soon");
             },
           ),
           new ListTile(
             leading: new Icon(Icons.timer),
             title: new Text("Reminder"),
             subtitle: new Text("No Reminder"),
+            onTap: () {
+              _showSnackbar("Comming Soon");
+            },
           )
         ],
       ),
       floatingActionButton: new FloatingActionButton(
           child: new Icon(Icons.send, color: Colors.white),
           onPressed: () {
-            if (text != "") {
+            if (_formState.currentState.validate()) {
+              _formState.currentState.save();
               List<int> labelIds = new List();
               selectedLabelList.forEach((label) {
                 labelIds.add(label.id);
@@ -120,6 +132,13 @@ class _AddTaskState extends State<AddTaskScreen> {
             }
           }),
     );
+  }
+
+  _showSnackbar(String message) {
+    if (message.isEmpty) return;
+    // Find the Scaffold in the Widget tree and use it to show a SnackBar
+    _scaffoldState.currentState
+        .showSnackBar(new SnackBar(content: new Text(message)));
   }
 
   String getDisplayLabels() {
