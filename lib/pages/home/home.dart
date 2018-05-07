@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
   final List<Tasks> taskList = new List();
+  GlobalKey<ScaffoldState> _scaffoldHomeState = new GlobalKey<ScaffoldState>();
   String homeTitle = "Today";
   int taskStartTime, taskEndTime;
 
@@ -32,7 +33,10 @@ class _HomeState extends State<HomeScreen> {
   void updateTasks(int taskStartTime, int taskEndTime) {
     AppDatabase
         .get()
-        .getTasks(startDate: taskStartTime, endDate: taskEndTime)
+        .getTasks(
+            startDate: taskStartTime,
+            endDate: taskEndTime,
+            taskStatus: TaskStatus.PENDING)
         .then((tasks) {
       if (tasks == null) return;
       setState(() {
@@ -67,6 +71,7 @@ class _HomeState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: _scaffoldHomeState,
       appBar: new AppBar(
         title: new Text(homeTitle),
       ),
@@ -110,10 +115,55 @@ class _HomeState extends State<HomeScreen> {
           child: new ListView.builder(
               itemCount: taskList.length,
               itemBuilder: (BuildContext context, int index) {
-                return new TaskRow(taskList[index]);
+                return new Dismissible(
+                    key: new Key("dismiss"),
+                    onDismissed: (DismissDirection direction) {
+                      if (direction == DismissDirection.endToStart) {
+                        AppDatabase
+                            .get()
+                            .updateTaskStatus(
+                                taskList[index].id, TaskStatus.COMPLETE)
+                            .then((value) {
+                          setState(() {
+                            taskList.removeAt(index);
+                          });
+                          _showSnackbar("Task marks as completed");
+                        });
+                      } else {
+                        AppDatabase
+                            .get()
+                            .deleteTask(taskList[index].id)
+                            .then((value) {
+                          setState(() {
+                            taskList.removeAt(index);
+                          });
+                          _showSnackbar("Task Deleted");
+                        });
+                      }
+                    },
+                    background: new Container(
+                      color: Colors.red,
+                      child: new ListTile(
+                        leading: new Icon(Icons.delete, color: Colors.white),
+                      ),
+                    ),
+                    secondaryBackground: new Container(
+                      color: Colors.green,
+                      child: new ListTile(
+                        trailing: new Icon(Icons.check, color: Colors.white),
+                      ),
+                    ),
+                    child: new TaskRow(taskList[index]));
               }),
         ),
       ),
     );
+  }
+
+  _showSnackbar(String message) {
+    if (message.isEmpty) return;
+    // Find the Scaffold in the Widget tree and use it to show a SnackBar
+    _scaffoldHomeState.currentState
+        .showSnackBar(new SnackBar(content: new Text(message)));
   }
 }

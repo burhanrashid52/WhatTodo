@@ -8,11 +8,13 @@ class Tasks {
   static final dbComment = "comment";
   static final dbDueDate = "dueDate";
   static final dbPriority = "priority";
+  static final dbStatus = "status";
   static final dbProjectID = "projectId";
 
   String title, comment, projectName;
   int id, dueDate, projectId, projectColor;
   Status priority;
+  TaskStatus tasksStatus;
   List<String> labelList = new List();
 
   Tasks.create(
@@ -24,15 +26,19 @@ class Tasks {
     if (this.dueDate == -1) {
       this.dueDate = new DateTime.now().millisecondsSinceEpoch;
     }
+    this.tasksStatus = TaskStatus.PENDING;
   }
+
+  bool operator ==(o) => o is Tasks && o.id == id;
 
   Tasks.update(
       {@required this.id,
       @required this.title,
       @required this.projectId,
       this.comment = "",
-      this.dueDate = -1,
-      this.priority = Status.PRIORITY_4}) {
+      this.dueDate =-1,
+      this.priority = Status.PRIORITY_4,
+      this.tasksStatus = TaskStatus.PENDING}) {
     if (this.dueDate == -1) {
       this.dueDate = new DateTime.now().millisecondsSinceEpoch;
     }
@@ -46,5 +52,11 @@ class Tasks {
           comment: map[dbComment],
           dueDate: map[dbDueDate],
           priority: Status.values[map[dbPriority]],
+          tasksStatus: TaskStatus.values[map[dbStatus]],
         );
+}
+
+enum TaskStatus {
+  PENDING,
+  COMPLETE,
 }

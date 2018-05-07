@@ -32,7 +32,7 @@ class AppDatabase {
     // Get a location using path_provider
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "tasks.db");
-    _database = await openDatabase(path, version: 6,
+    _database = await openDatabase(path, version: 8,
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
       await _createProjectTable(db);
@@ -89,16 +89,27 @@ class AppDatabase {
         "${Tasks.dbDueDate} LONG,"
         "${Tasks.dbPriority} LONG,"
         "${Tasks.dbProjectID} LONG,"
+        "${Tasks.dbStatus} LONG,"
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project
         .tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
 
-  Future<List<Tasks>> getTasks({int startDate = 0, int endDate = 0}) async {
+  Future<List<Tasks>> getTasks(
+      {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) async {
     var db = await _getDb();
     var whereClause = startDate > 0 && endDate > 0
         ? "WHERE ${Tasks.tblTask}.${Tasks
         .dbDueDate} BETWEEN $startDate AND $endDate"
         : "";
+
+    if (taskStatus != null) {
+      var taskWhereClause = "${Tasks.tblTask}.${Tasks.dbStatus} = ${taskStatus
+          .index}";
+      whereClause = whereClause.isEmpty
+          ? "WHERE $taskWhereClause"
+          : " AND $taskWhereClause";
+    }
+
     var result = await db
         .rawQuery('SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project
         .dbName},${Project.tblProject}.${Project
@@ -210,9 +221,10 @@ class AppDatabase {
       int id = await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks
           .dbProjectID},${Tasks.dbComment},${Tasks.dbDueDate},${Tasks
-          .dbPriority})'
+          .dbPriority},${Tasks.dbStatus})'
           ' VALUES(${task.id}, "${task.title}", ${task.projectId},"${task
-          .comment}", ${task.dueDate},${task.priority.index})');
+          .comment}", ${task.dueDate},${task.priority.index},${task.tasksStatus
+          .index})');
       if (id > 0 && labelIDs != null && labelIDs.length > 0) {
         labelIDs.forEach((labelId) {
           txn.rawInsert('INSERT OR REPLACE INTO '
@@ -251,6 +263,23 @@ class AppDatabase {
     await db.transaction((Transaction txn) async {
       await txn.rawDelete('DELETE FROM ${Project.tblProject} WHERE ${Project
           .dbId}==$projectID;');
+    });
+  }
+
+  Future deleteTask(int taskID) async {
+    var db = await _getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawDelete(
+          'DELETE FROM ${Tasks.tblTask} WHERE ${Tasks.dbId}=$taskID;');
+    });
+  }
+
+  Future updateTaskStatus(int taskID, TaskStatus status) async {
+    var db = await _getDb();
+    await db.transaction((Transaction txn) async {
+      await txn
+          .rawQuery("UPDATE ${Tasks.tblTask} SET ${Tasks.dbStatus} = '${status
+          .index}' WHERE ${Tasks.dbId} = '$taskID'");
     });
   }
 
