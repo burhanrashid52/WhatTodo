@@ -42,6 +42,7 @@ class AppDatabase {
       await db.execute("DROP TABLE ${Tasks.tblTask}");
       await db.execute("DROP TABLE ${Project.tblProject}");
       await db.execute("DROP TABLE ${TaskLabels.tblTaskLabel}");
+      await db.execute("DROP TABLE ${Label.tblLabel}");
       await _createProjectTable(db);
       await _createTaskTable(db);
       await _createLabelTable(db);
