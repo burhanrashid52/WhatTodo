@@ -108,7 +108,7 @@ class AppDatabase {
           .index}";
       whereClause = whereClause.isEmpty
           ? "WHERE $taskWhereClause"
-          : " AND $taskWhereClause";
+          : "$whereClause AND $taskWhereClause";
     }
 
     var result = await db
