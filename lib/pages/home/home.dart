@@ -6,6 +6,7 @@ import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/row_task.dart';
+import 'package:flutter_app/utils/app_constant.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -111,51 +112,55 @@ class _HomeState extends State<HomeScreen> {
       ),
       body: new Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: new Container(
-          child: new ListView.builder(
-              itemCount: taskList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return new Dismissible(
-                    key: new Key("dismiss"),
-                    onDismissed: (DismissDirection direction) {
-                      if (direction == DismissDirection.endToStart) {
-                        AppDatabase
-                            .get()
-                            .updateTaskStatus(
-                                taskList[index].id, TaskStatus.COMPLETE)
-                            .then((value) {
-                          setState(() {
-                            taskList.removeAt(index);
-                          });
-                          _showSnackbar("Task marks as completed");
-                        });
-                      } else {
-                        AppDatabase
-                            .get()
-                            .deleteTask(taskList[index].id)
-                            .then((value) {
-                          setState(() {
-                            taskList.removeAt(index);
-                          });
-                          _showSnackbar("Task Deleted");
-                        });
-                      }
-                    },
-                    background: new Container(
-                      color: Colors.red,
-                      child: new ListTile(
-                        leading: new Icon(Icons.delete, color: Colors.white),
-                      ),
-                    ),
-                    secondaryBackground: new Container(
-                      color: Colors.green,
-                      child: new ListTile(
-                        trailing: new Icon(Icons.check, color: Colors.white),
-                      ),
-                    ),
-                    child: new TaskRow(taskList[index]));
-              }),
-        ),
+        child: taskList.length == 0
+            ? _emptyView("No Task Added")
+            : new Container(
+                child: new ListView.builder(
+                    itemCount: taskList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return new Dismissible(
+                          key: new Key("dismiss"),
+                          onDismissed: (DismissDirection direction) {
+                            if (direction == DismissDirection.endToStart) {
+                              AppDatabase
+                                  .get()
+                                  .updateTaskStatus(
+                                      taskList[index].id, TaskStatus.COMPLETE)
+                                  .then((value) {
+                                setState(() {
+                                  taskList.removeAt(index);
+                                });
+                                _showSnackbar("Task marks as completed");
+                              });
+                            } else {
+                              AppDatabase
+                                  .get()
+                                  .deleteTask(taskList[index].id)
+                                  .then((value) {
+                                setState(() {
+                                  taskList.removeAt(index);
+                                });
+                                _showSnackbar("Task Deleted");
+                              });
+                            }
+                          },
+                          background: new Container(
+                            color: Colors.red,
+                            child: new ListTile(
+                              leading:
+                                  new Icon(Icons.delete, color: Colors.white),
+                            ),
+                          ),
+                          secondaryBackground: new Container(
+                            color: Colors.green,
+                            child: new ListTile(
+                              trailing:
+                                  new Icon(Icons.check, color: Colors.white),
+                            ),
+                          ),
+                          child: new TaskRow(taskList[index]));
+                    }),
+              ),
       ),
     );
   }
@@ -165,5 +170,12 @@ class _HomeState extends State<HomeScreen> {
     // Find the Scaffold in the Widget tree and use it to show a SnackBar
     _scaffoldHomeState.currentState
         .showSnackBar(new SnackBar(content: new Text(message)));
+  }
+
+  Widget _emptyView(String emptyMessage) {
+    return new Center(
+      child: new Text(emptyMessage,
+          style: new TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
+    );
   }
 }
