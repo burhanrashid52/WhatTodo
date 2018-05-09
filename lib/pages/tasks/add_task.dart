@@ -183,14 +183,9 @@ class _AddTaskState extends State<AddTaskScreen> {
       showDialog<Status>(
           context: context,
           builder: (BuildContext context) {
-            return new AlertDialog(
+            return new SimpleDialog(
                 title: const Text('Select Project'),
-                content: new ListView.builder(
-                  itemCount: projects.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) =>
-                      buildProject(projects[index]),
-                ));
+                children: buildProjects(projects));
           });
     });
   }
@@ -200,55 +195,59 @@ class _AddTaskState extends State<AddTaskScreen> {
       showDialog<Status>(
           context: context,
           builder: (BuildContext context) {
-            return new AlertDialog(
+            return new SimpleDialog(
                 title: const Text('Select Labels'),
-                content: new ListView.builder(
-                  itemCount: label.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) => buildLabel(label[index]),
-                ));
+                children: buildLabels(label));
           });
     });
   }
 
-  Widget buildProject(Project project) {
-    return new ListTile(
-      leading: new Container(
-        width: 12.0,
-        height: 12.0,
-        child: new CircleAvatar(
-          backgroundColor: new Color(project.colorValue),
+  List<Widget> buildProjects(List<Project> projectList) {
+    List<Widget> projects = new List();
+    projectList.forEach((project) {
+      projects.add(new ListTile(
+        leading: new Container(
+          width: 12.0,
+          height: 12.0,
+          child: new CircleAvatar(
+            backgroundColor: new Color(project.colorValue),
+          ),
         ),
-      ),
-      title: new Text(project.name),
-      onTap: () {
-        setState(() {
-          currentSelectedProject = project;
-        });
-        Navigator.pop(context);
-      },
-    );
+        title: new Text(project.name),
+        onTap: () {
+          setState(() {
+            currentSelectedProject = project;
+          });
+          Navigator.pop(context);
+        },
+      ));
+    });
+    return projects;
   }
 
-  Widget buildLabel(Label label) {
-    return new ListTile(
-      leading:
-          new Icon(Icons.label, color: new Color(label.colorValue), size: 18.0),
-      title: new Text(label.name),
-      trailing: selectedLabelList.contains(label)
-          ? new Icon(Icons.close)
-          : new Container(),
-      onTap: () {
-        setState(() {
-          if (!selectedLabelList.contains(label)) {
-            selectedLabelList.add(label);
-          } else {
-            selectedLabelList.remove(label);
-          }
-        });
-        Navigator.pop(context);
-      },
-    );
+  List<Widget> buildLabels(List<Label> labelList) {
+    List<Widget> labels = new List();
+    labelList.forEach((label) {
+      labels.add(new ListTile(
+        leading: new Icon(Icons.label,
+            color: new Color(label.colorValue), size: 18.0),
+        title: new Text(label.name),
+        trailing: selectedLabelList.contains(label)
+            ? new Icon(Icons.close)
+            : new Container(),
+        onTap: () {
+          setState(() {
+            if (!selectedLabelList.contains(label)) {
+              selectedLabelList.add(label);
+            } else {
+              selectedLabelList.remove(label);
+            }
+          });
+          Navigator.pop(context);
+        },
+      ));
+    });
+    return labels;
   }
 
   GestureDetector buildContainer(Status status) {
