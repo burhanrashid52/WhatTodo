@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
+import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 
 class AddLabel extends StatefulWidget {
@@ -46,7 +47,7 @@ class _AddLabelState extends State<AddLabel> {
                   currentSelectedPalette.colorName);
               AppDatabase.get().isLabelExits(label).then((isExist) {
                 if (isExist) {
-                  _showSnackbar("Label Already Exists");
+                  showSnackbar(_scaffoldState, "Label Already Exists");
                 } else {
                   Navigator.pop(context, true);
                 }
@@ -87,13 +88,6 @@ class _AddLabelState extends State<AddLabel> {
         ],
       ),
     );
-  }
-
-  _showSnackbar(String message) {
-    if (message.isEmpty) return;
-    // Find the Scaffold in the Widget tree and use it to show a SnackBar
-    _scaffoldState.currentState
-        .showSnackBar(new SnackBar(content: new Text(message)));
   }
 
   List<Widget> buildMaterialColors() {

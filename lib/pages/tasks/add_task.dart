@@ -6,7 +6,7 @@ import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Priority.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/models/Tasks.dart';
-import 'package:flutter_app/pages/tasks/add_comment.dart';
+import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';
 
@@ -95,7 +95,7 @@ class _AddTaskState extends State<AddTaskScreen> {
             title: new Text("Comments"),
             subtitle: new Text("No Comments"),
             onTap: () {
-              _showSnackbar("Comming Soon");
+              showSnackbar(_scaffoldState, "Comming Soon");
             },
           ),
           new ListTile(
@@ -103,7 +103,7 @@ class _AddTaskState extends State<AddTaskScreen> {
             title: new Text("Reminder"),
             subtitle: new Text("No Reminder"),
             onTap: () {
-              _showSnackbar("Comming Soon");
+              showSnackbar(_scaffoldState, "Comming Soon");
             },
           )
         ],
@@ -132,13 +132,6 @@ class _AddTaskState extends State<AddTaskScreen> {
             }
           }),
     );
-  }
-
-  _showSnackbar(String message) {
-    if (message.isEmpty) return;
-    // Find the Scaffold in the Widget tree and use it to show a SnackBar
-    _scaffoldState.currentState
-        .showSnackBar(new SnackBar(content: new Text(message)));
   }
 
   String getDisplayLabels() {

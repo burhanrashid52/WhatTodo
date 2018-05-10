@@ -6,7 +6,9 @@ import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/row_task.dart';
+import 'package:flutter_app/pages/tasks/task_complted.dart';
 import 'package:flutter_app/utils/app_constant.dart';
+import 'package:flutter_app/utils/app_util.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -75,6 +77,7 @@ class _HomeState extends State<HomeScreen> {
       key: _scaffoldHomeState,
       appBar: new AppBar(
         title: new Text(homeTitle),
+        actions: <Widget>[buildPopupMenu()],
       ),
       floatingActionButton: new FloatingActionButton(
         child: new Icon(
@@ -121,26 +124,24 @@ class _HomeState extends State<HomeScreen> {
                       return new Dismissible(
                           key: new Key("dismiss"),
                           onDismissed: (DismissDirection direction) {
+                            var taskID = taskList[index].id;
+                            taskList.removeAt(index);
                             if (direction == DismissDirection.endToStart) {
                               AppDatabase
                                   .get()
-                                  .updateTaskStatus(
-                                      taskList[index].id, TaskStatus.COMPLETE)
+                                  .updateTaskStatus(taskID, TaskStatus.COMPLETE)
                                   .then((value) {
-                                setState(() {
-                                  taskList.removeAt(index);
-                                });
-                                _showSnackbar("Task marks as completed");
+                                showSnackbar(_scaffoldHomeState,
+                                    "Task mark as completed",
+                                    materialColor: Colors.green);
                               });
                             } else {
                               AppDatabase
                                   .get()
-                                  .deleteTask(taskList[index].id)
+                                  .deleteTask(taskID)
                                   .then((value) {
-                                setState(() {
-                                  taskList.removeAt(index);
-                                });
-                                _showSnackbar("Task Deleted");
+                                showSnackbar(_scaffoldHomeState, "Task Deleted",
+                                    materialColor: Colors.red);
                               });
                             }
                           },
@@ -165,17 +166,38 @@ class _HomeState extends State<HomeScreen> {
     );
   }
 
-  _showSnackbar(String message) {
-    if (message.isEmpty) return;
-    // Find the Scaffold in the Widget tree and use it to show a SnackBar
-    _scaffoldHomeState.currentState
-        .showSnackBar(new SnackBar(content: new Text(message)));
-  }
-
   Widget _emptyView(String emptyMessage) {
     return new Center(
       child: new Text(emptyMessage,
           style: new TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
     );
   }
+
+// This menu button widget updates a _selection field (of type WhyFarther,
+// not shown here).
+  Widget buildPopupMenu() {
+    return new PopupMenuButton<MenuItem>(
+      onSelected: (MenuItem result) async {
+        switch (result) {
+          case MenuItem.taskCompleted:
+            bool isDataChanged = await Navigator.push(
+              context,
+              new MaterialPageRoute<bool>(
+                  builder: (context) => new TaskCompletedScreen()),
+            );
+            updateTasks(taskStartTime, taskEndTime);
+            break;
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
+            const PopupMenuItem<MenuItem>(
+              value: MenuItem.taskCompleted,
+              child: const Text('Complted Task'),
+            )
+          ],
+    );
+  }
 }
+
+// This is the type used by the popup menu below.
+enum MenuItem { taskCompleted }
