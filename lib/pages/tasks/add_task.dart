@@ -19,8 +19,7 @@ class _AddTaskState extends State<AddTaskScreen> {
   String text = "";
   int dueDate = new DateTime.now().millisecondsSinceEpoch;
   Status priorityStatus = Status.PRIORITY_4;
-  Project currentSelectedProject = new Project.update(
-      id: 1, name: "Inbox", colorName: "Grey", colorCode: Colors.grey.value);
+  Project currentSelectedProject = new Project.getInbox();
   List<Label> selectedLabelList = new List();
   GlobalKey<ScaffoldState> _scaffoldState = new GlobalKey<ScaffoldState>();
   GlobalKey<FormState> _formState = new GlobalKey<FormState>();

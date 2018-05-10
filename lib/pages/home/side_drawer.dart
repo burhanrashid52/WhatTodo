@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
+import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
 import 'package:flutter_app/pages/projects/add_project.dart';
 
@@ -63,10 +64,21 @@ class _SideDrawerState extends State<SideDrawer> {
         children: <Widget>[
           new UserAccountsDrawerHeader(
             accountName: new Text("Burhanuddin Rashid"),
-            accountEmail: new Text("burhanrashid52@gmail.com"),
+            accountEmail: new Text("burhanrashid5253@gmail.com"),
+            otherAccountsPictures: <Widget>[
+              new IconButton(
+                  icon: new Icon(Icons.info, color: Colors.white,size: 36.0,),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute<bool>(
+                          builder: (context) => new AboutUsScreen()),
+                    );
+                  })
+            ],
             currentAccountPicture: new CircleAvatar(
               backgroundColor: Theme.of(context).accentColor,
-              child: new Text("B", style: new TextStyle(color: Colors.white)),
+              backgroundImage: new AssetImage("assets/profile_pic.jpg"),
             ),
           ),
           new ListTile(
@@ -74,11 +86,7 @@ class _SideDrawerState extends State<SideDrawer> {
               title: new Text("Inbox"),
               onTap: () {
                 if (projectSelectionListener != null) {
-                  var project = Project.update(
-                      id: 1,
-                      name: "Inbox",
-                      colorCode: Colors.grey.value,
-                      colorName: "Grey");
+                  var project = Project.getInbox();
                   projectSelectionListener(project);
                   Navigator.pop(context);
                 }

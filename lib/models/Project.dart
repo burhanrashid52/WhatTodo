@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 class Project {
@@ -12,8 +13,7 @@ class Project {
 
   Project.create(this.name, this.colorValue, this.colorName);
 
-  Project.update(
-      {@required this.id, name, colorCode = "", colorName = ""}) {
+  Project.update({@required this.id, name, colorCode = "", colorName = ""}) {
     if (name != "") {
       this.name = name;
     }
@@ -24,6 +24,13 @@ class Project {
       this.colorName = colorName;
     }
   }
+
+  Project.getInbox()
+      : this.update(
+            id: 1,
+            name: "Inbox",
+            colorName: "Grey",
+            colorCode: Colors.grey.value);
 
   Project.fromMap(Map<String, dynamic> map)
       : this.update(
