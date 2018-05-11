@@ -9,9 +9,12 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_app/models/Tasks.dart';
 
+/// This is the singleton database class which handlers all database transactions
+/// All the task raw queries is handle here and return a Future<T> with result
 class AppDatabase {
   static final AppDatabase _appDatabase = new AppDatabase._internal();
 
+  //private internal constructor to make it singleton
   AppDatabase._internal();
 
   Database _database;
@@ -22,7 +25,8 @@ class AppDatabase {
 
   bool didInit = false;
 
-  /// Use this method to access the database, because initialization of the database (it has to go through the method channel)
+  /// Use this method to access the database which will provide you future of [Database],
+  /// because initialization of the database (it has to go through the method channel)
   Future<Database> _getDb() async {
     if (!didInit) await _init();
     return _database;
