@@ -27,40 +27,42 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
       appBar: new AppBar(
         title: new Text("Task Completed"),
       ),
-      body: new Container(
-        child: new ListView.builder(
-            itemCount: taskList.length,
-            itemBuilder: (context, index) {
-              return new Dismissible(
-                  key: new Key("taskCompleted"),
-                  direction: DismissDirection.endToStart,
-                  background: new Container(),
-                  onDismissed: (DismissDirection directions) {
-                    if (directions == DismissDirection.endToStart) {
-                      var taskID = taskList[index].id;
-                      setState(() {
-                        taskList.removeAt(index);
-                      });
-                      AppDatabase
-                          .get()
-                          .updateTaskStatus(taskID, TaskStatus.PENDING)
-                          .then((value) {
-                        showSnackbar(_scaffoldTaskState, "Task Undone");
-                      });
-                    }
-                  },
-                  secondaryBackground: new Container(
-                    color: Colors.grey,
-                    child: new ListTile(
-                      trailing: new Text("UNDO",
-                          style: new TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  child: new TaskCompletedRow(taskList[index]));
-            }),
-      ),
+      body: taskList.length == 0
+          ? emptyView("No Task Complted Yet")
+          : new Container(
+              child: new ListView.builder(
+                  itemCount: taskList.length,
+                  itemBuilder: (context, index) {
+                    return new Dismissible(
+                        key: new Key("taskCompleted"),
+                        direction: DismissDirection.endToStart,
+                        background: new Container(),
+                        onDismissed: (DismissDirection directions) {
+                          if (directions == DismissDirection.endToStart) {
+                            var taskID = taskList[index].id;
+                            setState(() {
+                              taskList.removeAt(index);
+                            });
+                            AppDatabase
+                                .get()
+                                .updateTaskStatus(taskID, TaskStatus.PENDING)
+                                .then((value) {
+                              showSnackbar(_scaffoldTaskState, "Task Undo");
+                            });
+                          }
+                        },
+                        secondaryBackground: new Container(
+                          color: Colors.grey,
+                          child: new ListTile(
+                            trailing: new Text("UNDO",
+                                style: new TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                        child: new TaskCompletedRow(taskList[index]));
+                  }),
+            ),
     );
   }
 

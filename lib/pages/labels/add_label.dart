@@ -5,6 +5,7 @@ import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/utils/app_util.dart';
+import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 
 class AddLabel extends StatefulWidget {
@@ -18,6 +19,7 @@ class _AddLabelState extends State<AddLabel> {
 
   GlobalKey<FormState> _formState = new GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldState = new GlobalKey<ScaffoldState>();
+  final expansionTile = new GlobalKey<CollapsibleExpansionTileState>();
 
   String labelName = "";
 
@@ -74,8 +76,8 @@ class _AddLabelState extends State<AddLabel> {
           ),
           new Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: new ExpansionTile(
-              initiallyExpanded: false,
+            child: new CollapsibleExpansionTile(
+              key: expansionTile,
               leading: new Icon(
                 Icons.label,
                 size: 16.0,
@@ -101,6 +103,7 @@ class _AddLabelState extends State<AddLabel> {
         ),
         title: new Text(colors.colorName),
         onTap: () {
+          expansionTile.currentState.collapse();
           setState(() {
             currentSelectedPalette =
                 new ColorPalette(colors.colorName, colors.colorValue);

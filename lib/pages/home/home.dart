@@ -116,7 +116,7 @@ class _HomeState extends State<HomeScreen> {
       body: new Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: taskList.length == 0
-            ? _emptyView("No Task Added")
+            ? emptyView("No Task Added")
             : new Container(
                 child: new ListView.builder(
                     itemCount: taskList.length,
@@ -163,13 +163,6 @@ class _HomeState extends State<HomeScreen> {
                     }),
               ),
       ),
-    );
-  }
-
-  Widget _emptyView(String emptyMessage) {
-    return new Center(
-      child: new Text(emptyMessage,
-          style: new TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
     );
   }
 
