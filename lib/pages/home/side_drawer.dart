@@ -60,7 +60,7 @@ class _SideDrawerState extends State<SideDrawer> {
   @override
   Widget build(BuildContext context) {
     return new Drawer(
-      child: ListView(
+      child: new ListView(
         children: <Widget>[
           new UserAccountsDrawerHeader(
             accountName: new Text("Burhanuddin Rashid"),
@@ -213,7 +213,7 @@ class ProjectRow extends StatelessWidget {
         height: 24.0,
       ),
       title: new Text(project.name),
-      trailing: Container(
+      trailing: new Container(
         height: 10.0,
         width: 10.0,
         child: new CircleAvatar(
@@ -243,7 +243,7 @@ class LabelRow extends StatelessWidget {
         height: 24.0,
       ),
       title: new Text("@ ${label.name}"),
-      trailing: Container(
+      trailing: new Container(
         height: 10.0,
         width: 10.0,
         child: new Icon(

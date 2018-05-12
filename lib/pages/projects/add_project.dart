@@ -14,6 +14,7 @@ class _AddProjectState extends State<AddProject> {
       new ColorPalette("Grey", Colors.grey.value);
 
   final expansionTile = new GlobalKey<CollapsibleExpansionTileState>();
+  GlobalKey<FormState> _formState = new GlobalKey<FormState>();
 
   String projectName = "";
 
@@ -34,7 +35,8 @@ class _AddProjectState extends State<AddProject> {
             color: Colors.white,
           ),
           onPressed: () {
-            if (projectName != "") {
+            if (_formState.currentState.validate()) {
+              _formState.currentState.save();
               var project = Project.create(
                   projectName,
                   currentSelectedPalette.colorValue,
@@ -46,17 +48,21 @@ class _AddProjectState extends State<AddProject> {
           }),
       body: new ListView(
         children: <Widget>[
-          new Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: new TextField(
-              decoration: new InputDecoration(hintText: "Project Name"),
-              maxLength: 20,
-              onChanged: (value) {
-                setState(() {
+          new Form(
+            child: new Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: new TextFormField(
+                decoration: new InputDecoration(hintText: "Project Name"),
+                maxLength: 20,
+                validator: (value) {
+                  return value.isEmpty ? "Project name cannot be empty" : null;
+                },
+                onSaved: (value) {
                   projectName = value;
-                });
-              },
+                },
+              ),
             ),
+            key: _formState,
           ),
           new Padding(
             padding: const EdgeInsets.only(top: 4.0),

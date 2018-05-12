@@ -122,11 +122,13 @@ class _HomeState extends State<HomeScreen> {
                     itemCount: taskList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return new Dismissible(
-                          key: new Key("dismiss"),
+                          key: new Key("dismiss$index"),
                           onDismissed: (DismissDirection direction) {
                             var taskID = taskList[index].id;
-                            taskList.removeAt(index);
                             if (direction == DismissDirection.endToStart) {
+                              setState(() {
+                                taskList.removeAt(index);
+                              });
                               AppDatabase
                                   .get()
                                   .updateTaskStatus(taskID, TaskStatus.COMPLETE)
@@ -136,6 +138,9 @@ class _HomeState extends State<HomeScreen> {
                                     materialColor: Colors.green);
                               });
                             } else {
+                              setState(() {
+                                taskList.removeAt(index);
+                              });
                               AppDatabase
                                   .get()
                                   .deleteTask(taskID)

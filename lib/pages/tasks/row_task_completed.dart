@@ -18,7 +18,7 @@ class TaskCompletedRow extends StatelessWidget {
       onTap: () {
         //TODO to click something
       },
-      child: Column(
+      child: new Column(
         children: <Widget>[
           new Container(
             margin: const EdgeInsets.symmetric(vertical: PADDING_TINY),

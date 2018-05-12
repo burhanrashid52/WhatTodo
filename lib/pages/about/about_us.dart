@@ -64,7 +64,7 @@ class AboutUsScreen extends StatelessWidget {
                 ),
               ),
               new Card(
-                child: Column(
+                child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     new Padding(
@@ -95,7 +95,7 @@ class AboutUsScreen extends StatelessWidget {
                 ),
               ),
               new Card(
-                child: Column(
+                child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     new Padding(

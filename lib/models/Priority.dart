@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Priority {
   final String dbPriority = "priority";
 }
