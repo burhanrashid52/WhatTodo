@@ -16,19 +16,29 @@ A Simple To-do app design in flutter to keep track of your task on daily basis. 
 
 
 ## Project
-When your runs for first time it already had preloaded **_Inbox_** project. You can add more projects by clicking add project button on SideDrawer. You can specify any single material color from the list to the project
+The app already has a preloaded **_Inbox_** project. You can add more projects by clicking add project button on SideDrawer. From material color list you can specify any single color to the project
+
+![](https://i.imgur.com/f01IjGz.gif)
 
 > You can assign only one project to a single task
 
 ## Labels
-You can add multiple labels by clicking add Labels button on SideDrawer. You can specify any single material color from the list to the label
+You can add multiple labels by clicking add Labels button on SideDrawer. From material color list you can specify any single color to the label
+
+![](https://i.imgur.com/tZQgEwW.gif)
 
 > You can assign multiple labels to a single task
 
 ## Task
-You can add task with multiple attributes. You must assign a project to task if not than by default it will be added in _Inbox_ project
-Labels can be zero or more than zero the task
+You can add task with multiple attributes. You must assign a project to task if not than by default it will be added in _Inbox_ project.
+Task can have zero or more to label assing to it
 
+![](https://i.imgur.com/mNs0D3B.gif)
+
+## Sorting
+You can sort your task with date i.e today and next 7 days and also acoording to project and labels
+
+![](https://i.imgur.com/wzou22S.gif)
 
 ## Questions?🤔
 Hit me on twitter [![Twitter](https://img.shields.io/badge/Twitter-%40burhanrashid52-blue.svg)](https://twitter.com/burhanrashid52)
