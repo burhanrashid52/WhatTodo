@@ -34,7 +34,7 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
                   itemCount: taskList.length,
                   itemBuilder: (context, index) {
                     return new Dismissible(
-                        key: new Key("taskCompleted"),
+                        key: new ObjectKey(taskList[index]),
                         direction: DismissDirection.endToStart,
                         background: new Container(),
                         onDismissed: (DismissDirection directions) {
