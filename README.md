@@ -10,7 +10,7 @@ A Simple To-do app design in flutter to keep track of your task on daily basis. 
 - Add [**Projects**](#project) by specifying a unique color to it
 - Add [**Labels**](#labels) by specifying a unique color to it
 - Add [**Task**](#task) by defining its priority
-- Delete/Complete Task by swipe
+- [**Swipe**](#swipe-the-task) to delete or complete the task
 - [**Sorting**](#sorting) Task
 - Works offline using [**Sqflite**](https://github.com/tekartik/sqflite "Flutter Database") database
 
@@ -34,6 +34,11 @@ You can add task with multiple attributes. You must assign a project to task if 
 Task can have zero or more to label assing to it
 
 ![](https://i.imgur.com/mNs0D3B.gif)
+
+## Swipe the Task
+You can delete a task by swiping left-to-right or your can mark task as completed by swiping right-to-left. You can also undo a completed task by clicking on options menu where  it shows the list of all completed tasks there you can swipe right-to-left to undo the completed task
+
+![](https://i.imgur.com/yU0gP1t.gif)
 
 ## Sorting
 You can sort your task with date i.e today and next 7 days and also acoording to project and labels
