@@ -11,7 +11,7 @@ A Simple To-do app design in flutter to keep track of your task on daily basis. 
 - Add [**Labels**](#labels) by specifying a unique color to it
 - Add [**Task**](#task) by defining its priority
 - Delete/Complete Task by swipe
-- Sort Task on basis of project, label and due date
+- [**Sorting**](#sorting) Task
 - Works offline using [**Sqflite**](https://github.com/tekartik/sqflite "Flutter Database") database
 
 
@@ -40,10 +40,29 @@ You can sort your task with date i.e today and next 7 days and also acoording to
 
 ![](https://i.imgur.com/wzou22S.gif)
 
+
+## How to contribute?
+* Check out contribution guidelines 👉[CONTRIBUTING.md](https://github.com/burhanrashid52/WhatTodo/blob/master/CONTRIBUTING.md)
+
+
+## What's next?
+
+ - Editiable Project,label and Task
+ - Deletable Project and Label
+ - Comment/Description in Task
+ - Reminder with notification
+
+
 ## Questions?🤔
 Hit me on twitter [![Twitter](https://img.shields.io/badge/Twitter-%40burhanrashid52-blue.svg)](https://twitter.com/burhanrashid52)
 [![Medium](https://img.shields.io/badge/Medium-%40burhanrashid52-brightgreen.svg)](https://medium.com/@burhanrashid52)
 [![Facebook](https://img.shields.io/badge/Facebook-Burhanuddin%20Rashid-blue.svg)](https://www.facebook.com/Bursid)
+
+
+## Credits
+  - UI/UX inspired from [**Todoist**](https://play.google.com/store/apps/details?id=com.todoist&hl=en) app
+  - Flutter [**Documentation**](https://flutter.io/docs/)
+  - [**Collin ackson**](https://stackoverflow.com/users/1463116/collin-jackson) answer's on stackoverflow :laughing:
 
 ## License
 Copyright 2018 Burhanuddin Rashid
