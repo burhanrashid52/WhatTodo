@@ -1,5 +1,7 @@
 # WhatTodo
 
+![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg)
+
 Life can feel overwhelming. But it doesn’t have to. 
 
 A Simple To-do app design in flutter to keep track of your task on daily basis. You can add project, labels and due-date to your tasks
