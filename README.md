@@ -1,6 +1,6 @@
 # WhatTodo
 
-![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg) ![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg) [![AwesomeAndroid](https://img.shields.io/badge/Flutter%20Weekly-%2319-pink.svg)](https://mailchi.mp/193f2a7fe907/flutter-weekly-257173)
 
 Life can feel overwhelming. But it doesn’t have to. 
 
