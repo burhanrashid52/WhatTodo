@@ -2,6 +2,8 @@
 
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg) ![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg) [![Uplabs](https://img.shields.io/badge/Uplabs-WhatTodo-orange.svg)](https://www.uplabs.com/posts/whattodo) [![FlutterWeeklt](https://img.shields.io/badge/Flutter%20Weekly-%2319-pink.svg)](https://mailchi.mp/193f2a7fe907/flutter-weekly-257173)
 
+![logo](/assets/Logo/horizontal.png)
+
 Life can feel overwhelming. But it doesn’t have to. 
 
 A Simple To-do app design in flutter to keep track of your task on daily basis. You can add project, labels and due-date to your tasks
