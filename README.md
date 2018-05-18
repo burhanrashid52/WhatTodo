@@ -1,6 +1,7 @@
 # WhatTodo
 
-![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg) ![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg) [![Uplabs](https://img.shields.io/badge/Uplabs-WhatTodo-orange.svg)](https://www.uplabs.com/posts/whattodo) [![FlutterWeeklt](https://img.shields.io/badge/Flutter%20Weekly-%2319-pink.svg)](https://mailchi.mp/193f2a7fe907/flutter-weekly-257173)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg) ![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg) [![Uplabs](https://img.shields.io/badge/Uplabs-WhatTodo-orange.svg)](https://www.uplabs.com/posts/whattodo) [![FlutterWeekly](https://img.shields.io/badge/Flutter%20Weekly-%2319-pink.svg)](https://mailchi.mp/193f2a7fe907/flutter-weekly-257173) [![AwesomeAndroid](https://img.shields.io/badge/Awesome%20Android-%23101-yellow.svg)](https://android.libhunt.com/newsletter/101)
+
 
 ![logo](/assets/Logo/horizontal.png)
 
