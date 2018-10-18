@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bloc/application_bloc.dart';
+import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
+import 'package:flutter_app/pages/home/task_widgets.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/row_task.dart';
 import 'package:flutter_app/pages/tasks/task_complted.dart';
@@ -34,8 +37,7 @@ class _HomeState extends State<HomeScreen> {
   }
 
   void updateTasks(int taskStartTime, int taskEndTime) {
-    AppDatabase
-        .get()
+    AppDatabase.get()
         .getTasks(
             startDate: taskStartTime,
             endDate: taskEndTime,
@@ -93,6 +95,8 @@ class _HomeState extends State<HomeScreen> {
           );
 
           if (isDataChanged) {
+            //TasksBloc tasksBloc = BlocProvider.of<TasksBloc>(context);
+            //tasksBloc.filterTodayTasks();
             updateTasks(taskStartTime, taskEndTime);
           }
         },
@@ -113,57 +117,9 @@ class _HomeState extends State<HomeScreen> {
           updateTasks(startTime, endTime);
         },
       ),
-      body: new Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: taskList.length == 0
-            ? emptyView("No Task Added")
-            : new Container(
-                child: new ListView.builder(
-                    itemCount: taskList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return new Dismissible(
-                          key: new ObjectKey(taskList[index]),
-                          onDismissed: (DismissDirection direction) {
-                            var taskID = taskList[index].id;
-                            setState(() {
-                              taskList.removeAt(index);
-                            });
-                            if (direction == DismissDirection.endToStart) {
-                              AppDatabase
-                                  .get()
-                                  .updateTaskStatus(taskID, TaskStatus.COMPLETE)
-                                  .then((value) {
-                                showSnackbar(_scaffoldHomeState,
-                                    "Task mark as completed",
-                                    materialColor: Colors.green);
-                              });
-                            } else {
-                              AppDatabase
-                                  .get()
-                                  .deleteTask(taskID)
-                                  .then((value) {
-                                showSnackbar(_scaffoldHomeState, "Task Deleted",
-                                    materialColor: Colors.red);
-                              });
-                            }
-                          },
-                          background: new Container(
-                            color: Colors.red,
-                            child: new ListTile(
-                              leading:
-                                  new Icon(Icons.delete, color: Colors.white),
-                            ),
-                          ),
-                          secondaryBackground: new Container(
-                            color: Colors.green,
-                            child: new ListTile(
-                              trailing:
-                                  new Icon(Icons.check, color: Colors.white),
-                            ),
-                          ),
-                          child: new TaskRow(taskList[index]));
-                    }),
-              ),
+      body: BlocProvider<TasksBloc>(
+        bloc: TasksBloc(AppDatabase.get()),
+        child: TasksPage(),
       ),
     );
   }

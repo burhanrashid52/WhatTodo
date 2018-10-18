@@ -12,6 +12,7 @@ dependencies:
   sqflite: any
   url_launcher : ^4.0.0
   path_provider: ^0.4.1
+  rxdart: ^0.19.0
 
 dev_dependencies:
   flutter_test:

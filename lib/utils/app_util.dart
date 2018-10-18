@@ -25,3 +25,17 @@ Widget emptyView(String emptyMessage) {
         style: new TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
   );
 }
+
+class MessageInCenterWidget extends StatelessWidget {
+  final String _message;
+
+  MessageInCenterWidget(this._message);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Center(
+      child: new Text(_message,
+          style: new TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
+    );
+  }
+}
