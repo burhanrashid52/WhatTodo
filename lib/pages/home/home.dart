@@ -22,55 +22,11 @@ class _HomeState extends State<HomeScreen> {
   final List<Tasks> taskList = new List();
   GlobalKey<ScaffoldState> _scaffoldHomeState = new GlobalKey<ScaffoldState>();
   String homeTitle = "Today";
-  int taskStartTime, taskEndTime;
+  final TasksBloc _taskBloc = TasksBloc(AppDatabase.get());
 
   @override
   void initState() {
-    var dateTime = new DateTime.now();
-    taskStartTime = new DateTime(dateTime.year, dateTime.month, dateTime.day)
-        .millisecondsSinceEpoch;
-    taskEndTime =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
-            .millisecondsSinceEpoch;
-    updateTasks(taskStartTime, taskEndTime);
     super.initState();
-  }
-
-  void updateTasks(int taskStartTime, int taskEndTime) {
-    AppDatabase.get()
-        .getTasks(
-            startDate: taskStartTime,
-            endDate: taskEndTime,
-            taskStatus: TaskStatus.PENDING)
-        .then((tasks) {
-      if (tasks == null) return;
-      setState(() {
-        taskList.clear();
-        taskList.addAll(tasks);
-      });
-    });
-  }
-
-  void updateTasksByProject(Project project) {
-    AppDatabase.get().getTasksByProject(project.id).then((tasks) {
-      if (tasks == null) return;
-      setState(() {
-        homeTitle = project.name;
-        taskList.clear();
-        taskList.addAll(tasks);
-      });
-    });
-  }
-
-  void updateTasksByLabel(Label label) {
-    AppDatabase.get().getTasksByLabel(label.name).then((tasks) {
-      if (tasks == null) return;
-      setState(() {
-        homeTitle = label.name;
-        taskList.clear();
-        taskList.addAll(tasks);
-      });
-    });
   }
 
   @override
@@ -87,38 +43,34 @@ class _HomeState extends State<HomeScreen> {
           color: Colors.white,
         ),
         backgroundColor: Colors.orange,
-        onPressed: () async {
-          bool isDataChanged = await Navigator.push(
+        onPressed: () {
+          Navigator.push(
             context,
             new MaterialPageRoute<bool>(
                 builder: (context) => new AddTaskScreen()),
           );
-
-          if (isDataChanged) {
-            //TasksBloc tasksBloc = BlocProvider.of<TasksBloc>(context);
-            //tasksBloc.filterTodayTasks();
-            updateTasks(taskStartTime, taskEndTime);
-          }
         },
       ),
       drawer: new SideDrawer(
         projectSelection: (project) {
-          updateTasksByProject(project);
+          _taskBloc.filterByProject(project.id);
         },
         labelSelection: (label) {
-          updateTasksByLabel(label);
+          _taskBloc.filterByLabel(label.name);
         },
         dateSelection: (startTime, endTime) {
           var dayInMillis = 86340000;
-          homeTitle =
-              endTime - startTime > dayInMillis ? "Next 7 Days" : "Today";
-          taskStartTime = startTime;
-          taskEndTime = endTime;
-          updateTasks(startTime, endTime);
+          bool isNextWeek = endTime - startTime > dayInMillis;
+          homeTitle = isNextWeek ? "Next 7 Days" : "Today";
+          if (isNextWeek) {
+            _taskBloc.filterTasksForNextWeek();
+          } else {
+            _taskBloc.filterTodayTasks();
+          }
         },
       ),
       body: BlocProvider<TasksBloc>(
-        bloc: TasksBloc(AppDatabase.get()),
+        bloc: _taskBloc,
         child: TasksPage(),
       ),
     );
@@ -131,12 +83,11 @@ class _HomeState extends State<HomeScreen> {
       onSelected: (MenuItem result) async {
         switch (result) {
           case MenuItem.taskCompleted:
-            bool isDataChanged = await Navigator.push(
+            Navigator.push(
               context,
               new MaterialPageRoute<bool>(
                   builder: (context) => new TaskCompletedScreen()),
             );
-            updateTasks(taskStartTime, taskEndTime);
             break;
         }
       },

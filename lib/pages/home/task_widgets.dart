@@ -7,6 +7,9 @@ import 'package:flutter_app/pages/tasks/row_task.dart';
 import 'package:flutter_app/utils/app_util.dart';
 
 class TasksPage extends StatefulWidget {
+
+  TasksPage();
+
   @override
   _TasksPageState createState() => _TasksPageState();
 }
@@ -16,7 +19,7 @@ class _TasksPageState extends State<TasksPage> {
   Widget build(BuildContext context) {
     final TasksBloc _tasksBloc = BlocProvider.of<TasksBloc>(context);
     return StreamBuilder<List<Tasks>>(
-      stream: _tasksBloc.tasks,
+      stream:_tasksBloc.tasks,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildTaskList(snapshot.data);
@@ -42,22 +45,15 @@ class _TasksPageState extends State<TasksPage> {
                         key: new ObjectKey(list[index]),
                         onDismissed: (DismissDirection direction) {
                           var taskID = list[index].id;
-                          setState(() {
-                            list.removeAt(index);
-                          });
+                          final TasksBloc _tasksBloc =
+                              BlocProvider.of<TasksBloc>(context);
+                          print("Task Bloc :$_tasksBloc");
+
                           if (direction == DismissDirection.endToStart) {
-                            AppDatabase.get()
-                                .updateTaskStatus(taskID, TaskStatus.COMPLETE)
-                                .then((value) {
-                              /* showSnackbar(
-                                  widget.scaffoldHomeState, "Task mark as completed",
-                                  materialColor: Colors.green);*/
-                            });
+                            _tasksBloc.updateStatus(
+                                taskID, TaskStatus.COMPLETE);
                           } else {
-                            AppDatabase.get().deleteTask(taskID).then((value) {
-                              /*showSnackbar(_scaffoldHomeState, "Task Deleted",
-                                  materialColor: Colors.red);*/
-                            });
+                            _tasksBloc.delete(taskID);
                           }
                         },
                         background: new Container(
