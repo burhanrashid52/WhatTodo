@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/Label.dart';
-import 'package:flutter_app/models/Project.dart';
-import 'package:flutter_app/models/TaskLabels.dart';
+import 'package:flutter_app/models/label.dart';
+import 'package:flutter_app/models/project.dart';
+import 'package:flutter_app/models/task_labels.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_app/models/Tasks.dart';
+import 'package:flutter_app/models/tasks.dart';
 
 /// This is the singleton database class which handlers all database transactions
 /// All the task raw queries is handle here and return a Future<T> with result

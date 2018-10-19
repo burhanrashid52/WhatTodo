@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
-import 'package:flutter_app/models/Tasks.dart';
+import 'package:flutter_app/models/tasks.dart';
 import 'package:flutter_app/pages/tasks/row_task_completed.dart';
 import 'package:flutter_app/utils/app_util.dart';
 
@@ -28,7 +28,7 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
         title: new Text("Task Completed"),
       ),
       body: taskList.length == 0
-          ? emptyView("No Task Complted Yet")
+          ? MessageInCenterWidget("No Task Complted Yet")
           : new Container(
               child: new ListView.builder(
                   itemCount: taskList.length,

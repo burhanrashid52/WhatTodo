@@ -19,13 +19,6 @@ launchURL(String url) async {
   }
 }
 
-Widget emptyView(String emptyMessage) {
-  return new Center(
-    child: new Text(emptyMessage,
-        style: new TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
-  );
-}
-
 class MessageInCenterWidget extends StatelessWidget {
   final String _message;
 

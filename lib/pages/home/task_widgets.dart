@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bloc/application_bloc.dart';
+import 'package:flutter_app/bloc/task_bloc.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/db/AppDatabase.dart';
-import 'package:flutter_app/models/Tasks.dart';
+import 'package:flutter_app/models/tasks.dart';
 import 'package:flutter_app/pages/tasks/row_task.dart';
 import 'package:flutter_app/utils/app_util.dart';
 
@@ -47,14 +46,18 @@ class _TasksPageState extends State<TasksPage> {
                           var taskID = list[index].id;
                           final TasksBloc _tasksBloc =
                               BlocProvider.of<TasksBloc>(context);
-                          print("Task Bloc :$_tasksBloc");
-
+                          String message="";
                           if (direction == DismissDirection.endToStart) {
                             _tasksBloc.updateStatus(
                                 taskID, TaskStatus.COMPLETE);
+                            message="Task completed";
                           } else {
                             _tasksBloc.delete(taskID);
+                            message="Task deleted";
                           }
+                          SnackBar snackbar=SnackBar(content: new Text(message));
+                          Scaffold.of(context).showSnackBar(snackbar);
+
                         },
                         background: new Container(
                           color: Colors.red,

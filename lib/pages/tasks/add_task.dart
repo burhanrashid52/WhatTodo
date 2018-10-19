@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
-import 'package:flutter_app/models/Label.dart';
-import 'package:flutter_app/models/Priority.dart';
-import 'package:flutter_app/models/Project.dart';
-import 'package:flutter_app/models/Tasks.dart';
+import 'package:flutter_app/models/label.dart';
+import 'package:flutter_app/models/priority.dart';
+import 'package:flutter_app/models/project.dart';
+import 'package:flutter_app/models/tasks.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';

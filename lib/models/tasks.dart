@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'Priority.dart';
+import 'priority.dart';
 
 class Tasks {
   static final tblTask = "Tasks";

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
-import 'package:flutter_app/models/Label.dart';
-import 'package:flutter_app/models/Project.dart';
+import 'package:flutter_app/models/label.dart';
+import 'package:flutter_app/models/project.dart';
 import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
 import 'package:flutter_app/pages/projects/add_project.dart';
@@ -14,19 +14,12 @@ class SideDrawer extends StatefulWidget {
   SideDrawer({this.projectSelection, this.labelSelection, this.dateSelection});
 
   @override
-  _SideDrawerState createState() =>
-      new _SideDrawerState(projectSelection, labelSelection, dateSelection);
+  _SideDrawerState createState() => new _SideDrawerState();
 }
 
 class _SideDrawerState extends State<SideDrawer> {
   final List<Project> projectList = new List();
   final List<Label> labelList = new List();
-  ProjectSelection projectSelectionListener;
-  LabelSelection labelSelectionListener;
-  DateSelection dateSelectionListener;
-
-  _SideDrawerState(this.projectSelectionListener, this.labelSelectionListener,
-      this.dateSelectionListener);
 
   @override
   void initState() {
@@ -67,7 +60,11 @@ class _SideDrawerState extends State<SideDrawer> {
             accountEmail: new Text("burhanrashid5253@gmail.com"),
             otherAccountsPictures: <Widget>[
               new IconButton(
-                  icon: new Icon(Icons.info, color: Colors.white,size: 36.0,),
+                  icon: new Icon(
+                    Icons.info,
+                    color: Colors.white,
+                    size: 36.0,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -85,9 +82,9 @@ class _SideDrawerState extends State<SideDrawer> {
               leading: new Icon(Icons.inbox),
               title: new Text("Inbox"),
               onTap: () {
-                if (projectSelectionListener != null) {
+                if (widget.projectSelection != null) {
                   var project = Project.getInbox();
-                  projectSelectionListener(project);
+                  widget.projectSelection(project);
                   Navigator.pop(context);
                 }
               }),
@@ -101,8 +98,8 @@ class _SideDrawerState extends State<SideDrawer> {
                         dateTime.year, dateTime.month, dateTime.day, 23, 59)
                     .millisecondsSinceEpoch;
 
-                if (dateSelectionListener != null) {
-                  dateSelectionListener(taskStartTime, taskEndTime);
+                if (widget.dateSelection != null) {
+                  widget.dateSelection(taskStartTime, taskEndTime);
                 }
                 Navigator.pop(context);
               },
@@ -118,8 +115,8 @@ class _SideDrawerState extends State<SideDrawer> {
                       dateTime.year, dateTime.month, dateTime.day + 7, 23, 59)
                   .millisecondsSinceEpoch;
 
-              if (dateSelectionListener != null) {
-                dateSelectionListener(taskStartTime, taskEndTime);
+              if (widget.dateSelection != null) {
+                widget.dateSelection(taskStartTime, taskEndTime);
               }
               Navigator.pop(context);
             },
@@ -147,7 +144,7 @@ class _SideDrawerState extends State<SideDrawer> {
     projectList.forEach((project) => projectWidgetList.add(new ProjectRow(
           project,
           projectSelection: (selectedProject) {
-            projectSelectionListener(selectedProject);
+            widget.projectSelection(selectedProject);
             Navigator.pop(context);
           },
         )));
@@ -173,7 +170,7 @@ class _SideDrawerState extends State<SideDrawer> {
     List<Widget> projectWidgetList = new List();
     labelList.forEach((label) =>
         projectWidgetList.add(new LabelRow(label, labelSelection: (label) {
-          labelSelectionListener(label);
+          widget.labelSelection(label);
           Navigator.pop(context);
         })));
     projectWidgetList.add(new ListTile(

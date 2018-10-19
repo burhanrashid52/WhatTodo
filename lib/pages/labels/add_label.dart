@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
-import 'package:flutter_app/models/Label.dart';
-import 'package:flutter_app/models/Project.dart';
+import 'package:flutter_app/models/label.dart';
+import 'package:flutter_app/models/project.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';

@@ -3,7 +3,7 @@ import 'dart:collection';
 
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
-import 'package:flutter_app/models/Tasks.dart';
+import 'package:flutter_app/models/tasks.dart';
 
 class TasksBloc implements BlocBase {
   ///
