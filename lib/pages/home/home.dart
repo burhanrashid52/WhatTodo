@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/task_bloc.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/db/app_database.dart';
+import 'package:flutter_app/db/app_db.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/tasks/task_widgets.dart';
 import 'package:flutter_app/pages/home/title_bloc.dart';
@@ -9,14 +9,12 @@ import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/task_complted.dart';
 
 class HomeScreen extends StatelessWidget {
-  GlobalKey<ScaffoldState> _scaffoldHomeState = new GlobalKey<ScaffoldState>();
   final TitleBloc _titleBloc = TitleBloc();
   final TasksBloc _taskBloc = TasksBloc(AppDatabase.get());
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      key: _scaffoldHomeState,
       appBar: new AppBar(
         title: StreamBuilder<String>(
             initialData: 'Today',
@@ -32,12 +30,13 @@ class HomeScreen extends StatelessWidget {
           color: Colors.white,
         ),
         backgroundColor: Colors.orange,
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             new MaterialPageRoute<bool>(
                 builder: (context) => new AddTaskScreen()),
           );
+          _taskBloc.refresh();
         },
       ),
       drawer: new SideDrawer(
@@ -61,7 +60,11 @@ class HomeScreen extends StatelessWidget {
           }
         },
       ),
-      body: BlocProvider<TasksBloc>(
+      /*drawer: BlocProvider<TasksBloc>(
+        bloc: _taskBloc,
+        child: SideDrawer(),
+      ),*/
+      body: BlocProvider(
         bloc: _taskBloc,
         child: TasksPage(),
       ),

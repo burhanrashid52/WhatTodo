@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/db/app_database.dart';
+import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/db/app_db.dart';
+import 'package:flutter_app/db/project_db.dart';
 import 'package:flutter_app/models/label.dart';
 import 'package:flutter_app/models/priority.dart';
 import 'package:flutter_app/models/project.dart';
 import 'package:flutter_app/models/tasks.dart';
+import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';
@@ -121,8 +124,7 @@ class _AddTaskState extends State<AddTaskScreen> {
                   dueDate: dueDate,
                   priority: priorityStatus,
                   projectId: currentSelectedProject.id);
-              AppDatabase
-                  .get()
+              AppDatabase.get()
                   .updateTask(task, labelIDs: labelIds)
                   .then((book) {
                 print(book);
@@ -171,15 +173,24 @@ class _AddTaskState extends State<AddTaskScreen> {
   }
 
   Future<Status> _showProjectsDialog(BuildContext context) async {
-    return AppDatabase.get().getProjects().then((projects) {
-      showDialog<Status>(
-          context: context,
-          builder: (BuildContext context) {
-            return new SimpleDialog(
-                title: const Text('Select Project'),
-                children: buildProjects(projects));
-          });
-    });
+    return showDialog<Status>(
+        context: context,
+        builder: (BuildContext context) {
+          var _projectBloc =
+              ProjectBloc(ProjectDB.projectDb, isInboxVisible: true);
+          return BlocProvider(
+            bloc: _projectBloc,
+            child: StreamBuilder(
+                stream: _projectBloc.projects,
+                initialData: new List<Project>(),
+                builder: (context, snapshot) {
+                  return SimpleDialog(
+                    title: const Text('Select Project'),
+                    children: buildProjects(snapshot.data),
+                  );
+                }),
+          );
+        });
   }
 
   Future<Status> _showLabelsDialog(BuildContext context) async {

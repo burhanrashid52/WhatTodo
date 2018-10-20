@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/db/app_database.dart';
+import 'package:flutter_app/db/app_db.dart';
 import 'package:flutter_app/models/label.dart';
 import 'package:flutter_app/models/project.dart';
 import 'package:flutter_app/utils/app_util.dart';

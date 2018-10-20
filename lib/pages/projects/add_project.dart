@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/db/app_database.dart';
+import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/db/app_db.dart';
 import 'package:flutter_app/models/project.dart';
+import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 
@@ -25,6 +27,7 @@ class _AddProjectState extends State<AddProject> {
 
   @override
   Widget build(BuildContext context) {
+    ProjectBloc _projectBloc = BlocProvider.of(context);
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Add Project"),
@@ -41,9 +44,8 @@ class _AddProjectState extends State<AddProject> {
                   projectName,
                   currentSelectedPalette.colorValue,
                   currentSelectedPalette.colorName);
-              AppDatabase.get().updateProject(project).then((value) {
-                Navigator.pop(context, true);
-              });
+              _projectBloc.createProject(project);
+              Navigator.pop(context, true);
             }
           }),
       body: new ListView(

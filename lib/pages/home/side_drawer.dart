@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/db/app_database.dart';
+import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/db/app_db.dart';
+import 'package:flutter_app/db/project_db.dart';
 import 'package:flutter_app/models/label.dart';
 import 'package:flutter_app/models/project.dart';
 import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
-import 'package:flutter_app/pages/projects/add_project.dart';
+import 'package:flutter_app/pages/projects/project_bloc.dart';
+import 'package:flutter_app/pages/projects/project_widget.dart';
 
 class SideDrawer extends StatefulWidget {
   ProjectSelection projectSelection;
@@ -24,19 +27,7 @@ class _SideDrawerState extends State<SideDrawer> {
   @override
   void initState() {
     super.initState();
-    updateProjects();
     updateLabels();
-  }
-
-  void updateProjects() {
-    AppDatabase.get().getProjects(isInboxVisible: false).then((projects) {
-      if (projects != null) {
-        setState(() {
-          projectList.clear();
-          projectList.addAll(projects);
-        });
-      }
-    });
   }
 
   void updateLabels() {
@@ -123,7 +114,10 @@ class _SideDrawerState extends State<SideDrawer> {
             leading: new Icon(Icons.calendar_today),
             title: new Text("Next 7 Days"),
           ),
-          buildExpansionTile(Icons.book, "Projects"),
+          BlocProvider(
+            bloc: ProjectBloc(ProjectDB.projectDb),
+            child: ProjectPage(widget.projectSelection),
+          ),
           buildExpansionTile(Icons.label, "Labels")
         ],
       ),
@@ -135,35 +129,8 @@ class _SideDrawerState extends State<SideDrawer> {
       leading: new Icon(icon),
       title: new Text(projectName,
           style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
-      children: projectName == "Projects" ? buildProjects() : buildLabels(),
+      children: buildLabels(),
     );
-  }
-
-  List<Widget> buildProjects() {
-    List<Widget> projectWidgetList = new List();
-    projectList.forEach((project) => projectWidgetList.add(new ProjectRow(
-          project,
-          projectSelection: (selectedProject) {
-            widget.projectSelection(selectedProject);
-            Navigator.pop(context);
-          },
-        )));
-    projectWidgetList.add(new ListTile(
-      leading: new Icon(Icons.add),
-      title: new Text("Add Project"),
-      onTap: () async {
-        Navigator.pop(context);
-        bool isDataChanged = await Navigator.push(
-            context,
-            new MaterialPageRoute<bool>(
-                builder: (context) => new AddProject()));
-
-        if (isDataChanged) {
-          updateProjects();
-        }
-      },
-    ));
-    return projectWidgetList;
   }
 
   List<Widget> buildLabels() {

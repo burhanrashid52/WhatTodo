@@ -5,20 +5,12 @@ import 'package:flutter_app/models/tasks.dart';
 import 'package:flutter_app/pages/tasks/row_task.dart';
 import 'package:flutter_app/utils/app_util.dart';
 
-class TasksPage extends StatefulWidget {
-
-  TasksPage();
-
-  @override
-  _TasksPageState createState() => _TasksPageState();
-}
-
-class _TasksPageState extends State<TasksPage> {
+class TasksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final TasksBloc _tasksBloc = BlocProvider.of<TasksBloc>(context);
+    final TasksBloc _tasksBloc = BlocProvider.of(context);
     return StreamBuilder<List<Tasks>>(
-      stream:_tasksBloc.tasks,
+      stream: _tasksBloc.tasks,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildTaskList(snapshot.data);
@@ -46,18 +38,18 @@ class _TasksPageState extends State<TasksPage> {
                           var taskID = list[index].id;
                           final TasksBloc _tasksBloc =
                               BlocProvider.of<TasksBloc>(context);
-                          String message="";
+                          String message = "";
                           if (direction == DismissDirection.endToStart) {
                             _tasksBloc.updateStatus(
                                 taskID, TaskStatus.COMPLETE);
-                            message="Task completed";
+                            message = "Task completed";
                           } else {
                             _tasksBloc.delete(taskID);
-                            message="Task deleted";
+                            message = "Task deleted";
                           }
-                          SnackBar snackbar=SnackBar(content: new Text(message));
+                          SnackBar snackbar =
+                              SnackBar(content: new Text(message));
                           Scaffold.of(context).showSnackBar(snackbar);
-
                         },
                         background: new Container(
                           color: Colors.red,

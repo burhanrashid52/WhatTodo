@@ -27,7 +27,7 @@ class AppDatabase {
 
   /// Use this method to access the database which will provide you future of [Database],
   /// because initialization of the database (it has to go through the method channel)
-  Future<Database> _getDb() async {
+  Future<Database> getDb() async {
     if (!didInit) await _init();
     return _database;
   }
@@ -97,7 +97,7 @@ class AppDatabase {
 
   Future<List<Tasks>> getTasks(
       {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) async {
-    var db = await _getDb();
+    var db = await getDb();
     var whereClause = startDate > 0 && endDate > 0
         ? "WHERE ${Tasks.tblTask}.${Tasks.dbDueDate} BETWEEN $startDate AND $endDate"
         : "";
@@ -121,7 +121,7 @@ class AppDatabase {
 
   Future<List<Tasks>> getTasksByProject(int projectId,
       {TaskStatus status}) async {
-    var db = await _getDb();
+    var db = await getDb();
     String whereStatus = status != null
         ? "AND ${Tasks.tblTask}.${Tasks.dbStatus}=${TaskStatus.PENDING.index}"
         : "";
@@ -135,7 +135,7 @@ class AppDatabase {
   }
 
   Future<List<Tasks>> getTasksByLabel(String labelName) async {
-    var db = await _getDb();
+    var db = await getDb();
     var result = await db.rawQuery(
         'SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project.dbName},${Project.tblProject}.${Project.dbColorCode},group_concat(${Label.tblLabel}.${Label.dbName}) as labelNames FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels.tblTaskLabel} ON ${TaskLabels.tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
         'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label.dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
@@ -159,8 +159,8 @@ class AppDatabase {
     return tasks;
   }
 
-  Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
-    var db = await _getDb();
+  /*Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
+    var db = await getDb();
     var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";
     var result =
         await db.rawQuery('SELECT * FROM ${Project.tblProject} $whereClause');
@@ -170,10 +170,10 @@ class AppDatabase {
       projects.add(myProject);
     }
     return projects;
-  }
+  }*/
 
   Future<List<Label>> getLabels() async {
-    var db = await _getDb();
+    var db = await getDb();
     var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
     List<Label> projects = new List();
     for (Map<String, dynamic> item in result) {
@@ -185,7 +185,7 @@ class AppDatabase {
 
   /// Inserts or replaces the task.
   Future updateTask(Tasks task, {List<int> labelIDs}) async {
-    var db = await _getDb();
+    var db = await getDb();
     await db.transaction((Transaction txn) async {
       int id = await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks.dbProjectID},${Tasks.dbComment},${Tasks.dbDueDate},${Tasks.dbPriority},${Tasks.dbStatus})'
@@ -200,17 +200,8 @@ class AppDatabase {
     });
   }
 
-  Future updateProject(Project project) async {
-    var db = await _getDb();
-    await db.transaction((Transaction txn) async {
-      await txn.rawInsert('INSERT OR REPLACE INTO '
-          '${Project.tblProject}(${Project.dbId},${Project.dbName},${Project.dbColorCode},${Project.dbColorName})'
-          ' VALUES(${project.id},"${project.name}", ${project.colorValue}, "${project.colorName}")');
-    });
-  }
-
   Future updateLabels(Label label) async {
-    var db = await _getDb();
+    var db = await getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Label.tblLabel}(${Label.dbName},${Label.dbColorCode},${Label.dbColorName})'
@@ -219,7 +210,7 @@ class AppDatabase {
   }
 
   Future deleteProject(int projectID) async {
-    var db = await _getDb();
+    var db = await getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawDelete(
           'DELETE FROM ${Project.tblProject} WHERE ${Project.dbId}==$projectID;');
@@ -227,7 +218,7 @@ class AppDatabase {
   }
 
   Future deleteTask(int taskID) async {
-    var db = await _getDb();
+    var db = await getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawDelete(
           'DELETE FROM ${Tasks.tblTask} WHERE ${Tasks.dbId}=$taskID;');
@@ -235,7 +226,7 @@ class AppDatabase {
   }
 
   Future updateTaskStatus(int taskID, TaskStatus status) async {
-    var db = await _getDb();
+    var db = await getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawQuery(
           "UPDATE ${Tasks.tblTask} SET ${Tasks.dbStatus} = '${status.index}' WHERE ${Tasks.dbId} = '$taskID'");
@@ -243,7 +234,7 @@ class AppDatabase {
   }
 
   Future<bool> isLabelExits(Label label) async {
-    var db = await _getDb();
+    var db = await getDb();
     var result = await db.rawQuery(
         "SELECT * FROM ${Label.tblLabel} WHERE ${Label.dbName} LIKE '${label.name}'");
     if (result.length == 0) {
