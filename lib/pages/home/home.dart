@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/task_bloc.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/db/app_database.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
-import 'package:flutter_app/pages/home/task_widgets.dart';
+import 'package:flutter_app/pages/tasks/task_widgets.dart';
 import 'package:flutter_app/pages/home/title_bloc.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/task_complted.dart';
@@ -75,11 +75,12 @@ class HomeScreen extends StatelessWidget {
       onSelected: (MenuItem result) async {
         switch (result) {
           case MenuItem.taskCompleted:
-            Navigator.push(
+            await Navigator.push(
               context,
               new MaterialPageRoute<bool>(
                   builder: (context) => new TaskCompletedScreen()),
             );
+            _taskBloc.refresh();
             break;
         }
       },

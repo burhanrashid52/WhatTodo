@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/db/app_database.dart';
 import 'package:flutter_app/models/tasks.dart';
 
 class TasksBloc implements BlocBase {
@@ -21,6 +21,7 @@ class TasksBloc implements BlocBase {
 
   AppDatabase _appDatabase;
   List<Tasks> _tasksList;
+  Filter _lastFilterStatus;
 
   TasksBloc(this._appDatabase) {
     filterTodayTasks();
@@ -59,6 +60,7 @@ class TasksBloc implements BlocBase {
 
     // Read all today's tasks from database
     _filterTask(taskStartTime, taskEndTime, TaskStatus.PENDING);
+    _lastFilterStatus = Filter.byToday();
   }
 
   void filterTasksForNextWeek() {
@@ -71,11 +73,15 @@ class TasksBloc implements BlocBase {
             .millisecondsSinceEpoch;
     // Read all next week tasks from database
     _filterTask(taskStartTime, taskEndTime, TaskStatus.PENDING);
+    _lastFilterStatus = Filter.byNextWeek();
   }
 
   void filterByProject(int projectId) {
-    _appDatabase.getTasksByProject(projectId).then((tasks) {
+    _appDatabase
+        .getTasksByProject(projectId, status: TaskStatus.COMPLETE)
+        .then((tasks) {
       if (tasks == null) return;
+      _lastFilterStatus = Filter.byProject(projectId);
       _updateTaskStream(tasks);
     });
   }
@@ -83,26 +89,66 @@ class TasksBloc implements BlocBase {
   void filterByLabel(String labelName) {
     _appDatabase.getTasksByLabel(labelName).then((tasks) {
       if (tasks == null) return;
+      _lastFilterStatus = Filter.byLabel(labelName);
       _updateTaskStream(tasks);
     });
   }
 
   void updateStatus(int taskID, TaskStatus complete) {
     _appDatabase.updateTaskStatus(taskID, TaskStatus.COMPLETE).then((value) {
-      filterTodayTasks();
-      filterTasksForNextWeek();
-      /* showSnackbar(
-                                  widget.scaffoldHomeState, "Task mark as completed",
-                                  materialColor: Colors.green);*/
+      refresh();
     });
   }
 
   void delete(int taskID) {
     _appDatabase.deleteTask(taskID).then((value) {
-      filterTodayTasks();
-      filterTasksForNextWeek();
-      /*showSnackbar(_scaffoldHomeState, "Task Deleted",
-                                  materialColor: Colors.red);*/
+      refresh();
     });
+  }
+
+  void refresh() {
+    if (_lastFilterStatus != null) {
+      switch (_lastFilterStatus.filterStatus) {
+        case FILTER_STATUS.BY_TODAY:
+          filterTodayTasks();
+          break;
+
+        case FILTER_STATUS.BY_WEEK:
+          filterTasksForNextWeek();
+          break;
+
+        case FILTER_STATUS.BY_LABEL:
+          filterByLabel(_lastFilterStatus.labelName);
+          break;
+
+        case FILTER_STATUS.BY_PROJECT:
+          filterByProject(_lastFilterStatus.projectId);
+          break;
+      }
+    }
+  }
+}
+
+enum FILTER_STATUS { BY_TODAY, BY_WEEK, BY_PROJECT, BY_LABEL }
+
+class Filter {
+  String labelName;
+  int projectId;
+  FILTER_STATUS filterStatus;
+
+  Filter.byToday() {
+    filterStatus = FILTER_STATUS.BY_TODAY;
+  }
+
+  Filter.byNextWeek() {
+    filterStatus = FILTER_STATUS.BY_WEEK;
+  }
+
+  Filter.byProject(this.projectId) {
+    filterStatus = FILTER_STATUS.BY_PROJECT;
+  }
+
+  Filter.byLabel(this.labelName) {
+    filterStatus = FILTER_STATUS.BY_LABEL;
   }
 }

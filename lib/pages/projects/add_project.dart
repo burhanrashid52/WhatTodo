@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/db/app_database.dart';
 import 'package:flutter_app/models/project.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
