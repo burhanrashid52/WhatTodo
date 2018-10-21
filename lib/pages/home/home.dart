@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bloc/task_bloc.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/db/app_db.dart';
+import 'package:flutter_app/bloc/task_bloc.dart';
+import 'package:flutter_app/db/task_db.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
-import 'package:flutter_app/pages/tasks/task_widgets.dart';
 import 'package:flutter_app/pages/home/title_bloc.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/task_complted.dart';
+import 'package:flutter_app/pages/tasks/task_widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   final TitleBloc _titleBloc = TitleBloc();
-  final TasksBloc _taskBloc = TasksBloc(AppDatabase.get());
+  final TaskBloc _taskBloc = TaskBloc(TaskDB.get());
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class HomeScreen extends StatelessWidget {
             await Navigator.push(
               context,
               new MaterialPageRoute<bool>(
-                  builder: (context) => new TaskCompletedScreen()),
+                  builder: (context) => TaskCompletedPage()),
             );
             _taskBloc.refresh();
             break;

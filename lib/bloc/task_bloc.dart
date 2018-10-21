@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/db/app_db.dart';
+import 'package:flutter_app/db/task_db.dart';
 import 'package:flutter_app/models/tasks.dart';
 
-class TasksBloc implements BlocBase {
+class TaskBloc implements BlocBase {
   ///
   /// Synchronous Stream to handle the provision of the movie genres
   ///
@@ -19,11 +19,11 @@ class TasksBloc implements BlocBase {
 
   //StreamSink get getMovieGenres => _cmdController.sink;
 
-  AppDatabase _appDatabase;
+  TaskDB _taskDb;
   List<Tasks> _tasksList;
   Filter _lastFilterStatus;
 
-  TasksBloc(this._appDatabase) {
+  TaskBloc(this._taskDb) {
     filterTodayTasks();
     _cmdController.stream.listen((_) {
       _updateTaskStream(_tasksList);
@@ -31,7 +31,7 @@ class TasksBloc implements BlocBase {
   }
 
   void _filterTask(int taskStartTime, int taskEndTime, TaskStatus status) {
-    _appDatabase
+    _taskDb
         .getTasks(
             startDate: taskStartTime, endDate: taskEndTime, taskStatus: status)
         .then((tasks) {
@@ -77,7 +77,7 @@ class TasksBloc implements BlocBase {
   }
 
   void filterByProject(int projectId) {
-    _appDatabase
+    _taskDb
         .getTasksByProject(projectId, status: TaskStatus.COMPLETE)
         .then((tasks) {
       if (tasks == null) return;
@@ -87,21 +87,29 @@ class TasksBloc implements BlocBase {
   }
 
   void filterByLabel(String labelName) {
-    _appDatabase.getTasksByLabel(labelName).then((tasks) {
+    _taskDb.getTasksByLabel(labelName).then((tasks) {
       if (tasks == null) return;
       _lastFilterStatus = Filter.byLabel(labelName);
       _updateTaskStream(tasks);
     });
   }
 
-  void updateStatus(int taskID, TaskStatus complete) {
-    _appDatabase.updateTaskStatus(taskID, TaskStatus.COMPLETE).then((value) {
+  void filterByStatus(TaskStatus status) {
+    _taskDb.getTasks(taskStatus: status).then((tasks) {
+      if (tasks == null) return;
+      _lastFilterStatus = Filter.byStatus(status);
+      _updateTaskStream(tasks);
+    });
+  }
+
+  void updateStatus(int taskID, TaskStatus status) {
+    _taskDb.updateTaskStatus(taskID, status).then((value) {
       refresh();
     });
   }
 
   void delete(int taskID) {
-    _appDatabase.deleteTask(taskID).then((value) {
+    _taskDb.deleteTask(taskID).then((value) {
       refresh();
     });
   }
@@ -124,17 +132,22 @@ class TasksBloc implements BlocBase {
         case FILTER_STATUS.BY_PROJECT:
           filterByProject(_lastFilterStatus.projectId);
           break;
+
+        case FILTER_STATUS.BY_STATUS:
+          filterByStatus(_lastFilterStatus.status);
+          break;
       }
     }
   }
 }
 
-enum FILTER_STATUS { BY_TODAY, BY_WEEK, BY_PROJECT, BY_LABEL }
+enum FILTER_STATUS { BY_TODAY, BY_WEEK, BY_PROJECT, BY_LABEL, BY_STATUS }
 
 class Filter {
   String labelName;
   int projectId;
   FILTER_STATUS filterStatus;
+  TaskStatus status;
 
   Filter.byToday() {
     filterStatus = FILTER_STATUS.BY_TODAY;
@@ -150,5 +163,9 @@ class Filter {
 
   Filter.byLabel(this.labelName) {
     filterStatus = FILTER_STATUS.BY_LABEL;
+  }
+
+  Filter.byStatus(this.status) {
+    filterStatus = FILTER_STATUS.BY_STATUS;
   }
 }

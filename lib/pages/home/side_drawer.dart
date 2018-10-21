@@ -115,7 +115,7 @@ class _SideDrawerState extends State<SideDrawer> {
             title: new Text("Next 7 Days"),
           ),
           BlocProvider(
-            bloc: ProjectBloc(ProjectDB.projectDb),
+            bloc: ProjectBloc(ProjectDB.get()),
             child: ProjectPage(widget.projectSelection),
           ),
           buildExpansionTile(Icons.label, "Labels")

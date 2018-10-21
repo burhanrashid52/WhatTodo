@@ -177,7 +177,7 @@ class _AddTaskState extends State<AddTaskScreen> {
         context: context,
         builder: (BuildContext context) {
           var _projectBloc =
-              ProjectBloc(ProjectDB.projectDb, isInboxVisible: true);
+              ProjectBloc(ProjectDB.get(), isInboxVisible: true);
           return BlocProvider(
             bloc: _projectBloc,
             child: StreamBuilder(

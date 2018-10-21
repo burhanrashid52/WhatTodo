@@ -8,7 +8,7 @@ import 'package:flutter_app/utils/app_util.dart';
 class TasksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final TasksBloc _tasksBloc = BlocProvider.of(context);
+    final TaskBloc _tasksBloc = BlocProvider.of(context);
     return StreamBuilder<List<Tasks>>(
       stream: _tasksBloc.tasks,
       builder: (context, snapshot) {
@@ -36,8 +36,8 @@ class TasksPage extends StatelessWidget {
                         key: new ObjectKey(list[index]),
                         onDismissed: (DismissDirection direction) {
                           var taskID = list[index].id;
-                          final TasksBloc _tasksBloc =
-                              BlocProvider.of<TasksBloc>(context);
+                          final TaskBloc _tasksBloc =
+                              BlocProvider.of<TaskBloc>(context);
                           String message = "";
                           if (direction == DismissDirection.endToStart) {
                             _tasksBloc.updateStatus(

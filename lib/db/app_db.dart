@@ -95,83 +95,6 @@ class AppDatabase {
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project.tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
 
-  Future<List<Tasks>> getTasks(
-      {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) async {
-    var db = await getDb();
-    var whereClause = startDate > 0 && endDate > 0
-        ? "WHERE ${Tasks.tblTask}.${Tasks.dbDueDate} BETWEEN $startDate AND $endDate"
-        : "";
-
-    if (taskStatus != null) {
-      var taskWhereClause =
-          "${Tasks.tblTask}.${Tasks.dbStatus} = ${taskStatus.index}";
-      whereClause = whereClause.isEmpty
-          ? "WHERE $taskWhereClause"
-          : "$whereClause AND $taskWhereClause";
-    }
-
-    var result = await db.rawQuery(
-        'SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project.dbName},${Project.tblProject}.${Project.dbColorCode},group_concat(${Label.tblLabel}.${Label.dbName}) as labelNames '
-        'FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels.tblTaskLabel} ON ${TaskLabels.tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
-        'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label.dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
-        'INNER JOIN ${Project.tblProject} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project.tblProject}.${Project.dbId} $whereClause GROUP BY ${Tasks.tblTask}.${Tasks.dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
-
-    return bindData(result);
-  }
-
-  Future<List<Tasks>> getTasksByProject(int projectId,
-      {TaskStatus status}) async {
-    var db = await getDb();
-    String whereStatus = status != null
-        ? "AND ${Tasks.tblTask}.${Tasks.dbStatus}=${TaskStatus.PENDING.index}"
-        : "";
-    var result = await db.rawQuery(
-        'SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project.dbName},${Project.tblProject}.${Project.dbColorCode},group_concat(${Label.tblLabel}.${Label.dbName}) as labelNames '
-        'FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels.tblTaskLabel} ON ${TaskLabels.tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
-        'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label.dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
-        'INNER JOIN ${Project.tblProject} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project.tblProject}.${Project.dbId} WHERE ${Tasks.tblTask}.${Tasks.dbProjectID}=$projectId $whereStatus GROUP BY ${Tasks.tblTask}.${Tasks.dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
-
-    return bindData(result);
-  }
-
-  Future<List<Tasks>> getTasksByLabel(String labelName) async {
-    var db = await getDb();
-    var result = await db.rawQuery(
-        'SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project.dbName},${Project.tblProject}.${Project.dbColorCode},group_concat(${Label.tblLabel}.${Label.dbName}) as labelNames FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels.tblTaskLabel} ON ${TaskLabels.tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
-        'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label.dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
-        'INNER JOIN ${Project.tblProject} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project.tblProject}.${Project.dbId} WHERE ${Tasks.tblTask}.${Tasks.dbProjectID}=${Project.tblProject}.${Project.dbId} GROUP BY ${Tasks.tblTask}.${Tasks.dbId} having labelNames LIKE "%$labelName%" ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
-
-    return bindData(result);
-  }
-
-  List<Tasks> bindData(List<Map<String, dynamic>> result) {
-    List<Tasks> tasks = new List();
-    for (Map<String, dynamic> item in result) {
-      var myTask = new Tasks.fromMap(item);
-      myTask.projectName = item[Project.dbName];
-      myTask.projectColor = item[Project.dbColorCode];
-      var labelComma = item["labelNames"];
-      if (labelComma != null) {
-        myTask.labelList = labelComma.toString().split(",");
-      }
-      tasks.add(myTask);
-    }
-    return tasks;
-  }
-
-  /*Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
-    var db = await getDb();
-    var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";
-    var result =
-        await db.rawQuery('SELECT * FROM ${Project.tblProject} $whereClause');
-    List<Project> projects = new List();
-    for (Map<String, dynamic> item in result) {
-      var myProject = new Project.fromMap(item);
-      projects.add(myProject);
-    }
-    return projects;
-  }*/
-
   Future<List<Label>> getLabels() async {
     var db = await getDb();
     var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
@@ -214,22 +137,6 @@ class AppDatabase {
     await db.transaction((Transaction txn) async {
       await txn.rawDelete(
           'DELETE FROM ${Project.tblProject} WHERE ${Project.dbId}==$projectID;');
-    });
-  }
-
-  Future deleteTask(int taskID) async {
-    var db = await getDb();
-    await db.transaction((Transaction txn) async {
-      await txn.rawDelete(
-          'DELETE FROM ${Tasks.tblTask} WHERE ${Tasks.dbId}=$taskID;');
-    });
-  }
-
-  Future updateTaskStatus(int taskID, TaskStatus status) async {
-    var db = await getDb();
-    await db.transaction((Transaction txn) async {
-      await txn.rawQuery(
-          "UPDATE ${Tasks.tblTask} SET ${Tasks.dbStatus} = '${status.index}' WHERE ${Tasks.dbId} = '$taskID'");
     });
   }
 
