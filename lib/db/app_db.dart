@@ -95,17 +95,6 @@ class AppDatabase {
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project.tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
 
-  Future<List<Label>> getLabels() async {
-    var db = await getDb();
-    var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
-    List<Label> projects = new List();
-    for (Map<String, dynamic> item in result) {
-      var myProject = new Label.fromMap(item);
-      projects.add(myProject);
-    }
-    return projects;
-  }
-
   /// Inserts or replaces the task.
   Future updateTask(Tasks task, {List<int> labelIDs}) async {
     var db = await getDb();
@@ -121,35 +110,5 @@ class AppDatabase {
         });
       }
     });
-  }
-
-  Future updateLabels(Label label) async {
-    var db = await getDb();
-    await db.transaction((Transaction txn) async {
-      await txn.rawInsert('INSERT OR REPLACE INTO '
-          '${Label.tblLabel}(${Label.dbName},${Label.dbColorCode},${Label.dbColorName})'
-          ' VALUES("${label.name}", ${label.colorValue}, "${label.colorName}")');
-    });
-  }
-
-  Future deleteProject(int projectID) async {
-    var db = await getDb();
-    await db.transaction((Transaction txn) async {
-      await txn.rawDelete(
-          'DELETE FROM ${Project.tblProject} WHERE ${Project.dbId}==$projectID;');
-    });
-  }
-
-  Future<bool> isLabelExits(Label label) async {
-    var db = await getDb();
-    var result = await db.rawQuery(
-        "SELECT * FROM ${Label.tblLabel} WHERE ${Label.dbName} LIKE '${label.name}'");
-    if (result.length == 0) {
-      return await updateLabels(label).then((value) {
-        return false;
-      });
-    } else {
-      return true;
-    }
   }
 }

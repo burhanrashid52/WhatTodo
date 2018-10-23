@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/db/app_db.dart';
+import 'package:flutter_app/db/label_db.dart';
 import 'package:flutter_app/db/project_db.dart';
 import 'package:flutter_app/models/label.dart';
 import 'package:flutter_app/models/project.dart';
 import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
+import 'package:flutter_app/pages/labels/label_bloc.dart';
+import 'package:flutter_app/pages/labels/label_widget.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/pages/projects/project_widget.dart';
 
@@ -27,18 +30,6 @@ class _SideDrawerState extends State<SideDrawer> {
   @override
   void initState() {
     super.initState();
-    updateLabels();
-  }
-
-  void updateLabels() {
-    AppDatabase.get().getLabels().then((projects) {
-      if (projects != null) {
-        setState(() {
-          labelList.clear();
-          labelList.addAll(projects);
-        });
-      }
-    });
   }
 
   @override
@@ -118,43 +109,13 @@ class _SideDrawerState extends State<SideDrawer> {
             bloc: ProjectBloc(ProjectDB.get()),
             child: ProjectPage(widget.projectSelection),
           ),
-          buildExpansionTile(Icons.label, "Labels")
+          BlocProvider(
+            bloc: LabelBloc(LabelDB.get()),
+            child: LabelPage(widget.labelSelection),
+          )
         ],
       ),
     );
-  }
-
-  ExpansionTile buildExpansionTile(IconData icon, String projectName) {
-    return new ExpansionTile(
-      leading: new Icon(icon),
-      title: new Text(projectName,
-          style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
-      children: buildLabels(),
-    );
-  }
-
-  List<Widget> buildLabels() {
-    List<Widget> projectWidgetList = new List();
-    labelList.forEach((label) =>
-        projectWidgetList.add(new LabelRow(label, labelSelection: (label) {
-          widget.labelSelection(label);
-          Navigator.pop(context);
-        })));
-    projectWidgetList.add(new ListTile(
-        leading: new Icon(Icons.add),
-        title: new Text("Add Label"),
-        onTap: () async {
-          Navigator.pop(context);
-          bool isDataChanged = await Navigator.push(
-              context,
-              new MaterialPageRoute<bool>(
-                  builder: (context) => new AddLabel()));
-
-          if (isDataChanged) {
-            updateLabels();
-          }
-        }));
-    return projectWidgetList;
   }
 }
 

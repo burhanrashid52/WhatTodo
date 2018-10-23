@@ -13,17 +13,15 @@ class ProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProjectBloc _projectBloc = BlocProvider.of<ProjectBloc>(context);
-    return LayoutBuilder(
-      builder: (buildContext, _) => StreamBuilder<List<Project>>(
-            stream: _projectBloc.projects,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return buildExpansionTile(buildContext, snapshot.data);
-              } else {
-                return CircularProgressIndicator();
-              }
-            },
-          ),
+    return StreamBuilder<List<Project>>(
+      stream: _projectBloc.projects,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return buildExpansionTile(context, snapshot.data);
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 

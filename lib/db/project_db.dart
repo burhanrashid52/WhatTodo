@@ -18,7 +18,7 @@ class ProjectDB {
     var db = await _appDatabase.getDb();
     var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";
     var result =
-    await db.rawQuery('SELECT * FROM ${Project.tblProject} $whereClause');
+        await db.rawQuery('SELECT * FROM ${Project.tblProject} $whereClause');
     List<Project> projects = new List();
     for (Map<String, dynamic> item in result) {
       var myProject = new Project.fromMap(item);
@@ -31,10 +31,16 @@ class ProjectDB {
     var db = await _appDatabase.getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawInsert('INSERT OR REPLACE INTO '
-          '${Project.tblProject}(${Project.dbId},${Project.dbName},${Project
-          .dbColorCode},${Project.dbColorName})'
-          ' VALUES(${project.id},"${project.name}", ${project
-          .colorValue}, "${project.colorName}")');
+          '${Project.tblProject}(${Project.dbId},${Project.dbName},${Project.dbColorCode},${Project.dbColorName})'
+          ' VALUES(${project.id},"${project.name}", ${project.colorValue}, "${project.colorName}")');
+    });
+  }
+
+  Future deleteProject(int projectID) async {
+    var db = await _appDatabase.getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawDelete(
+          'DELETE FROM ${Project.tblProject} WHERE ${Project.dbId}==$projectID;');
     });
   }
 }

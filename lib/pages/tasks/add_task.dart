@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/db/app_db.dart';
+import 'package:flutter_app/db/label_db.dart';
 import 'package:flutter_app/db/project_db.dart';
 import 'package:flutter_app/models/label.dart';
 import 'package:flutter_app/models/priority.dart';
 import 'package:flutter_app/models/project.dart';
 import 'package:flutter_app/models/tasks.dart';
+import 'package:flutter_app/pages/labels/label_bloc.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/color_utils.dart';
@@ -176,13 +178,12 @@ class _AddTaskState extends State<AddTaskScreen> {
     return showDialog<Status>(
         context: context,
         builder: (BuildContext context) {
-          var _projectBloc =
-              ProjectBloc(ProjectDB.get(), isInboxVisible: true);
+          var _projectBloc = ProjectBloc(ProjectDB.get(), isInboxVisible: true);
           return BlocProvider(
             bloc: _projectBloc,
             child: StreamBuilder(
                 stream: _projectBloc.projects,
-                initialData: new List<Project>(),
+                initialData: List<Project>(),
                 builder: (context, snapshot) {
                   return SimpleDialog(
                     title: const Text('Select Project'),
@@ -194,15 +195,23 @@ class _AddTaskState extends State<AddTaskScreen> {
   }
 
   Future<Status> _showLabelsDialog(BuildContext context) async {
-    return AppDatabase.get().getLabels().then((label) {
-      showDialog<Status>(
-          context: context,
-          builder: (BuildContext context) {
-            return new SimpleDialog(
-                title: const Text('Select Labels'),
-                children: buildLabels(label));
-          });
-    });
+    return showDialog<Status>(
+        context: context,
+        builder: (BuildContext context) {
+          var _labelBloc = LabelBloc(LabelDB.get());
+          return BlocProvider(
+            bloc: _labelBloc,
+            child: StreamBuilder(
+                stream: _labelBloc.labels,
+                initialData: List<Label>(),
+                builder: (context, snapshot) {
+                  return SimpleDialog(
+                    title: const Text('Select Labels'),
+                    children: buildLabels(snapshot.data),
+                  );
+                }),
+          );
+        });
   }
 
   List<Widget> buildProjects(List<Project> projectList) {

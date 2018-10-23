@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/db/app_db.dart';
 import 'package:flutter_app/models/label.dart';
 import 'package:flutter_app/models/project.dart';
+import 'package:flutter_app/pages/labels/label_bloc.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
@@ -30,6 +32,7 @@ class _AddLabelState extends State<AddLabel> {
 
   @override
   Widget build(BuildContext context) {
+    LabelBloc labelBloc = BlocProvider.of(context);
     return new Scaffold(
       key: _scaffoldState,
       appBar: new AppBar(
@@ -40,18 +43,18 @@ class _AddLabelState extends State<AddLabel> {
             Icons.send,
             color: Colors.white,
           ),
-          onPressed: () {
+          onPressed: () async {
             if (_formState.currentState.validate()) {
               _formState.currentState.save();
               var label = Label.create(
                   labelName,
                   currentSelectedPalette.colorValue,
                   currentSelectedPalette.colorName);
-              AppDatabase.get().isLabelExits(label).then((isExist) {
+              labelBloc.checkIfLabelExist(label).then((isExist) {
                 if (isExist) {
-                  showSnackbar(_scaffoldState, "Label Already Exists");
-                } else {
-                  Navigator.pop(context, true);
+                  showSnackbar(_scaffoldState, "Label already exists");
+                }else{
+                  Navigator.pop(context);
                 }
               });
             }
