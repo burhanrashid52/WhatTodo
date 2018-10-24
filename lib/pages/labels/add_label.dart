@@ -33,6 +33,13 @@ class _AddLabelState extends State<AddLabel> {
   @override
   Widget build(BuildContext context) {
     LabelBloc labelBloc = BlocProvider.of(context);
+    labelBloc.labelsExist.listen((isExist) {
+      if (isExist) {
+        showSnackbar(_scaffoldState, "Label already exists");
+      } else {
+        Navigator.pop(context);
+      }
+    });
     return new Scaffold(
       key: _scaffoldState,
       appBar: new AppBar(
@@ -50,13 +57,7 @@ class _AddLabelState extends State<AddLabel> {
                   labelName,
                   currentSelectedPalette.colorValue,
                   currentSelectedPalette.colorName);
-              labelBloc.checkIfLabelExist(label).then((isExist) {
-                if (isExist) {
-                  showSnackbar(_scaffoldState, "Label already exists");
-                }else{
-                  Navigator.pop(context);
-                }
-              });
+              labelBloc.checkIfLabelExist(label);
             }
           }),
       body: new ListView(

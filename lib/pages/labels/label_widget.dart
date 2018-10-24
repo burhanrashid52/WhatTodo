@@ -1,48 +1,49 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/bloc/task_bloc.dart';
 import 'package:flutter_app/db/label_db.dart';
 import 'package:flutter_app/models/label.dart';
-import 'package:flutter_app/pages/home/side_drawer.dart';
+import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
 import 'package:flutter_app/pages/labels/label_bloc.dart';
 
 class LabelPage extends StatelessWidget {
-  final LabelSelection labelSelection;
-
-  LabelPage(this.labelSelection);
-
   @override
   Widget build(BuildContext context) {
-    LabelBloc _labelBloc = BlocProvider.of(context);
+    LabelBloc labelBloc = BlocProvider.of(context);
     return StreamBuilder<List<Label>>(
-      stream: _labelBloc.labels,
+      stream: labelBloc.labels,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return buildExpansionTile(context, snapshot.data);
+          return LabelExpansionTileWidget(snapshot.data);
         } else {
           return CircularProgressIndicator();
         }
       },
     );
   }
+}
 
-  ExpansionTile buildExpansionTile(BuildContext context, List<Label> labels) {
+class LabelExpansionTileWidget extends StatelessWidget {
+  final List<Label> _labels;
+
+  LabelExpansionTileWidget(this._labels);
+
+  @override
+  Widget build(BuildContext context) {
     return ExpansionTile(
       leading: Icon(Icons.label),
       title: Text("Labels",
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
-      children: buildLabels(context, labels),
+      children: buildLabels(context),
     );
   }
 
-  List<Widget> buildLabels(BuildContext context, List<Label> labelList) {
+  List<Widget> buildLabels(BuildContext context) {
+    LabelBloc _labelBloc = BlocProvider.of(context);
     List<Widget> projectWidgetList = List();
-    labelList.forEach((label) =>
-        projectWidgetList.add(LabelRow(label, labelSelection: (label) {
-          labelSelection(label);
-          Navigator.pop(context);
-        })));
+    _labels.forEach((label) => projectWidgetList.add(LabelRow(label)));
     projectWidgetList.add(ListTile(
         leading: Icon(Icons.add),
         title: Text("Add Label"),
@@ -57,9 +58,39 @@ class LabelPage extends StatelessWidget {
           await Navigator.push(context,
               MaterialPageRoute<bool>(builder: (context) => blocLabelProvider));
 
-          LabelBloc _labelBloc = BlocProvider.of(context);
           _labelBloc.refresh();
         }));
     return projectWidgetList;
+  }
+}
+
+class LabelRow extends StatelessWidget {
+  final Label label;
+
+  LabelRow(this.label);
+
+  @override
+  Widget build(BuildContext context) {
+    HomeBloc homeBloc = BlocProvider.of(context);
+    return new ListTile(
+      onTap: () {
+        homeBloc.applyFilter("@ ${label.name}", Filter.byLabel(label.name));
+        Navigator.pop(context);
+      },
+      leading: new Container(
+        width: 24.0,
+        height: 24.0,
+      ),
+      title: new Text("@ ${label.name}"),
+      trailing: new Container(
+        height: 10.0,
+        width: 10.0,
+        child: new Icon(
+          Icons.label,
+          size: 16.0,
+          color: new Color(label.colorValue),
+        ),
+      ),
+    );
   }
 }

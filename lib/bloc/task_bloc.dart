@@ -141,6 +141,11 @@ class TaskBloc implements BlocBase {
       }
     }
   }
+
+  void updateFilters(Filter filter) {
+    _lastFilterStatus = filter;
+    refresh();
+  }
 }
 
 enum FILTER_STATUS { BY_TODAY, BY_WEEK, BY_PROJECT, BY_LABEL, BY_STATUS }

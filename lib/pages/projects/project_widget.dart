@@ -1,66 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/bloc/task_bloc.dart';
 import 'package:flutter_app/models/project.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
+import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/projects/add_project.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 
 class ProjectPage extends StatelessWidget {
-  final ProjectSelection projectSelection;
-
-  ProjectPage(this.projectSelection);
-
   @override
   Widget build(BuildContext context) {
-    ProjectBloc _projectBloc = BlocProvider.of<ProjectBloc>(context);
+    ProjectBloc projectBloc = BlocProvider.of<ProjectBloc>(context);
     return StreamBuilder<List<Project>>(
-      stream: _projectBloc.projects,
+      stream: projectBloc.projects,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return buildExpansionTile(context, snapshot.data);
+          return ProjectExpansionTileWidget(snapshot.data);
         } else {
           return CircularProgressIndicator();
         }
       },
     );
   }
+}
 
-  ExpansionTile buildExpansionTile(
-      BuildContext context, List<Project> projects) {
+class ProjectExpansionTileWidget extends StatelessWidget {
+  final List<Project> _projects;
+
+  ProjectExpansionTileWidget(this._projects);
+
+  @override
+  Widget build(BuildContext context) {
     return new ExpansionTile(
       leading: new Icon(Icons.book),
       title: new Text("Projects",
           style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
-      children: buildProjects(context, projects),
+      children: buildProjects(context),
     );
   }
 
-  List<Widget> buildProjects(BuildContext context, List<Project> projectList) {
-    List<Widget> projectWidgetList = new List();
-    projectList.forEach((project) => projectWidgetList.add(new ProjectRow(
-          project,
-          projectSelection: (selectedProject) {
-            projectSelection(selectedProject);
-            Navigator.pop(context);
-          },
-        )));
-    projectWidgetList.add(new ListTile(
-      leading: new Icon(Icons.add),
-      title: new Text("Add Project"),
+  List<Widget> buildProjects(BuildContext context) {
+    List<Widget> projectWidgetList = List();
+    _projects.forEach((project) => projectWidgetList.add(ProjectRow(project)));
+    projectWidgetList.add(ListTile(
+      leading: Icon(Icons.add),
+      title: Text("Add Project"),
       onTap: () {
         Navigator.pop(context);
-        ProjectBloc _projectBloc = BlocProvider.of<ProjectBloc>(context);
+        ProjectBloc projectBloc = BlocProvider.of<ProjectBloc>(context);
         Widget addProject = BlocProvider(
-          bloc: _projectBloc,
+          bloc: projectBloc,
           child: AddProject(),
         );
         Navigator.push(
             context,
-            new MaterialPageRoute<bool>(
+            MaterialPageRoute<bool>(
               builder: (context) => addProject,
             ));
       },
     ));
     return projectWidgetList;
+  }
+}
+
+class ProjectRow extends StatelessWidget {
+  final Project project;
+
+  ProjectRow(this.project);
+
+  @override
+  Widget build(BuildContext context) {
+    HomeBloc homeBloc = BlocProvider.of(context);
+    return new ListTile(
+      onTap: () {
+        homeBloc.applyFilter(project.name, Filter.byProject(project.id));
+        Navigator.pop(context);
+      },
+      leading: new Container(
+        width: 24.0,
+        height: 24.0,
+      ),
+      title: new Text(project.name),
+      trailing: new Container(
+        height: 10.0,
+        width: 10.0,
+        child: new CircleAvatar(
+          backgroundColor: new Color(project.colorValue),
+        ),
+      ),
+    );
   }
 }

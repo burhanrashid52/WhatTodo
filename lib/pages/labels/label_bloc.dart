@@ -10,6 +10,11 @@ class LabelBloc implements BlocBase {
 
   Stream<List<Label>> get labels => _labelController.stream;
 
+  StreamController<bool> _labelExistController =
+      StreamController<bool>.broadcast();
+
+  Stream<bool> get labelsExist => _labelExistController.stream;
+
   LabelDB _labelDB;
 
   LabelBloc(this._labelDB) {
@@ -19,6 +24,7 @@ class LabelBloc implements BlocBase {
   @override
   void dispose() {
     _labelController.close();
+    _labelExistController.close();
   }
 
   void _loadLabels() {
@@ -31,7 +37,9 @@ class LabelBloc implements BlocBase {
     _loadLabels();
   }
 
-  Future<bool> checkIfLabelExist(Label label) async {
-    return _labelDB.isLabelExits(label);
+  void checkIfLabelExist(Label label) async {
+    _labelDB.isLabelExits(label).then((isExist) {
+      _labelExistController.sink.add(isExist);
+    });
   }
 }
