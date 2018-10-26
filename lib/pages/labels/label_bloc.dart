@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/db/label_db.dart';
-import 'package:flutter_app/models/label.dart';
+import 'package:flutter_app/pages/labels/label.dart';
+import 'package:flutter_app/pages/labels/label_db.dart';
+import 'package:flutter_app/utils/color_utils.dart';
 
 class LabelBloc implements BlocBase {
   StreamController<List<Label>> _labelController =
@@ -15,6 +16,11 @@ class LabelBloc implements BlocBase {
 
   Stream<bool> get labelsExist => _labelExistController.stream;
 
+  StreamController<ColorPalette> _colorController =
+      StreamController<ColorPalette>.broadcast();
+
+  Stream<ColorPalette> get colorSelection => _colorController.stream;
+
   LabelDB _labelDB;
 
   LabelBloc(this._labelDB) {
@@ -25,6 +31,7 @@ class LabelBloc implements BlocBase {
   void dispose() {
     _labelController.close();
     _labelExistController.close();
+    _colorController.close();
   }
 
   void _loadLabels() {
@@ -41,5 +48,9 @@ class LabelBloc implements BlocBase {
     _labelDB.isLabelExits(label).then((isExist) {
       _labelExistController.sink.add(isExist);
     });
+  }
+
+  void updateColorSelection(ColorPalette colorPalette) {
+    _colorController.sink.add(colorPalette);
   }
 }

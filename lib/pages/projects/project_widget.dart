@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/bloc/task_bloc.dart';
-import 'package:flutter_app/models/project.dart';
+import 'package:flutter_app/pages/projects/project_db.dart';
+import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/projects/add_project.dart';
@@ -45,18 +46,19 @@ class ProjectExpansionTileWidget extends StatelessWidget {
     projectWidgetList.add(ListTile(
       leading: Icon(Icons.add),
       title: Text("Add Project"),
-      onTap: () {
+      onTap: () async {
         Navigator.pop(context);
         ProjectBloc projectBloc = BlocProvider.of<ProjectBloc>(context);
         Widget addProject = BlocProvider(
-          bloc: projectBloc,
+          bloc: ProjectBloc(ProjectDB.get()),
           child: AddProject(),
         );
-        Navigator.push(
+        await Navigator.push(
             context,
             MaterialPageRoute<bool>(
               builder: (context) => addProject,
             ));
+        projectBloc.refresh();
       },
     ));
     return projectWidgetList;

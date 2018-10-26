@@ -1,33 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/db/app_db.dart';
-import 'package:flutter_app/models/project.dart';
+import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 
-class AddProject extends StatefulWidget {
-  @override
-  _AddProjectState createState() => new _AddProjectState();
-}
-
-class _AddProjectState extends State<AddProject> {
-  ColorPalette currentSelectedPalette =
-      new ColorPalette("Grey", Colors.grey.value);
-
+class AddProject extends StatelessWidget {
   final expansionTile = new GlobalKey<CollapsibleExpansionTileState>();
-  GlobalKey<FormState> _formState = new GlobalKey<FormState>();
-
-  String projectName = "";
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final GlobalKey<FormState> _formState = new GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     ProjectBloc _projectBloc = BlocProvider.of(context);
+    ColorPalette currentSelectedPalette;
+    String projectName = "";
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Add Project"),
@@ -68,17 +55,24 @@ class _AddProjectState extends State<AddProject> {
           ),
           new Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: new CollapsibleExpansionTile(
-              key: expansionTile,
-              leading: new Container(
-                width: 12.0,
-                height: 12.0,
-                child: new CircleAvatar(
-                  backgroundColor: new Color(currentSelectedPalette.colorValue),
-                ),
-              ),
-              title: new Text(currentSelectedPalette.colorName),
-              children: buildMaterialColors(),
+            child: StreamBuilder(
+              stream: _projectBloc.colorSelection,
+              initialData: ColorPalette("Grey", Colors.grey.value),
+              builder: (context, snapshot) {
+                currentSelectedPalette = snapshot.data;
+                return new CollapsibleExpansionTile(
+                  key: expansionTile,
+                  leading: new Container(
+                    width: 12.0,
+                    height: 12.0,
+                    child: new CircleAvatar(
+                      backgroundColor: new Color(snapshot.data.colorValue),
+                    ),
+                  ),
+                  title: new Text(snapshot.data.colorName),
+                  children: buildMaterialColors(_projectBloc),
+                );
+              },
             ),
           )
         ],
@@ -86,7 +80,7 @@ class _AddProjectState extends State<AddProject> {
     );
   }
 
-  List<Widget> buildMaterialColors() {
+  List<Widget> buildMaterialColors(ProjectBloc projectBloc) {
     List<Widget> projectWidgetList = new List();
     colorsPalettes.forEach((colors) {
       projectWidgetList.add(new ListTile(
@@ -100,10 +94,9 @@ class _AddProjectState extends State<AddProject> {
         title: new Text(colors.colorName),
         onTap: () {
           expansionTile.currentState.collapse();
-          setState(() {
-            currentSelectedPalette =
-                new ColorPalette(colors.colorName, colors.colorValue);
-          });
+          projectBloc.updateColorSelection(
+            ColorPalette(colors.colorName, colors.colorValue),
+          );
         },
       ));
     });

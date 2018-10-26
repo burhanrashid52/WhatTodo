@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/bloc/task_bloc.dart';
-import 'package:flutter_app/db/label_db.dart';
-import 'package:flutter_app/db/project_db.dart';
-import 'package:flutter_app/models/project.dart';
+import 'package:flutter_app/pages/labels/label_db.dart';
+import 'package:flutter_app/pages/projects/project_db.dart';
+import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/labels/label_bloc.dart';

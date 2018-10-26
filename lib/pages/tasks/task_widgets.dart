@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/task_bloc.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/models/tasks.dart';
+import 'package:flutter_app/pages/tasks/models/tasks.dart';
 import 'package:flutter_app/pages/tasks/row_task.dart';
 import 'package:flutter_app/utils/app_util.dart';
 

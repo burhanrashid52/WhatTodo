@@ -3,36 +3,23 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/db/app_db.dart';
-import 'package:flutter_app/models/label.dart';
-import 'package:flutter_app/models/project.dart';
+import 'package:flutter_app/pages/labels/label.dart';
+import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/labels/label_bloc.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 
-class AddLabel extends StatefulWidget {
-  @override
-  _AddLabelState createState() => new _AddLabelState();
-}
-
-class _AddLabelState extends State<AddLabel> {
-  ColorPalette currentSelectedPalette =
-      new ColorPalette("Grey", Colors.grey.value);
-
-  GlobalKey<FormState> _formState = new GlobalKey<FormState>();
-  GlobalKey<ScaffoldState> _scaffoldState = new GlobalKey<ScaffoldState>();
-  final expansionTile = new GlobalKey<CollapsibleExpansionTileState>();
-
-  String labelName = "";
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class AddLabel extends StatelessWidget {
+  final GlobalKey<FormState> _formState = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+  final expansionTile = GlobalKey<CollapsibleExpansionTileState>();
 
   @override
   Widget build(BuildContext context) {
+    ColorPalette currentSelectedPalette;
     LabelBloc labelBloc = BlocProvider.of(context);
+    String labelName = "";
     labelBloc.labelsExist.listen((isExist) {
       if (isExist) {
         showSnackbar(_scaffoldState, "Label already exists");
@@ -80,15 +67,22 @@ class _AddLabelState extends State<AddLabel> {
           ),
           new Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: new CollapsibleExpansionTile(
-              key: expansionTile,
-              leading: new Icon(
-                Icons.label,
-                size: 16.0,
-                color: new Color(currentSelectedPalette.colorValue),
-              ),
-              title: new Text(currentSelectedPalette.colorName),
-              children: buildMaterialColors(),
+            child: StreamBuilder<ColorPalette>(
+              stream: labelBloc.colorSelection,
+              initialData: ColorPalette("Grey", Colors.grey.value),
+              builder: (context, snapshot) {
+                currentSelectedPalette = snapshot.data;
+                return new CollapsibleExpansionTile(
+                  key: expansionTile,
+                  leading: new Icon(
+                    Icons.label,
+                    size: 16.0,
+                    color: new Color(currentSelectedPalette.colorValue),
+                  ),
+                  title: new Text(currentSelectedPalette.colorName),
+                  children: buildMaterialColors(labelBloc),
+                );
+              },
             ),
           )
         ],
@@ -96,7 +90,7 @@ class _AddLabelState extends State<AddLabel> {
     );
   }
 
-  List<Widget> buildMaterialColors() {
+  List<Widget> buildMaterialColors(LabelBloc labelBloc) {
     List<Widget> projectWidgetList = new List();
     colorsPalettes.forEach((colors) {
       projectWidgetList.add(new ListTile(
@@ -108,10 +102,9 @@ class _AddLabelState extends State<AddLabel> {
         title: new Text(colors.colorName),
         onTap: () {
           expansionTile.currentState.collapse();
-          setState(() {
-            currentSelectedPalette =
-                new ColorPalette(colors.colorName, colors.colorValue);
-          });
+          labelBloc.updateColorSelection(
+            ColorPalette(colors.colorName, colors.colorValue),
+          );
         },
       ));
     });

@@ -1,5 +1,5 @@
 import 'package:flutter_app/db/app_db.dart';
-import 'package:flutter_app/models/label.dart';
+import 'package:flutter_app/pages/labels/label.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LabelDB {

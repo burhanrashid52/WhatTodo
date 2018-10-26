@@ -1,5 +1,5 @@
+import 'package:flutter_app/models/priority.dart';
 import 'package:meta/meta.dart';
-import 'priority.dart';
 
 class Tasks {
   static final tblTask = "Tasks";
