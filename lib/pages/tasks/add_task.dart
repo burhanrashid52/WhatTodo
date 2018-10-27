@@ -2,35 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/db/app_db.dart';
-import 'package:flutter_app/pages/labels/label_db.dart';
-import 'package:flutter_app/pages/projects/project_db.dart';
-import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/models/priority.dart';
+import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/pages/projects/project.dart';
-import 'package:flutter_app/pages/tasks/models/tasks.dart';
-import 'package:flutter_app/pages/labels/label_bloc.dart';
-import 'package:flutter_app/pages/projects/project_bloc.dart';
+import 'package:flutter_app/pages/tasks/bloc/add_task_bloc.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  @override
-  _AddTaskState createState() => new _AddTaskState();
-}
-
-class _AddTaskState extends State<AddTaskScreen> {
-  String text = "";
-  int dueDate = new DateTime.now().millisecondsSinceEpoch;
-  Status priorityStatus = Status.PRIORITY_4;
-  Project currentSelectedProject = new Project.getInbox();
-  List<Label> selectedLabelList = new List();
-  GlobalKey<ScaffoldState> _scaffoldState = new GlobalKey<ScaffoldState>();
-  GlobalKey<FormState> _formState = new GlobalKey<FormState>();
+class AddTaskScreen extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldState =
+      new GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formState = new GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    AddTaskBloc createTaskBloc = BlocProvider.of(context);
     return new Scaffold(
       key: _scaffoldState,
       appBar: new AppBar(
@@ -47,7 +34,7 @@ class _AddTaskState extends State<AddTaskScreen> {
                     return msg;
                   },
                   onSaved: (value) {
-                    text = value;
+                    createTaskBloc.updateTitle = value;
                   },
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
@@ -58,15 +45,24 @@ class _AddTaskState extends State<AddTaskScreen> {
           new ListTile(
             leading: new Icon(Icons.book),
             title: new Text("Project"),
-            subtitle: new Text(currentSelectedProject.name),
+            subtitle: StreamBuilder<Project>(
+              stream: createTaskBloc.selectedProject,
+              initialData: Project.getInbox(),
+              builder: (context, snapshot) => new Text(snapshot.data.name),
+            ),
             onTap: () {
-              _showProjectsDialog(context);
+              _showProjectsDialog(createTaskBloc, context);
             },
           ),
           new ListTile(
             leading: new Icon(Icons.calendar_today),
             title: new Text("Due Date"),
-            subtitle: new Text(getFormattedDate(dueDate)),
+            subtitle: StreamBuilder(
+              stream: createTaskBloc.dueDateSelected,
+              initialData: DateTime.now().millisecondsSinceEpoch,
+              builder: (context, snapshot) =>
+                  Text(getFormattedDate(snapshot.data)),
+            ),
             onTap: () {
               _selectDate(context);
             },
@@ -74,23 +70,24 @@ class _AddTaskState extends State<AddTaskScreen> {
           new ListTile(
             leading: new Icon(Icons.flag),
             title: new Text("Priority"),
-            subtitle: new Text(priorityText[priorityStatus.index]),
+            subtitle: StreamBuilder(
+              stream: createTaskBloc.prioritySelected,
+              initialData: Status.PRIORITY_4,
+              builder: (context, snapshot) =>
+                  Text(priorityText[snapshot.data.index]),
+            ),
             onTap: () {
-              _showPriorityDialog(context).then((status) {
-                if (status != null) {
-                  setState(() {
-                    priorityStatus = status;
-                  });
-                }
-              });
+              _showPriorityDialog(createTaskBloc, context);
             },
           ),
           new ListTile(
               leading: new Icon(Icons.label),
               title: new Text("Lables"),
-              subtitle: new Text(selectedLabelList.length == 0
-                  ? "No Label"
-                  : getDisplayLabels()),
+              subtitle: StreamBuilder(
+                stream: createTaskBloc.labelSelection,
+                initialData: "No Labels",
+                builder: (context, snapshot) => Text(snapshot.data),
+              ),
               onTap: () {
                 _showLabelsDialog(context);
               }),
@@ -117,19 +114,7 @@ class _AddTaskState extends State<AddTaskScreen> {
           onPressed: () {
             if (_formState.currentState.validate()) {
               _formState.currentState.save();
-              List<int> labelIds = new List();
-              selectedLabelList.forEach((label) {
-                labelIds.add(label.id);
-              });
-              var task = new Tasks.create(
-                  title: text,
-                  dueDate: dueDate,
-                  priority: priorityStatus,
-                  projectId: currentSelectedProject.id);
-              AppDatabase.get()
-                  .updateTask(task, labelIDs: labelIds)
-                  .then((book) {
-                print(book);
+              createTaskBloc.createTask().listen((value) {
                 Navigator.pop(context, true);
               });
             }
@@ -137,84 +122,75 @@ class _AddTaskState extends State<AddTaskScreen> {
     );
   }
 
-  String getDisplayLabels() {
-    List<String> selectedLabelNameList = new List();
-    selectedLabelList.forEach((label) {
-      selectedLabelNameList.add("@${label.name}");
-    });
-    return selectedLabelNameList.join("  ");
-  }
-
   Future<Null> _selectDate(BuildContext context) async {
+    AddTaskBloc createTaskBloc = BlocProvider.of(context);
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime(2015, 8),
         lastDate: new DateTime(2101));
     if (picked != null) {
-      setState(() {
-        dueDate = picked.millisecondsSinceEpoch;
-      });
+      createTaskBloc.updateDueDate(picked.millisecondsSinceEpoch);
     }
   }
 
-  Future<Status> _showPriorityDialog(BuildContext context) async {
+  Future<Status> _showPriorityDialog(
+      AddTaskBloc createTaskBloc, BuildContext context) async {
     return await showDialog<Status>(
         context: context,
-        builder: (BuildContext context) {
+        builder: (BuildContext dialogContext) {
           return new SimpleDialog(
             title: const Text('Select Priority'),
             children: <Widget>[
-              buildContainer(Status.PRIORITY_1),
-              buildContainer(Status.PRIORITY_2),
-              buildContainer(Status.PRIORITY_3),
-              buildContainer(Status.PRIORITY_4),
+              buildContainer(context, Status.PRIORITY_1),
+              buildContainer(context, Status.PRIORITY_2),
+              buildContainer(context, Status.PRIORITY_3),
+              buildContainer(context, Status.PRIORITY_4),
             ],
           );
         });
   }
 
-  Future<Status> _showProjectsDialog(BuildContext context) async {
+  Future<Status> _showProjectsDialog(
+      AddTaskBloc createTaskBloc, BuildContext context) async {
     return showDialog<Status>(
         context: context,
-        builder: (BuildContext context) {
-          var _projectBloc = ProjectBloc(ProjectDB.get(), isInboxVisible: true);
-          return BlocProvider(
-            bloc: _projectBloc,
-            child: StreamBuilder(
-                stream: _projectBloc.projects,
-                initialData: List<Project>(),
-                builder: (context, snapshot) {
-                  return SimpleDialog(
-                    title: const Text('Select Project'),
-                    children: buildProjects(snapshot.data),
-                  );
-                }),
-          );
+        builder: (BuildContext dialogContext) {
+          return StreamBuilder(
+              stream: createTaskBloc.projects,
+              initialData: List<Project>(),
+              builder: (context, snapshot) {
+                return SimpleDialog(
+                  title: const Text('Select Project'),
+                  children:
+                      buildProjects(createTaskBloc, context, snapshot.data),
+                );
+              });
         });
   }
 
   Future<Status> _showLabelsDialog(BuildContext context) async {
+    AddTaskBloc createTaskBloc = BlocProvider.of(context);
     return showDialog<Status>(
         context: context,
         builder: (BuildContext context) {
-          var _labelBloc = LabelBloc(LabelDB.get());
-          return BlocProvider(
-            bloc: _labelBloc,
-            child: StreamBuilder(
-                stream: _labelBloc.labels,
-                initialData: List<Label>(),
-                builder: (context, snapshot) {
-                  return SimpleDialog(
-                    title: const Text('Select Labels'),
-                    children: buildLabels(snapshot.data),
-                  );
-                }),
-          );
+          return StreamBuilder(
+              stream: createTaskBloc.labels,
+              initialData: List<Label>(),
+              builder: (context, snapshot) {
+                return SimpleDialog(
+                  title: const Text('Select Labels'),
+                  children: buildLabels(createTaskBloc, context, snapshot.data),
+                );
+              });
         });
   }
 
-  List<Widget> buildProjects(List<Project> projectList) {
+  List<Widget> buildProjects(
+    AddTaskBloc createTaskBloc,
+    BuildContext context,
+    List<Project> projectList,
+  ) {
     List<Widget> projects = new List();
     projectList.forEach((project) {
       projects.add(new ListTile(
@@ -227,9 +203,7 @@ class _AddTaskState extends State<AddTaskScreen> {
         ),
         title: new Text(project.name),
         onTap: () {
-          setState(() {
-            currentSelectedProject = project;
-          });
+          createTaskBloc.projectSelected(project);
           Navigator.pop(context);
         },
       ));
@@ -237,24 +211,22 @@ class _AddTaskState extends State<AddTaskScreen> {
     return projects;
   }
 
-  List<Widget> buildLabels(List<Label> labelList) {
+  List<Widget> buildLabels(
+    AddTaskBloc createTaskBloc,
+    BuildContext context,
+    List<Label> labelList,
+  ) {
     List<Widget> labels = new List();
     labelList.forEach((label) {
       labels.add(new ListTile(
         leading: new Icon(Icons.label,
             color: new Color(label.colorValue), size: 18.0),
         title: new Text(label.name),
-        trailing: selectedLabelList.contains(label)
+        trailing: createTaskBloc.selectedLabels.contains(label)
             ? new Icon(Icons.close)
-            : new Container(),
+            : new Container(width: 18.0, height: 18.0),
         onTap: () {
-          setState(() {
-            if (!selectedLabelList.contains(label)) {
-              selectedLabelList.add(label);
-            } else {
-              selectedLabelList.remove(label);
-            }
-          });
+          createTaskBloc.labelAddOrRemove(label);
           Navigator.pop(context);
         },
       ));
@@ -262,13 +234,17 @@ class _AddTaskState extends State<AddTaskScreen> {
     return labels;
   }
 
-  GestureDetector buildContainer(Status status) {
+  GestureDetector buildContainer(BuildContext context, Status status) {
+    AddTaskBloc createTaskBloc = BlocProvider.of(context);
     return new GestureDetector(
         onTap: () {
+          createTaskBloc.updatePriority(status);
           Navigator.pop(context, status);
         },
         child: new Container(
-            color: status == priorityStatus ? Colors.grey : Colors.white,
+            color: status == createTaskBloc.lastPrioritySelection
+                ? Colors.grey
+                : Colors.white,
             child: new Container(
               margin: const EdgeInsets.symmetric(vertical: 2.0),
               decoration: new BoxDecoration(

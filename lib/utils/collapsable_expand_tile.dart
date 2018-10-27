@@ -89,7 +89,7 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
         if (_isExpanded)
           _controller.forward();
         else
-          _controller.reverse().then<void>((Null value) {
+          _controller.reverse().then<void>((value) {
             setState(() {
               // Rebuild without widget.children.
             });

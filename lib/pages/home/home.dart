@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/bloc/task_bloc.dart';
+import 'package:flutter_app/pages/labels/label_db.dart';
+import 'package:flutter_app/pages/projects/project_db.dart';
+import 'package:flutter_app/pages/tasks/bloc/add_task_bloc.dart';
+import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
@@ -34,9 +37,13 @@ class HomePage extends StatelessWidget {
         ),
         backgroundColor: Colors.orange,
         onPressed: () async {
+          var blocProviderAddTask = BlocProvider(
+            bloc: AddTaskBloc(TaskDB.get(), ProjectDB.get(), LabelDB.get()),
+            child: AddTaskScreen(),
+          );
           await Navigator.push(
             context,
-            MaterialPageRoute<bool>(builder: (context) => new AddTaskScreen()),
+            MaterialPageRoute<bool>(builder: (context) => blocProviderAddTask),
           );
           _taskBloc.refresh();
         },

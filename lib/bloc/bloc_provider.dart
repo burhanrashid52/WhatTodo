@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bloc/task_bloc.dart';
 
 abstract class BlocBase {
   void dispose();

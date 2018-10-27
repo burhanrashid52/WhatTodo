@@ -102,4 +102,21 @@ class TaskDB {
           "UPDATE ${Tasks.tblTask} SET ${Tasks.dbStatus} = '${status.index}' WHERE ${Tasks.dbId} = '$taskID'");
     });
   }
+
+  /// Inserts or replaces the task.
+  Future updateTask(Tasks task, {List<int> labelIDs}) async {
+    var db = await _appDatabase.getDb();
+    await db.transaction((Transaction txn) async {
+      int id = await txn.rawInsert('INSERT OR REPLACE INTO '
+          '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks.dbProjectID},${Tasks.dbComment},${Tasks.dbDueDate},${Tasks.dbPriority},${Tasks.dbStatus})'
+          ' VALUES(${task.id}, "${task.title}", ${task.projectId},"${task.comment}", ${task.dueDate},${task.priority.index},${task.tasksStatus.index})');
+      if (id > 0 && labelIDs != null && labelIDs.length > 0) {
+        labelIDs.forEach((labelId) {
+          txn.rawInsert('INSERT OR REPLACE INTO '
+              '${TaskLabels.tblTaskLabel}(${TaskLabels.dbId},${TaskLabels.dbTaskId},${TaskLabels.dbLabelId})'
+              ' VALUES(null, $id, $labelId)');
+        });
+      }
+    });
+  }
 }
