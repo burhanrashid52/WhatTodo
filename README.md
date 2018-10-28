@@ -21,12 +21,12 @@ A Simple To-do app design in flutter to keep track of your task on daily basis. 
 - Works offline using [**Sqflite**](https://github.com/tekartik/sqflite "Flutter Database") database
 
 ## BLoC Diagram
-This diagram show case the dependencies to create a feature specific BLoCs.The HomeBloc is an independent and used as communication channel between its child widgets.
+This diagram show case the dependencies to create a feature specific BLoCs.The HomeBloc is independent and used as communication channel between its child widgets.
 
 ![](https://i.imgur.com/byajGE7.png)
 
 ## Relationship
-This is show how each widget is uses the BLoCs.
+This diagram shows that how each widget uses BLoCs.
 
 ![](https://i.imgur.com/fHGTASw.png)
 
