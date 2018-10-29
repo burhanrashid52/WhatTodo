@@ -25,7 +25,7 @@ This diagram show case the dependencies to create a feature specific BLoCs.The H
 
 ![](https://i.imgur.com/byajGE7.png)
 
-## Relationship
+## Widget-BLoC Relationship
 This diagram shows that how each widget uses BLoCs.
 
 ![](https://i.imgur.com/fHGTASw.png)
