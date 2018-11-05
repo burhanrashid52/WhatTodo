@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
       itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
             const PopupMenuItem<MenuItem>(
               value: MenuItem.taskCompleted,
-              child: const Text('Complted Task'),
+              child: const Text('Completed Tasks'),
             )
           ],
     );
