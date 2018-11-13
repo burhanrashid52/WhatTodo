@@ -82,7 +82,7 @@ Hit me on twitter [![Twitter](https://img.shields.io/badge/Twitter-%40burhanrash
 ## Credits
   - UI/UX inspired from [**Todoist**](https://play.google.com/store/apps/details?id=com.todoist&hl=en) app
   - Flutter [**Documentation**](https://flutter.io/docs/)
-  - [**Collin ackson**](https://stackoverflow.com/users/1463116/collin-jackson) answer's on stackoverflow :laughing:
+  - [**Collin Jackson**](https://stackoverflow.com/users/1463116/collin-jackson) answer's on stackoverflow :laughing:
 
 ## License
 Copyright 2018 Burhanuddin Rashid
