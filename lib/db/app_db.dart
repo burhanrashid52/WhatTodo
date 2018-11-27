@@ -12,7 +12,7 @@ import 'package:flutter_app/pages/tasks/models/tasks.dart';
 /// This is the singleton database class which handlers all database transactions
 /// All the task raw queries is handle here and return a Future<T> with result
 class AppDatabase {
-  static final AppDatabase _appDatabase = new AppDatabase._internal();
+  static final AppDatabase _appDatabase = AppDatabase._internal();
 
   //private internal constructor to make it singleton
   AppDatabase._internal();
