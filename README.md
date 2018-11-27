@@ -25,7 +25,7 @@ This diagram show case the dependencies to create a feature specific BLoCs.The H
 
 ![](https://i.imgur.com/byajGE7.png)
 
-## Relationship
+## Widget-BLoC Relationship
 This diagram shows that how each widget uses BLoCs.
 
 ![](https://i.imgur.com/fHGTASw.png)
@@ -82,7 +82,7 @@ Hit me on twitter [![Twitter](https://img.shields.io/badge/Twitter-%40burhanrash
 ## Credits
   - UI/UX inspired from [**Todoist**](https://play.google.com/store/apps/details?id=com.todoist&hl=en) app
   - Flutter [**Documentation**](https://flutter.io/docs/)
-  - [**Collin ackson**](https://stackoverflow.com/users/1463116/collin-jackson) answer's on stackoverflow :laughing:
+  - [**Collin Jackson**](https://stackoverflow.com/users/1463116/collin-jackson) answer's on stackoverflow :laughing:
 
 ## License
 Copyright 2018 Burhanuddin Rashid
