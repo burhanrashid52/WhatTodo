@@ -28,7 +28,7 @@ class CollapsibleExpansionTile extends StatefulWidget {
 
   @override
   CollapsibleExpansionTileState createState() =>
-      new CollapsibleExpansionTileState();
+      CollapsibleExpansionTileState();
 }
 
 class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
@@ -47,17 +47,17 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
   @override
   void initState() {
     super.initState();
-    _controller = new AnimationController(duration: _kExpand, vsync: this);
+    _controller = AnimationController(duration: _kExpand, vsync: this);
     _easeOutAnimation =
-        new CurvedAnimation(parent: _controller, curve: Curves.easeOut);
+        CurvedAnimation(parent: _controller, curve: Curves.easeOut);
     _easeInAnimation =
-        new CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-    _borderColor = new ColorTween();
-    _headerColor = new ColorTween();
-    _iconColor = new ColorTween();
+        CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+    _borderColor = ColorTween();
+    _headerColor = ColorTween();
+    _iconColor = ColorTween();
     _iconTurns =
-        new Tween<double>(begin: 0.0, end: 0.5).animate(_easeInAnimation);
-    _backgroundColor = new ColorTween();
+        Tween<double>(begin: 0.0, end: 0.5).animate(_easeInAnimation);
+    _backgroundColor = ColorTween();
 
     _isExpanded =
         PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
@@ -107,24 +107,24 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
         _borderColor.evaluate(_easeOutAnimation) ?? Colors.transparent;
     final Color titleColor = _headerColor.evaluate(_easeInAnimation);
 
-    return new Container(
-      decoration: new BoxDecoration(
+    return Container(
+      decoration: BoxDecoration(
           color: _backgroundColor.evaluate(_easeOutAnimation) ??
               Colors.transparent,
-          border: new Border(
-            top: new BorderSide(color: borderSideColor),
-            bottom: new BorderSide(color: borderSideColor),
+          border: Border(
+            top: BorderSide(color: borderSideColor),
+            bottom: BorderSide(color: borderSideColor),
           )),
-      child: new Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           IconTheme.merge(
             data:
-                new IconThemeData(color: _iconColor.evaluate(_easeInAnimation)),
-            child: new ListTile(
+                IconThemeData(color: _iconColor.evaluate(_easeInAnimation)),
+            child: ListTile(
               onTap: toggle,
               leading: widget.leading,
-              title: new DefaultTextStyle(
+              title: DefaultTextStyle(
                 style: Theme
                     .of(context)
                     .textTheme
@@ -133,14 +133,14 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
                 child: widget.title,
               ),
               trailing: widget.trailing ??
-                  new RotationTransition(
+                  RotationTransition(
                     turns: _iconTurns,
                     child: const Icon(Icons.expand_more),
                   ),
             ),
           ),
-          new ClipRect(
-            child: new Align(
+          ClipRect(
+            child: Align(
               heightFactor: _easeInAnimation.value,
               child: child,
             ),
@@ -163,10 +163,10 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
     _backgroundColor.end = widget.backgroundColor;
 
     final bool closed = !_isExpanded && _controller.isDismissed;
-    return new AnimatedBuilder(
+    return AnimatedBuilder(
       animation: _controller.view,
       builder: _buildChildren,
-      child: closed ? null : new Column(children: widget.children),
+      child: closed ? null : Column(children: widget.children),
     );
   }
 }

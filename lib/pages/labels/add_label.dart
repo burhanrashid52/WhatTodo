@@ -1,10 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/db/app_db.dart';
 import 'package:flutter_app/pages/labels/label.dart';
-import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/labels/label_bloc.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
@@ -27,13 +23,13 @@ class AddLabel extends StatelessWidget {
         Navigator.pop(context);
       }
     });
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldState,
-      appBar: new AppBar(
-        title: new Text("Add Label"),
+      appBar: AppBar(
+        title: Text("Add Label"),
       ),
-      floatingActionButton: new FloatingActionButton(
-          child: new Icon(
+      floatingActionButton: FloatingActionButton(
+          child: Icon(
             Icons.send,
             color: Colors.white,
           ),
@@ -47,13 +43,13 @@ class AddLabel extends StatelessWidget {
               labelBloc.checkIfLabelExist(label);
             }
           }),
-      body: new ListView(
+      body: ListView(
         children: <Widget>[
-          new Form(
-            child: new Padding(
+          Form(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new TextFormField(
-                decoration: new InputDecoration(hintText: "Label Name"),
+              child: TextFormField(
+                decoration: InputDecoration(hintText: "Label Name"),
                 maxLength: 20,
                 validator: (value) {
                   return value.isEmpty ? "Label Cannot be empty" : null;
@@ -65,21 +61,21 @@ class AddLabel extends StatelessWidget {
             ),
             key: _formState,
           ),
-          new Padding(
+          Padding(
             padding: const EdgeInsets.only(top: 4.0),
             child: StreamBuilder<ColorPalette>(
               stream: labelBloc.colorSelection,
               initialData: ColorPalette("Grey", Colors.grey.value),
               builder: (context, snapshot) {
                 currentSelectedPalette = snapshot.data;
-                return new CollapsibleExpansionTile(
+                return CollapsibleExpansionTile(
                   key: expansionTile,
-                  leading: new Icon(
+                  leading: Icon(
                     Icons.label,
                     size: 16.0,
-                    color: new Color(currentSelectedPalette.colorValue),
+                    color: Color(currentSelectedPalette.colorValue),
                   ),
-                  title: new Text(currentSelectedPalette.colorName),
+                  title: Text(currentSelectedPalette.colorName),
                   children: buildMaterialColors(labelBloc),
                 );
               },
@@ -91,15 +87,15 @@ class AddLabel extends StatelessWidget {
   }
 
   List<Widget> buildMaterialColors(LabelBloc labelBloc) {
-    List<Widget> projectWidgetList = new List();
+    List<Widget> projectWidgetList = List();
     colorsPalettes.forEach((colors) {
-      projectWidgetList.add(new ListTile(
-        leading: new Icon(
+      projectWidgetList.add(ListTile(
+        leading: Icon(
           Icons.label,
           size: 16.0,
-          color: new Color(colors.colorValue),
+          color: Color(colors.colorValue),
         ),
-        title: new Text(colors.colorName),
+        title: Text(colors.colorName),
         onTap: () {
           expansionTile.currentState.collapse();
           labelBloc.updateColorSelection(

@@ -7,7 +7,7 @@ showSnackbar(GlobalKey<ScaffoldState> scaffoldState, String message,
   if (message.isEmpty) return;
   // Find the Scaffold in the Widget tree and use it to show a SnackBar
   scaffoldState.currentState.showSnackBar(
-      new SnackBar(content: new Text(message), backgroundColor: materialColor));
+      SnackBar(content: Text(message), backgroundColor: materialColor));
 }
 
 launchURL(String url) async {
@@ -26,9 +26,9 @@ class MessageInCenterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
-      child: new Text(_message,
-          style: new TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
+    return Center(
+      child: Text(_message,
+          style: TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
     );
   }
 }

@@ -15,15 +15,15 @@ class SideDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
-    return new Drawer(
-      child: new ListView(
+    return Drawer(
+      child: ListView(
         children: <Widget>[
-          new UserAccountsDrawerHeader(
-            accountName: new Text("Burhanuddin Rashid"),
-            accountEmail: new Text("burhanrashid5253@gmail.com"),
+          UserAccountsDrawerHeader(
+            accountName: Text("Burhanuddin Rashid"),
+            accountEmail: Text("burhanrashid5253@gmail.com"),
             otherAccountsPictures: <Widget>[
-              new IconButton(
-                  icon: new Icon(
+              IconButton(
+                  icon: Icon(
                     Icons.info,
                     color: Colors.white,
                     size: 36.0,
@@ -32,38 +32,38 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute<bool>(
-                          builder: (context) => new AboutUsScreen()),
+                          builder: (context) => AboutUsScreen()),
                     );
                   })
             ],
-            currentAccountPicture: new CircleAvatar(
+            currentAccountPicture: CircleAvatar(
               backgroundColor: Theme.of(context).accentColor,
-              backgroundImage: new AssetImage("assets/profile_pic.jpg"),
+              backgroundImage: AssetImage("assets/profile_pic.jpg"),
             ),
           ),
-          new ListTile(
-              leading: new Icon(Icons.inbox),
-              title: new Text("Inbox"),
+          ListTile(
+              leading: Icon(Icons.inbox),
+              title: Text("Inbox"),
               onTap: () {
                 var project = Project.getInbox();
                 homeBloc.applyFilter(
                     project.name, Filter.byProject(project.id));
                 Navigator.pop(context);
               }),
-          new ListTile(
+          ListTile(
               onTap: () {
                 homeBloc.applyFilter("Today", Filter.byToday());
                 Navigator.pop(context);
               },
-              leading: new Icon(Icons.calendar_today),
-              title: new Text("Today")),
-          new ListTile(
+              leading: Icon(Icons.calendar_today),
+              title: Text("Today")),
+          ListTile(
             onTap: () {
               homeBloc.applyFilter("Next 7 Days", Filter.byNextWeek());
               Navigator.pop(context);
             },
-            leading: new Icon(Icons.calendar_today),
-            title: new Text("Next 7 Days"),
+            leading: Icon(Icons.calendar_today),
+            title: Text("Next 7 Days"),
           ),
           BlocProvider(
             bloc: ProjectBloc(ProjectDB.get()),

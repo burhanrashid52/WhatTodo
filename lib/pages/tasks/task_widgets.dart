@@ -24,16 +24,16 @@ class TasksPage extends StatelessWidget {
   }
 
   Widget _buildTaskList(List<Tasks> list) {
-    return new Padding(
+    return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: list.length == 0
           ? MessageInCenterWidget("No Task Added")
-          : new Container(
-              child: new ListView.builder(
+          : Container(
+              child: ListView.builder(
                   itemCount: list.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return new Dismissible(
-                        key: new ObjectKey(list[index]),
+                    return Dismissible(
+                        key: ObjectKey(list[index]),
                         onDismissed: (DismissDirection direction) {
                           var taskID = list[index].id;
                           final TaskBloc _tasksBloc =
@@ -48,24 +48,24 @@ class TasksPage extends StatelessWidget {
                             message = "Task deleted";
                           }
                           SnackBar snackbar =
-                              SnackBar(content: new Text(message));
+                              SnackBar(content: Text(message));
                           Scaffold.of(context).showSnackBar(snackbar);
                         },
-                        background: new Container(
+                        background: Container(
                           color: Colors.red,
-                          child: new ListTile(
+                          child: ListTile(
                             leading:
-                                new Icon(Icons.delete, color: Colors.white),
+                                Icon(Icons.delete, color: Colors.white),
                           ),
                         ),
-                        secondaryBackground: new Container(
+                        secondaryBackground: Container(
                           color: Colors.green,
-                          child: new ListTile(
+                          child: ListTile(
                             trailing:
-                                new Icon(Icons.check, color: Colors.white),
+                                Icon(Icons.check, color: Colors.white),
                           ),
                         ),
-                        child: new TaskRow(list[index]));
+                        child: TaskRow(list[index]));
                   }),
             ),
     );

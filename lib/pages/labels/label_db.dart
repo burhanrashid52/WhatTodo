@@ -3,7 +3,7 @@ import 'package:flutter_app/pages/labels/label.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LabelDB {
-  static final LabelDB _labelDb = new LabelDB._internal(AppDatabase.get());
+  static final LabelDB _labelDb = LabelDB._internal(AppDatabase.get());
 
   AppDatabase _appDatabase;
 
@@ -39,9 +39,9 @@ class LabelDB {
   Future<List<Label>> getLabels() async {
     var db = await _appDatabase.getDb();
     var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
-    List<Label> projects = new List();
+    List<Label> projects = List();
     for (Map<String, dynamic> item in result) {
-      var myProject = new Label.fromMap(item);
+      var myProject = Label.fromMap(item);
       projects.add(myProject);
     }
     return projects;

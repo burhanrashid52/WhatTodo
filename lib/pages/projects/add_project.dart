@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/db/app_db.dart';
 import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 
 class AddProject extends StatelessWidget {
-  final expansionTile = new GlobalKey<CollapsibleExpansionTileState>();
-  final GlobalKey<FormState> _formState = new GlobalKey<FormState>();
+  final expansionTile = GlobalKey<CollapsibleExpansionTileState>();
+  final GlobalKey<FormState> _formState = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     ProjectBloc _projectBloc = BlocProvider.of(context);
     ColorPalette currentSelectedPalette;
     String projectName = "";
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Add Project"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Add Project"),
       ),
-      floatingActionButton: new FloatingActionButton(
-          child: new Icon(
+      floatingActionButton: FloatingActionButton(
+          child: Icon(
             Icons.send,
             color: Colors.white,
           ),
@@ -35,13 +34,13 @@ class AddProject extends StatelessWidget {
               Navigator.pop(context, true);
             }
           }),
-      body: new ListView(
+      body: ListView(
         children: <Widget>[
-          new Form(
-            child: new Padding(
+          Form(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new TextFormField(
-                decoration: new InputDecoration(hintText: "Project Name"),
+              child: TextFormField(
+                decoration: InputDecoration(hintText: "Project Name"),
                 maxLength: 20,
                 validator: (value) {
                   return value.isEmpty ? "Project name cannot be empty" : null;
@@ -53,23 +52,23 @@ class AddProject extends StatelessWidget {
             ),
             key: _formState,
           ),
-          new Padding(
+          Padding(
             padding: const EdgeInsets.only(top: 4.0),
             child: StreamBuilder(
               stream: _projectBloc.colorSelection,
               initialData: ColorPalette("Grey", Colors.grey.value),
               builder: (context, snapshot) {
                 currentSelectedPalette = snapshot.data;
-                return new CollapsibleExpansionTile(
+                return CollapsibleExpansionTile(
                   key: expansionTile,
-                  leading: new Container(
+                  leading: Container(
                     width: 12.0,
                     height: 12.0,
-                    child: new CircleAvatar(
-                      backgroundColor: new Color(snapshot.data.colorValue),
+                    child: CircleAvatar(
+                      backgroundColor: Color(snapshot.data.colorValue),
                     ),
                   ),
-                  title: new Text(snapshot.data.colorName),
+                  title: Text(snapshot.data.colorName),
                   children: buildMaterialColors(_projectBloc),
                 );
               },
@@ -81,17 +80,17 @@ class AddProject extends StatelessWidget {
   }
 
   List<Widget> buildMaterialColors(ProjectBloc projectBloc) {
-    List<Widget> projectWidgetList = new List();
+    List<Widget> projectWidgetList = List();
     colorsPalettes.forEach((colors) {
-      projectWidgetList.add(new ListTile(
-        leading: new Container(
+      projectWidgetList.add(ListTile(
+        leading: Container(
           width: 12.0,
           height: 12.0,
-          child: new CircleAvatar(
-            backgroundColor: new Color(colors.colorValue),
+          child: CircleAvatar(
+            backgroundColor: Color(colors.colorValue),
           ),
         ),
-        title: new Text(colors.colorName),
+        title: Text(colors.colorName),
         onTap: () {
           expansionTile.currentState.collapse();
           projectBloc.updateColorSelection(

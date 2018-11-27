@@ -6,7 +6,7 @@ import 'package:flutter_app/pages/tasks/models/task_labels.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TaskDB {
-  static final TaskDB _taskDb = new TaskDB._internal(AppDatabase.get());
+  static final TaskDB _taskDb = TaskDB._internal(AppDatabase.get());
 
   AppDatabase _appDatabase;
 
@@ -44,9 +44,9 @@ class TaskDB {
   }
 
   List<Tasks> _bindData(List<Map<String, dynamic>> result) {
-    List<Tasks> tasks = new List();
+    List<Tasks> tasks = List();
     for (Map<String, dynamic> item in result) {
-      var myTask = new Tasks.fromMap(item);
+      var myTask = Tasks.fromMap(item);
       myTask.projectName = item[Project.dbName];
       myTask.projectColor = item[Project.dbColorCode];
       var labelComma = item["labelNames"];

@@ -8,73 +8,73 @@ import 'package:flutter_app/utils/app_constant.dart';
 class TaskCompletedRow extends StatelessWidget {
   final Tasks tasks;
   static final date_label = "Date";
-  List<String> labelNames = new List();
+  final List<String> labelNames = List();
 
   TaskCompletedRow(this.tasks);
 
   @override
   Widget build(BuildContext context) {
-    return new GestureDetector(
+    return GestureDetector(
       onTap: () {
         //TODO to click something
       },
-      child: new Column(
+      child: Column(
         children: <Widget>[
-          new Container(
+          Container(
             margin: const EdgeInsets.symmetric(vertical: PADDING_TINY),
-            decoration: new BoxDecoration(
-              border: new Border(
-                left: new BorderSide(
+            decoration: BoxDecoration(
+              border: Border(
+                left: BorderSide(
                   width: 4.0,
                   color: priorityColor[tasks.priority.index],
                 ),
               ),
             ),
-            child: new Padding(
+            child: Padding(
               padding: const EdgeInsets.all(PADDING_SMALL),
-              child: new Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  new Padding(
+                  Padding(
                     padding: const EdgeInsets.only(
                         left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
-                    child: new Text(tasks.title,
-                        style: new TextStyle(
+                    child: Text(tasks.title,
+                        style: TextStyle(
                             decoration: TextDecoration.lineThrough,
                             fontSize: FONT_SIZE_TITLE,
                             fontWeight: FontWeight.bold)),
                   ),
                   getLabels(tasks.labelList),
-                  new Padding(
+                  Padding(
                     padding: const EdgeInsets.only(
                         left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
-                    child: new Row(
+                    child: Row(
                       children: <Widget>[
-                        new Text(
+                        Text(
                           getFormattedDate(tasks.dueDate),
-                          style: new TextStyle(
+                          style: TextStyle(
                               color: Colors.grey, fontSize: FONT_SIZE_DATE),
-                          key: new Key(date_label),
+                          key: Key(date_label),
                         ),
-                        new Expanded(
-                          child: new Column(
+                        Expanded(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
-                              new Row(
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
-                                  new Text(tasks.projectName,
-                                      style: new TextStyle(
+                                  Text(tasks.projectName,
+                                      style: TextStyle(
                                           color: Colors.grey,
                                           fontSize: FONT_SIZE_LABEL)),
-                                  new Container(
+                                  Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 8.0),
                                     width: 8.0,
                                     height: 8.0,
-                                    child: new CircleAvatar(
+                                    child: CircleAvatar(
                                       backgroundColor:
-                                          new Color(tasks.projectColor),
+                                          Color(tasks.projectColor),
                                     ),
                                   )
                                 ],
@@ -89,10 +89,10 @@ class TaskCompletedRow extends StatelessWidget {
               ),
             ),
           ),
-          new Container(
-              decoration: new BoxDecoration(
-            border: new Border(
-              bottom: new BorderSide(
+          Container(
+              decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
                 width: 0.5,
                 color: Colors.grey,
               ),
@@ -105,13 +105,13 @@ class TaskCompletedRow extends StatelessWidget {
 
   Widget getLabels(List<String> labelList) {
     if (labelList.isEmpty) {
-      return new Container();
+      return Container();
     } else {
-      return new Padding(
+      return Padding(
         padding: const EdgeInsets.only(
             left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
-        child: new Text(tasks.labelList.join("  "),
-            style: new TextStyle(
+        child: Text(tasks.labelList.join("  "),
+            style: TextStyle(
                 decoration: TextDecoration.lineThrough,
                 fontSize: FONT_SIZE_LABEL)),
       );

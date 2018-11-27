@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
-import 'package:flutter_app/pages/projects/project_db.dart';
-import 'package:flutter_app/pages/projects/project.dart';
-import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/projects/add_project.dart';
+import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
+import 'package:flutter_app/pages/projects/project_db.dart';
+import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 
 class ProjectPage extends StatelessWidget {
   @override
@@ -32,10 +31,10 @@ class ProjectExpansionTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new ExpansionTile(
-      leading: new Icon(Icons.book),
-      title: new Text("Projects",
-          style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+    return ExpansionTile(
+      leading: Icon(Icons.book),
+      title: Text("Projects",
+          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
       children: buildProjects(context),
     );
   }
@@ -73,21 +72,21 @@ class ProjectRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
-    return new ListTile(
+    return ListTile(
       onTap: () {
         homeBloc.applyFilter(project.name, Filter.byProject(project.id));
         Navigator.pop(context);
       },
-      leading: new Container(
+      leading: Container(
         width: 24.0,
         height: 24.0,
       ),
-      title: new Text(project.name),
-      trailing: new Container(
+      title: Text(project.name),
+      trailing: Container(
         height: 10.0,
         width: 10.0,
-        child: new CircleAvatar(
-          backgroundColor: new Color(project.colorValue),
+        child: CircleAvatar(
+          backgroundColor: Color(project.colorValue),
         ),
       ),
     );

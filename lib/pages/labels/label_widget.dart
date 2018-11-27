@@ -72,23 +72,23 @@ class LabelRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
-    return new ListTile(
+    return ListTile(
       onTap: () {
         homeBloc.applyFilter("@ ${label.name}", Filter.byLabel(label.name));
         Navigator.pop(context);
       },
-      leading: new Container(
+      leading: Container(
         width: 24.0,
         height: 24.0,
       ),
-      title: new Text("@ ${label.name}"),
-      trailing: new Container(
+      title: Text("@ ${label.name}"),
+      trailing: Container(
         height: 10.0,
         width: 10.0,
-        child: new Icon(
+        child: Icon(
           Icons.label,
           size: 16.0,
-          color: new Color(label.colorValue),
+          color: Color(label.colorValue),
         ),
       ),
     );

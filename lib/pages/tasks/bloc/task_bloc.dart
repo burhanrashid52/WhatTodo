@@ -50,12 +50,12 @@ class TaskBloc implements BlocBase {
   }
 
   void filterTodayTasks() {
-    final dateTime = new DateTime.now();
+    final dateTime = DateTime.now();
     final int taskStartTime =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day)
+        DateTime(dateTime.year, dateTime.month, dateTime.day)
             .millisecondsSinceEpoch;
     final int taskEndTime =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
+        DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
             .millisecondsSinceEpoch;
 
     // Read all today's tasks from database
@@ -64,12 +64,12 @@ class TaskBloc implements BlocBase {
   }
 
   void filterTasksForNextWeek() {
-    var dateTime = new DateTime.now();
+    var dateTime = DateTime.now();
     var taskStartTime =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day)
+        DateTime(dateTime.year, dateTime.month, dateTime.day)
             .millisecondsSinceEpoch;
     var taskEndTime =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 7, 23, 59)
+        DateTime(dateTime.year, dateTime.month, dateTime.day + 7, 23, 59)
             .millisecondsSinceEpoch;
     // Read all next week tasks from database
     _filterTask(taskStartTime, taskEndTime, TaskStatus.PENDING);

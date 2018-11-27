@@ -30,8 +30,8 @@ class HomePage extends StatelessWidget {
             }),
         actions: <Widget>[buildPopupMenu(context)],
       ),
-      floatingActionButton: new FloatingActionButton(
-        child: new Icon(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
 // This menu button widget updates a _selection field (of type WhyFarther,
 // not shown here).
   Widget buildPopupMenu(BuildContext context) {
-    return new PopupMenuButton<MenuItem>(
+    return PopupMenuButton<MenuItem>(
       onSelected: (MenuItem result) async {
         switch (result) {
           case MenuItem.taskCompleted:

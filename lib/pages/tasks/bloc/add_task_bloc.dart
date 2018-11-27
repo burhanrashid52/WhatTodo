@@ -93,7 +93,7 @@ class AddTaskBloc implements BlocBase {
   }
 
   void _buildLabelsString() {
-    List<String> selectedLabelNameList = new List();
+    List<String> selectedLabelNameList = List();
     _selectedLabelList.forEach((label) {
       selectedLabelNameList.add("@${label.name}");
     });
@@ -111,12 +111,12 @@ class AddTaskBloc implements BlocBase {
   Observable<String> createTask() {
     return Observable.zip3(selectedProject, dueDateSelected, prioritySelected,
         (Project project, int dueDateSelected, Status status) {
-      List<int> labelIds = new List();
+      List<int> labelIds = List();
       _selectedLabelList.forEach((label) {
         labelIds.add(label.id);
       });
 
-      var task = new Tasks.create(
+      var task = Tasks.create(
         title: updateTitle,
         dueDate: dueDateSelected,
         priority: status,

@@ -38,7 +38,7 @@ class TaskCompletedPage extends StatelessWidget {
                               Scaffold.of(context).showSnackBar(snackbar);
                             }
                           },
-                          secondaryBackground: new Container(
+                          secondaryBackground: Container(
                             color: Colors.grey,
                             child: ListTile(
                               trailing: Text("UNDO",
