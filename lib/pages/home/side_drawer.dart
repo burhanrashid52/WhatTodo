@@ -17,6 +17,7 @@ class SideDrawer extends StatelessWidget {
     HomeBloc homeBloc = BlocProvider.of(context);
     return Drawer(
       child: ListView(
+        padding: EdgeInsets.all(0.0),
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text("Burhanuddin Rashid"),
