@@ -16,6 +16,10 @@
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="WhatTodo">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+                   android:value="YOURKEYHERE"/>
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale"
