@@ -9,7 +9,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.0
   sqflite: any
-  url_launcher : ^4.0.0
+  url_launcher: ^4.0.0
   path_provider: ^0.4.1
   rxdart: ^0.19.0
   google_maps_flutter: ^0.5.21+8
@@ -17,6 +17,8 @@ dependencies:
   json_serializable: ^2.0.2
 
 dev_dependencies:
+  pedantic: ^1.4.0
+  build_runner: ^1.2.7
   flutter_test:
     sdk: flutter
 
@@ -36,9 +38,9 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-      - assets/profile_pic.jpg
-      - assets/twitter_logo.png
-      - assets/facebook_logo.png
+    - assets/profile_pic.jpg
+    - assets/twitter_logo.png
+    - assets/facebook_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

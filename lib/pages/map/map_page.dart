@@ -1,28 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/map/map_bloc.dart';
+import 'package:flutter_app/pages/places/models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapPage extends StatelessWidget {
   final Completer<GoogleMapController> _controller = Completer();
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-
   @override
   Widget build(BuildContext context) {
     final MapBloc mapBloc = BlocProvider.of(context);
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Maps"),
         actions: <Widget>[
@@ -40,27 +31,61 @@ class MapPage extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder<MapType>(
-          stream: mapBloc.mayType,
-          initialData: MapType.hybrid,
-          builder: (context, snapshot) {
-            return GoogleMap(
-              mapType: snapshot.data,
-              initialCameraPosition: _kGooglePlex,
-              zoomGesturesEnabled: true,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            );
-          }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _goToTheLake,
+      body: Stack(
+        children: <Widget>[
+          StreamBuilder<MapType>(
+            stream: mapBloc.mayType,
+            initialData: MapType.hybrid,
+            builder: (context, snapshotType) {
+              return GoogleMap(
+                mapType: snapshotType.data,
+                initialCameraPosition: buildInitialCamera(),
+                zoomGesturesEnabled: true,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              );
+            },
+          ),
+          //TODO: Fix the scroll and item are not visible
+          StreamBuilder<List<Office>>(
+            stream: mapBloc.offices,
+            builder: (context, snapshot) {
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  var item = snapshot.data[index];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.red,
+                      child: Text("P"),
+                    ),
+                    title: Text(item.name),
+                    subtitle: Text(item.address),
+                  );
+                  //return Text(item.name);
+                },
+              );
+            },
+          )
+        ],
       ),
     );
   }
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  Set<Marker> buildMarkerSet(List<Office> offices) {
+    Set<Marker> markers = Set<Marker>();
+    for (var office in offices) {
+      markers.add(office.toMarker());
+    }
+    return markers;
+  }
+
+  CameraPosition buildInitialCamera() {
+    return CameraPosition(
+      target: LatLng(37.42796133580664, -122.085749655962),
+      zoom: 14.4746,
+    );
   }
 }
