@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/map/map_bloc.dart';
-import 'package:flutter_app/pages/places/models.dart';
+import 'package:flutter_app/pages/places/places_models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapPage extends StatelessWidget {
@@ -48,7 +48,7 @@ class MapPage extends StatelessWidget {
             },
           ),
           //TODO: Fix the scroll and item are not visible
-          StreamBuilder<List<Office>>(
+          StreamBuilder<List<Candidate>>(
             stream: mapBloc.offices,
             builder: (context, snapshot) {
               return ListView.builder(
@@ -56,15 +56,18 @@ class MapPage extends StatelessWidget {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
                   var item = snapshot.data[index];
-                  return ListTile(
+                  /*return ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Colors.red,
                       child: Text("P"),
                     ),
                     title: Text(item.name),
-                    subtitle: Text(item.address),
+                    subtitle: Text(item.name),
+                  );*/
+                  return Text(
+                    item.name,
+                    style: Theme.of(context).textTheme.headline,
                   );
-                  //return Text(item.name);
                 },
               );
             },
@@ -74,13 +77,13 @@ class MapPage extends StatelessWidget {
     );
   }
 
-  Set<Marker> buildMarkerSet(List<Office> offices) {
+  /*Set<Marker> buildMarkerSet(List<Office> offices) {
     Set<Marker> markers = Set<Marker>();
     for (var office in offices) {
       markers.add(office.toMarker());
     }
     return markers;
-  }
+  }*/
 
   CameraPosition buildInitialCamera() {
     return CameraPosition(

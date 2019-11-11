@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/pages/places/models.dart';
 import 'package:flutter_app/pages/places/places_api_service.dart';
+import 'package:flutter_app/pages/places/places_models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapBloc extends BlocBase {
   MapBloc(this.placesApiService) {
-    _fetchLocations();
+    _fetchLocations("Mumbai");
   }
 
   final PlacesApiService placesApiService;
@@ -17,10 +17,10 @@ class MapBloc extends BlocBase {
 
   Stream<MapType> get mayType => _mapTypeController.stream;
 
-  StreamController<List<Office>> _officesController =
-      StreamController<List<Office>>.broadcast();
+  StreamController<List<Candidate>> _officesController =
+      StreamController<List<Candidate>>.broadcast();
 
-  Stream<List<Office>> get offices => _officesController.stream;
+  Stream<List<Candidate>> get offices => _officesController.stream;
 
   @override
   void dispose() {
@@ -32,14 +32,14 @@ class MapBloc extends BlocBase {
     _mapTypeController.sink.add(mayType);
   }
 
-  void _fetchLocations() {
-    placesApiService.getGoogleOffices().then((value) {
-      _officesController.sink.add(value.offices);
+  void _fetchLocations(String placeQuery) {
+    placesApiService.searchPlaces(placeQuery).then((value) {
+      _officesController.sink.add(value.candidates);
     });
   }
 }
 
-extension MyOffices on Office {
+/*extension MyOffices on Office {
   Marker toMarker() {
     return Marker(
       markerId: MarkerId(name),
@@ -50,4 +50,4 @@ extension MyOffices on Office {
       ),
     );
   }
-}
+}*/

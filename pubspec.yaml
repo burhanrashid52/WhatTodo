@@ -14,11 +14,12 @@ dependencies:
   rxdart: ^0.19.0
   google_maps_flutter: ^0.5.21+8
   http: ^0.12.0+1
-  json_serializable: ^2.0.2
+  json_annotation: ^3.0.0
 
 dev_dependencies:
   pedantic: ^1.4.0
   build_runner: ^1.2.7
+  json_serializable: ^3.0.0
   flutter_test:
     sdk: flutter
 
