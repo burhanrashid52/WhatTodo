@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapBloc extends BlocBase {
   MapBloc(this.placesApiService) {
-    _fetchLocations("Mumbai");
+    _fetchLocations("A");
   }
 
   final PlacesApiService placesApiService;

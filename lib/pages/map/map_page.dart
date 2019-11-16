@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/map/map_bloc.dart';
+import 'package:flutter_app/pages/map/place_widget.dart';
 import 'package:flutter_app/pages/places/places_models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -13,6 +13,9 @@ class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MapBloc mapBloc = BlocProvider.of(context);
+
+    _createMapTypeListener(mapBloc.mayType);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Maps"),
@@ -33,47 +36,40 @@ class MapPage extends StatelessWidget {
       ),
       body: Stack(
         children: <Widget>[
-          StreamBuilder<MapType>(
-            stream: mapBloc.mayType,
-            initialData: MapType.hybrid,
-            builder: (context, snapshotType) {
-              return GoogleMap(
-                mapType: snapshotType.data,
-                initialCameraPosition: buildInitialCamera(),
-                zoomGesturesEnabled: true,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-              );
-            },
+           Container(
+            child: StreamBuilder<MapType>(
+              stream: mapBloc.mayType,
+              initialData: MapType.hybrid,
+              builder: (context, snapshotType) {
+                return buildGoogleMap(snapshotType.data);
+              },
+            ),
           ),
           //TODO: Fix the scroll and item are not visible
-          StreamBuilder<List<Candidate>>(
-            stream: mapBloc.offices,
-            builder: (context, snapshot) {
-              return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  var item = snapshot.data[index];
-                  /*return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.red,
-                      child: Text("P"),
-                    ),
-                    title: Text(item.name),
-                    subtitle: Text(item.name),
-                  );*/
-                  return Text(
-                    item.name,
-                    style: Theme.of(context).textTheme.headline,
-                  );
-                },
-              );
-            },
+          Container(
+            child: StreamBuilder<List<Candidate>>(
+              stream: mapBloc.offices,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return PlaceWidget(snapshot.data);
+                }
+                return CircularProgressIndicator();
+              },
+            ),
           )
         ],
       ),
+    );
+  }
+
+  GoogleMap buildGoogleMap(MapType mayType) {
+    return GoogleMap(
+      mapType: mayType,
+      initialCameraPosition: buildInitialCamera(),
+      zoomGesturesEnabled: true,
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
+      },
     );
   }
 
@@ -90,5 +86,13 @@ class MapPage extends StatelessWidget {
       target: LatLng(37.42796133580664, -122.085749655962),
       zoom: 14.4746,
     );
+  }
+
+  void _createMapTypeListener(Stream<MapType> mayType) {
+    mayType.listen((value) {
+      if (_controller != null) {
+        // _controller
+      }
+    });
   }
 }
