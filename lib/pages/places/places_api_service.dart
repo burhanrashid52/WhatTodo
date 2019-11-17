@@ -16,6 +16,7 @@ const SEARCH_PLACE_ENDPOINT = BASE_URL + PLACE_PARAMS;
 class PlacesApiService {
   Future<PlaceResponse> searchPlaces(String placeQuery) async {
     final googlePlacesURL = SEARCH_PLACE_ENDPOINT + placeQuery;
+    print(googlePlacesURL);
     // Retrieve the locations of Google offices
     final response = await http.get(googlePlacesURL);
     if (response.statusCode == 200) {

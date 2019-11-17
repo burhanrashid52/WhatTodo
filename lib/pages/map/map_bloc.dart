@@ -6,9 +6,8 @@ import 'package:flutter_app/pages/places/places_models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapBloc extends BlocBase {
-  MapBloc(this.placesApiService) {
-    _fetchLocations("A");
-  }
+
+  MapBloc(this.placesApiService);
 
   final PlacesApiService placesApiService;
 
@@ -32,7 +31,7 @@ class MapBloc extends BlocBase {
     _mapTypeController.sink.add(mayType);
   }
 
-  void _fetchLocations(String placeQuery) {
+  void fetchLocations(String placeQuery) {
     placesApiService.searchPlaces(placeQuery).then((value) {
       _officesController.sink.add(value.candidates);
     });
