@@ -9,7 +9,7 @@ const BASE_URL = "https://maps.googleapis.com/maps/api/place";
 const API_KEY = "YOUR_PLACES_KEY_HERE";
 // ignore: constant_identifier_names
 const PLACE_PARAMS =
-    "/findplacefromtext/json?key=$API_KEY&inputtype=textquery&fields=photos,formatted_address,name,geometry&&input=";
+    "/textsearch/json?key=$API_KEY&inputtype=textquery&fields=photos,formatted_address,name,geometry&&input=";
 // ignore: constant_identifier_names
 const SEARCH_PLACE_ENDPOINT = BASE_URL + PLACE_PARAMS;
 

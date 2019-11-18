@@ -10,7 +10,7 @@ PlaceResponse _$PlaceResponseFromJson(Map<String, dynamic> json) {
   return PlaceResponse(
     candidates: (json['candidates'] as List)
         ?.map((e) =>
-            e == null ? null : Candidate.fromJson(e as Map<String, dynamic>))
+            e == null ? null : Results.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     status: json['status'] as String,
   );
@@ -22,8 +22,8 @@ Map<String, dynamic> _$PlaceResponseToJson(PlaceResponse instance) =>
       'status': instance.status,
     };
 
-Candidate _$CandidateFromJson(Map<String, dynamic> json) {
-  return Candidate(
+Results _$ResultsFromJson(Map<String, dynamic> json) {
+  return Results(
     formatted_address: json['formatted_address'] as String,
     geometry: json['geometry'] == null
         ? null
@@ -36,7 +36,7 @@ Candidate _$CandidateFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CandidateToJson(Candidate instance) => <String, dynamic>{
+Map<String, dynamic> _$ResultsToJson(Results instance) => <String, dynamic>{
       'formatted_address': instance.formatted_address,
       'geometry': instance.geometry,
       'name': instance.name,

@@ -16,10 +16,10 @@ class MapBloc extends BlocBase {
 
   Stream<MapType> get mayType => _mapTypeController.stream;
 
-  StreamController<List<Candidate>> _officesController =
-      StreamController<List<Candidate>>.broadcast();
+  StreamController<List<Results>> _officesController =
+      StreamController<List<Results>>.broadcast();
 
-  Stream<List<Candidate>> get offices => _officesController.stream;
+  Stream<List<Results>> get offices => _officesController.stream;
 
   @override
   void dispose() {

@@ -3,9 +3,7 @@ import 'package:flutter_app/pages/map/map_bloc.dart';
 import 'package:flutter_app/pages/map/place_widget.dart';
 import 'package:flutter_app/pages/places/places_models.dart';
 
-class SearchPlaces extends SearchDelegate<Candidate> {
-
-
+class SearchPlaces extends SearchDelegate<Results> {
   SearchPlaces(this._mapBloc);
 
   final MapBloc _mapBloc;
@@ -34,6 +32,7 @@ class SearchPlaces extends SearchDelegate<Candidate> {
 
   @override
   Widget buildResults(BuildContext context) {
+    _mapBloc.fetchLocations(query);
     return _buildPlaceStream();
   }
 
@@ -44,7 +43,7 @@ class SearchPlaces extends SearchDelegate<Candidate> {
   }
 
   StreamBuilder _buildPlaceStream() {
-    return StreamBuilder<List<Candidate>>(
+    return StreamBuilder<List<Results>>(
       stream: _mapBloc.offices,
       builder: (context, snapshot) {
         if (snapshot.hasData) {

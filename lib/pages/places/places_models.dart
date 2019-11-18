@@ -9,7 +9,7 @@ class PlaceResponse {
   factory PlaceResponse.fromJson(Map<String, dynamic> json) =>
       _$PlaceResponseFromJson(json);
 
-  final List<Candidate> candidates;
+  final List<Results> candidates;
 
   final String status;
 
@@ -17,11 +17,11 @@ class PlaceResponse {
 }
 
 @JsonSerializable()
-class Candidate {
-  Candidate({this.formatted_address, this.geometry, this.name, this.photos});
+class Results {
+  Results({this.formatted_address, this.geometry, this.name, this.photos});
 
-  factory Candidate.fromJson(Map<String, dynamic> json) =>
-      _$CandidateFromJson(json);
+  factory Results.fromJson(Map<String, dynamic> json) =>
+      _$ResultsFromJson(json);
 
   final String formatted_address;
   final Geometry geometry;
@@ -30,7 +30,7 @@ class Candidate {
 
   final List<Photo> photos;
 
-  Map<String, dynamic> toJson() => _$CandidateToJson(this);
+  Map<String, dynamic> toJson() => _$ResultsToJson(this);
 }
 
 @JsonSerializable()

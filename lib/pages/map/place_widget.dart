@@ -4,7 +4,7 @@ import 'package:flutter_app/pages/places/places_models.dart';
 class PlaceWidget extends StatelessWidget {
   PlaceWidget(this.candidates);
 
-  final List<Candidate> candidates;
+  final List<Results> candidates;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,5 @@ class PlaceWidget extends StatelessWidget {
         );
       },
     );
-    ;
   }
 }
