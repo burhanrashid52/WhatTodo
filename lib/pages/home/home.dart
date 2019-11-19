@@ -60,6 +60,7 @@ class HomePage extends StatelessWidget {
 // not shown here).
   Widget buildPopupMenu(BuildContext context) {
     return PopupMenuButton<MenuItem>(
+      icon: Icon(Icons.more_vert),
       onSelected: (MenuItem result) async {
         switch (result) {
           case MenuItem.taskCompleted:
