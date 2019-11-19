@@ -15,18 +15,6 @@ class MapPage extends StatelessWidget {
         title: Text("Maps"),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.satellite),
-            onPressed: () => mapBloc.setMayType(MapType.satellite),
-          ),
-          IconButton(
-            icon: Icon(Icons.map),
-            onPressed: () => mapBloc.setMayType(MapType.normal),
-          ),
-          IconButton(
-            icon: Icon(Icons.dashboard),
-            onPressed: () => mapBloc.setMayType(MapType.terrain),
-          ),
-          IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
               final canditate = showSearch(
@@ -35,9 +23,38 @@ class MapPage extends StatelessWidget {
               );
             },
           ),
+          buildPopupMenu(context),
         ],
       ),
       body: MyGoogleMap(),
+    );
+  }
+
+  Widget buildPopupMenu(BuildContext context) {
+    final MapBloc mapBloc = BlocProvider.of(context);
+    return PopupMenuButton<MapType>(
+      icon: Icon(Icons.more_vert),
+      onSelected: (MapType result) async {
+        mapBloc.setMayType(result);
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<MapType>>[
+        const PopupMenuItem<MapType>(
+          value: MapType.satellite,
+          child: Text('Satellite'),
+        ),
+        const PopupMenuItem<MapType>(
+          value: MapType.hybrid,
+          child: Text('Hybrid'),
+        ),
+        const PopupMenuItem<MapType>(
+          value: MapType.normal,
+          child: Text('Normal'),
+        ),
+        const PopupMenuItem<MapType>(
+          value: MapType.terrain,
+          child: Text('Terrain'),
+        )
+      ],
     );
   }
 }

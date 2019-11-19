@@ -49,7 +49,9 @@ class SearchPlaces extends SearchDelegate<Results> {
         if (snapshot.hasData) {
           return PlaceWidget(snapshot.data);
         }
-        return CircularProgressIndicator();
+        return Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }
