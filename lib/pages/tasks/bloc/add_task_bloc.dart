@@ -4,6 +4,7 @@ import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/models/priority.dart';
 import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
+import 'package:flutter_app/pages/places/places_models.dart';
 import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
@@ -54,6 +55,10 @@ class AddTaskBloc implements BlocBase {
   BehaviorSubject<int> _dueDateSelected = BehaviorSubject<int>();
 
   Stream<int> get dueDateSelected => _dueDateSelected.stream;
+
+  BehaviorSubject<LocationInfo> _locationInfo = BehaviorSubject<LocationInfo>();
+
+  Stream<LocationInfo> get locationInfo => _locationInfo.stream;
 
   String updateTitle = "";
 
@@ -130,5 +135,9 @@ class AddTaskBloc implements BlocBase {
 
   void updateDueDate(int millisecondsSinceEpoch) {
     _dueDateSelected.add(millisecondsSinceEpoch);
+  }
+
+  void updateLocation(LocationInfo locationInfo) {
+    _locationInfo.add(locationInfo);
   }
 }

@@ -55,9 +55,7 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-// This menu button widget updates a _selection field (of type WhyFarther,
-// not shown here).
+  
   Widget buildPopupMenu(BuildContext context) {
     return PopupMenuButton<MenuItem>(
       icon: Icon(Icons.more_vert),

@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/models/priority.dart';
 import 'package:flutter_app/pages/labels/label.dart';
+import 'package:flutter_app/pages/map/map_bloc.dart';
+import 'package:flutter_app/pages/map/map_page.dart';
+import 'package:flutter_app/pages/places/places_api_service.dart';
+import 'package:flutter_app/pages/places/places_models.dart';
 import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/tasks/bloc/add_task_bloc.dart';
 import 'package:flutter_app/utils/app_util.dart';
@@ -11,8 +15,7 @@ import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldState =
-      GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
 
   @override
@@ -92,11 +95,40 @@ class AddTaskScreen extends StatelessWidget {
                 _showLabelsDialog(context);
               }),
           ListTile(
-            leading: Icon(Icons.mode_comment),
-            title: Text("Comments"),
-            subtitle: Text("No Comments"),
-            onTap: () {
-              showSnackbar(_scaffoldState, "Comming Soon");
+            leading: Icon(Icons.add_location),
+            title: Text("Location"),
+            trailing: StreamBuilder<LocationInfo>(
+                stream: createTaskBloc.locationInfo,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    return IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        createTaskBloc.updateLocation(null);
+                      },
+                    );
+                  }
+                  return SizedBox();
+                }),
+            subtitle: StreamBuilder<LocationInfo>(
+                stream: createTaskBloc.locationInfo,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(snapshot.data.locationName);
+                  }
+                  return Text("No Location");
+                }),
+            onTap: () async {
+              final locationInfo = await Navigator.push(
+                context,
+                MaterialPageRoute<LocationInfo>(
+                  builder: (context) => BlocProvider(
+                    child: MapPage(),
+                    bloc: MapBloc(PlacesApiService()),
+                  ),
+                ),
+              );
+              createTaskBloc.updateLocation(locationInfo);
             },
           ),
           ListTile(
@@ -219,8 +251,7 @@ class AddTaskScreen extends StatelessWidget {
     List<Widget> labels = List();
     labelList.forEach((label) {
       labels.add(ListTile(
-        leading: Icon(Icons.label,
-            color: Color(label.colorValue), size: 18.0),
+        leading: Icon(Icons.label, color: Color(label.colorValue), size: 18.0),
         title: Text(label.name),
         trailing: createTaskBloc.selectedLabels.contains(label)
             ? Icon(Icons.close)

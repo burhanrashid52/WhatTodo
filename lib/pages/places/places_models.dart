@@ -118,3 +118,10 @@ class Photo {
 
   Map<String, dynamic> toJson() => _$PhotoToJson(this);
 }
+
+class LocationInfo {
+  LocationInfo(this.lat, this.lng, this.address, this.locationName);
+
+  double lat, lng;
+  String address, locationName;
+}

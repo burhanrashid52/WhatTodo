@@ -19,6 +19,7 @@ class MyGoogleMap extends StatelessWidget {
           mapType: snapshotType.data,
           initialCameraPosition: _buildInitialCamera(),
           zoomGesturesEnabled: true,
+          myLocationButtonEnabled: false,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },

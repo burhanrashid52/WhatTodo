@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/map/map_bloc.dart';
 import 'package:flutter_app/pages/map/map_widget.dart';
+import 'package:flutter_app/pages/places/places_models.dart';
 import 'package:flutter_app/pages/places/search_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -27,6 +28,17 @@ class MapPage extends StatelessWidget {
         ],
       ),
       body: MyGoogleMap(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.send,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          final locationInfo = LocationInfo(
+              18.4695, 73.8890, "Kondhwa", "Graphikon Paradise lane");
+          Navigator.pop(context, locationInfo);
+        },
+      ),
     );
   }
 
