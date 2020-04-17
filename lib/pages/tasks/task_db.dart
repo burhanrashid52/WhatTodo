@@ -6,14 +6,12 @@ import 'package:flutter_app/pages/tasks/models/task_labels.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TaskDB {
-  static final TaskDB _taskDb = TaskDB._internal(AppDatabase.get());
-
-  AppDatabase _appDatabase;
-
   //private internal constructor to make it singleton
   TaskDB._internal(this._appDatabase);
 
-  //static TaskDB get taskDb => _taskDb;
+  static final TaskDB _taskDb = TaskDB._internal(AppDatabase.get());
+
+  AppDatabase _appDatabase;
 
   static TaskDB get() {
     return _taskDb;
@@ -110,7 +108,7 @@ class TaskDB {
       int id = await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks.dbProjectID},${Tasks.dbComment},${Tasks.dbDueDate},${Tasks.dbPriority},${Tasks.dbStatus})'
           ' VALUES(${task.id}, "${task.title}", ${task.projectId},"${task.comment}", ${task.dueDate},${task.priority.index},${task.tasksStatus.index})');
-      if (id > 0 && labelIDs != null && labelIDs.length > 0) {
+      if (id > 0 && labelIDs != null && labelIDs.isNotEmpty) {
         labelIDs.forEach((labelId) {
           txn.rawInsert('INSERT OR REPLACE INTO '
               '${TaskLabels.tblTaskLabel}(${TaskLabels.dbId},${TaskLabels.dbTaskId},${TaskLabels.dbLabelId})'

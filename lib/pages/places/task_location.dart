@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class TaskLocation {
-
   TaskLocation.create({
     @required this.id,
     @required this.location_name,
@@ -44,3 +43,13 @@ class TaskLocation {
   @override
   bool operator ==(o) => o is TaskLocation && o.id == id;
 }
+
+final CREATE_LOCATION_TABLE_QUERY =
+    "CREATE TABLE ${TaskLocation.tblTaskLocation} ("
+    "${TaskLocation.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "${TaskLocation.dbLocationName} TEXT,"
+    "${TaskLocation.dbAddress} TEXT,"
+    "${TaskLocation.dbLat} DOUBLE,"
+    "${TaskLocation.dbLng} DOUBLE);";
+
+final DROP_LOCATION_TABLE_QUERY = "DROP TABLE ${TaskLocation.tblTaskLocation}";

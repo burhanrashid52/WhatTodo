@@ -5,6 +5,7 @@ import 'package:flutter_app/models/priority.dart';
 import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
 import 'package:flutter_app/pages/places/places_models.dart';
+import 'package:flutter_app/pages/places/task_location_db.dart';
 import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
@@ -13,18 +14,19 @@ import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
 class AddTaskBloc implements BlocBase {
-  final TaskDB _taskDB;
-  final ProjectDB _projectDB;
-  final LabelDB _labelDB;
-  Status lastPrioritySelection = Status.PRIORITY_4;
-
-  AddTaskBloc(this._taskDB, this._projectDB, this._labelDB) {
+  AddTaskBloc(this._taskDB, this._projectDB, this._labelDB, this._locationDB) {
     _loadProjects();
     _loadLabels();
     updateDueDate(DateTime.now().millisecondsSinceEpoch);
     _projectSelection.add(Project.getInbox());
     _prioritySelected.add(lastPrioritySelection);
   }
+
+  final TaskDB _taskDB;
+  final ProjectDB _projectDB;
+  final LabelDB _labelDB;
+  final LocationDB _locationDB;
+  Status lastPrioritySelection = Status.PRIORITY_4;
 
   BehaviorSubject<List<Project>> _projectController =
       BehaviorSubject<List<Project>>();
@@ -104,7 +106,7 @@ class AddTaskBloc implements BlocBase {
     });
     String labelJoinString = selectedLabelNameList.join("  ");
     String displayLabels =
-        labelJoinString.length == 0 ? "No Labels" : labelJoinString;
+        labelJoinString.isEmpty ? "No Labels" : labelJoinString;
     _labelSelected.add(displayLabels);
   }
 
@@ -114,8 +116,10 @@ class AddTaskBloc implements BlocBase {
   }
 
   Observable<String> createTask() {
-    return Observable.zip3(selectedProject, dueDateSelected, prioritySelected,
-        (Project project, int dueDateSelected, Status status) {
+    return Observable.zip4(
+        selectedProject, dueDateSelected, prioritySelected, locationInfo,
+        (Project project, int dueDateSelected, Status status,
+            LocationInfo locationInfo) {
       List<int> labelIds = List();
       _selectedLabelList.forEach((label) {
         labelIds.add(label.id);
@@ -127,8 +131,11 @@ class AddTaskBloc implements BlocBase {
         priority: status,
         projectId: project.id,
       );
-      _taskDB.updateTask(task, labelIDs: labelIds).then((task) {
-        Notification.onDone();
+
+      _locationDB.createLocation(locationInfo).then((value) {
+        _taskDB.updateTask(task, labelIDs: labelIds).then((task) {
+          Notification.onDone();
+        });
       });
     });
   }

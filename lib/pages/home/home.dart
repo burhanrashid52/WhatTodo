@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
+import 'package:flutter_app/pages/places/task_location_db.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/bloc/add_task_bloc.dart';
 import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
@@ -38,7 +39,8 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.orange,
         onPressed: () async {
           var blocProviderAddTask = BlocProvider(
-            bloc: AddTaskBloc(TaskDB.get(), ProjectDB.get(), LabelDB.get()),
+            bloc: AddTaskBloc(
+                TaskDB.get(), ProjectDB.get(), LabelDB.get(), LocationDB.get()),
             child: AddTaskScreen(),
           );
           await Navigator.push(
@@ -55,7 +57,7 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget buildPopupMenu(BuildContext context) {
     return PopupMenuButton<MenuItem>(
       icon: Icon(Icons.more_vert),
@@ -72,11 +74,11 @@ class HomePage extends StatelessWidget {
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
-            const PopupMenuItem<MenuItem>(
-              value: MenuItem.taskCompleted,
-              child: Text('Completed Tasks'),
-            )
-          ],
+        const PopupMenuItem<MenuItem>(
+          value: MenuItem.taskCompleted,
+          child: Text('Completed Tasks'),
+        )
+      ],
     );
   }
 }

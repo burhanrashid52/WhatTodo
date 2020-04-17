@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/labels/label.dart';
+import 'package:flutter_app/pages/places/task_location.dart';
 import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/tasks/models/task_labels.dart';
 import 'package:path/path.dart';
@@ -12,10 +13,10 @@ import 'package:flutter_app/pages/tasks/models/tasks.dart';
 /// This is the singleton database class which handlers all database transactions
 /// All the task raw queries is handle here and return a Future<T> with result
 class AppDatabase {
-  static final AppDatabase _appDatabase = AppDatabase._internal();
-
   //private internal constructor to make it singleton
   AppDatabase._internal();
+
+  static final AppDatabase _appDatabase = AppDatabase._internal();
 
   Database _database;
 
@@ -39,19 +40,23 @@ class AppDatabase {
     _database = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
-      await _createProjectTable(db);
-      await _createTaskTable(db);
-      await _createLabelTable(db);
+      await _createTableInSequence(db);
     }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
       await db.execute("DROP TABLE ${Tasks.tblTask}");
       await db.execute("DROP TABLE ${Project.tblProject}");
       await db.execute("DROP TABLE ${TaskLabels.tblTaskLabel}");
       await db.execute("DROP TABLE ${Label.tblLabel}");
-      await _createProjectTable(db);
-      await _createTaskTable(db);
-      await _createLabelTable(db);
+      await db.execute(DROP_LOCATION_TABLE_QUERY);
+      await _createTableInSequence(db);
     });
     didInit = true;
+  }
+
+  Future _createTableInSequence(Database db) async {
+    await _createLocationTable(db);
+    await _createProjectTable(db);
+    await _createTaskTable(db);
+    await _createLabelTable(db);
   }
 
   Future _createProjectTable(Database db) {
@@ -81,6 +86,10 @@ class AppDatabase {
           "FOREIGN KEY(${TaskLabels.dbTaskId}) REFERENCES ${Tasks.tblTask}(${Tasks.dbId}) ON DELETE CASCADE,"
           "FOREIGN KEY(${TaskLabels.dbLabelId}) REFERENCES ${Label.tblLabel}(${Label.dbId}) ON DELETE CASCADE);");
     });
+  }
+
+  Future _createLocationTable(Database db) {
+    return db.execute(CREATE_LOCATION_TABLE_QUERY);
   }
 
   Future _createTaskTable(Database db) {
