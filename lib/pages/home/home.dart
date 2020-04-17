@@ -26,11 +26,15 @@ class HomePage extends StatelessWidget {
             initialData: 'Today',
             stream: homeBloc.title,
             builder: (context, snapshot) {
-              return Text(snapshot.data);
+              return Text(
+                snapshot.data,
+                key: ValueKey('home_title'),
+              );
             }),
         actions: <Widget>[buildPopupMenu(context)],
       ),
       floatingActionButton: FloatingActionButton(
+        key: ValueKey("add_task"),
         child: Icon(
           Icons.add,
           color: Colors.white,
@@ -73,11 +77,11 @@ class HomePage extends StatelessWidget {
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
-            const PopupMenuItem<MenuItem>(
-              value: MenuItem.taskCompleted,
-              child: const Text('Completed Tasks'),
-            )
-          ],
+        const PopupMenuItem<MenuItem>(
+          value: MenuItem.taskCompleted,
+          child: const Text('Completed Tasks'),
+        )
+      ],
     );
   }
 }

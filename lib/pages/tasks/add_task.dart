@@ -11,8 +11,7 @@ import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldState =
-      GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
 
   @override
@@ -21,7 +20,10 @@ class AddTaskScreen extends StatelessWidget {
     return Scaffold(
       key: _scaffoldState,
       appBar: AppBar(
-        title: Text("Add Task"),
+        title: Text(
+          "Add Task",
+          key: ValueKey("add_task_title"),
+        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -219,8 +221,7 @@ class AddTaskScreen extends StatelessWidget {
     List<Widget> labels = List();
     labelList.forEach((label) {
       labels.add(ListTile(
-        leading: Icon(Icons.label,
-            color: Color(label.colorValue), size: 18.0),
+        leading: Icon(Icons.label, color: Color(label.colorValue), size: 18.0),
         title: Text(label.name),
         trailing: createTaskBloc.selectedLabels.contains(label)
             ? Icon(Icons.close)
