@@ -1,7 +1,6 @@
 # WhatTodo
 
-![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg) ![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg) [![Uplabs](https://img.shields.io/badge/Uplabs-WhatTodo-orange.svg)](https://www.uplabs.com/posts/whattodo) [![FlutterWeekly](https://img.shields.io/badge/Flutter%20Weekly-%2319-pink.svg)](https://mailchi.mp/193f2a7fe907/flutter-weekly-257173) [![AwesomeAndroid](https://img.shields.io/badge/Awesome%20Android-%23101-yellow.svg)](https://android.libhunt.com/newsletter/101)
-
+[![Codemagic build status](https://api.codemagic.io/apps/5d43b6fe9585dc25b92df7d2/5d43b6fe9585dc25b92df7d1/status_badge.svg)](https://codemagic.io/apps/5d43b6fe9585dc25b92df7d2/5d43b6fe9585dc25b92df7d1/latest_build) ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg) ![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg) [![Uplabs](https://img.shields.io/badge/Uplabs-WhatTodo-orange.svg)](https://www.uplabs.com/posts/whattodo) [![FlutterWeekly](https://img.shields.io/badge/Flutter%20Weekly-%2319-pink.svg)](https://mailchi.mp/193f2a7fe907/flutter-weekly-257173) [![AwesomeAndroid](https://img.shields.io/badge/Awesome%20Android-%23101-yellow.svg)](https://android.libhunt.com/newsletter/101)
 
 ![logo](/assets/Logo/horizontal.png)
 
@@ -85,7 +84,7 @@ Hit me on twitter [![Twitter](https://img.shields.io/badge/Twitter-%40burhanrash
   - [**Collin Jackson**](https://stackoverflow.com/users/1463116/collin-jackson) answer's on stackoverflow :laughing:
 
 ## License
-Copyright 2018 Burhanuddin Rashid
+Copyright 2020 Burhanuddin Rashid
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
