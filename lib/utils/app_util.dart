@@ -28,6 +28,7 @@ class MessageInCenterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(_message,
+          key: ValueKey("messageInCenter"),
           style: TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
     );
   }

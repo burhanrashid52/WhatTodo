@@ -39,6 +39,7 @@ class TaskRow extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
                     child: Text(tasks.title,
+                        key: ValueKey("taskTitle"),
                         style: TextStyle(
                             fontSize: FONT_SIZE_TITLE,
                             fontWeight: FontWeight.bold)),
@@ -63,6 +64,7 @@ class TaskRow extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
                                   Text(tasks.projectName,
+                                      key: ValueKey("taskProjectName"),
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontSize: FONT_SIZE_LABEL)),
@@ -110,6 +112,7 @@ class TaskRow extends StatelessWidget {
         padding: const EdgeInsets.only(
             left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
         child: Text(tasks.labelList.join("  "),
+            key: ValueKey("taskLabels"),
             style: TextStyle(fontSize: FONT_SIZE_LABEL)),
       );
     }

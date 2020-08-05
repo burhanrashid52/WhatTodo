@@ -31,6 +31,7 @@ class AddTaskScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                  key: ValueKey("addTitle"),
                   validator: (value) {
                     var msg = value.isEmpty ? "Title Cannot be Empty" : null;
                     return msg;
@@ -45,6 +46,7 @@ class AddTaskScreen extends StatelessWidget {
             key: _formState,
           ),
           ListTile(
+            key: ValueKey("addProject"),
             leading: Icon(Icons.book),
             title: Text("Project"),
             subtitle: StreamBuilder<Project>(
@@ -112,6 +114,7 @@ class AddTaskScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+          key: ValueKey("addTask"),
           child: Icon(Icons.send, color: Colors.white),
           onPressed: () {
             if (_formState.currentState.validate()) {
