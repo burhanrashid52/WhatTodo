@@ -26,11 +26,41 @@ void main() {
       expect(await driver.getText(emptyTaskMessage), "No Task Added");
     });
 
-    /* test('Add Task Button Clicked', () async {
-      await driver.tap(addTaskButton);
-      var addTaskTitle = find.byValueKey('add_task_title');
-      expect(await driver.getText(addTaskTitle), "Add Task");
-    });*/
+    test('Show Data in Home Page', () async {
+      await driver.requestData("addTask");
+      var drawer = find.byValueKey('drawer');
+      await driver.tap(drawer);
+
+      var today = find.byValueKey('today');
+      await driver.tap(today);
+
+      var taskTitle = find.byValueKey('taskTitle');
+      var taskProjectName = find.byValueKey('taskProjectName');
+      expect(await driver.getText(homeTitle), "Today");
+
+      expect(await driver.getText(taskTitle), "Test Tile");
+      expect(await driver.getText(taskProjectName), "Inbox");
+
+      await driver.requestData("clearTask");
+    });
+  });
+
+  group("Add Tasks", () {
+    FlutterDriver driver;
+
+    // Connect to the Flutter driver before running any tests.
+    setUpAll(() async {
+      driver = await FlutterDriver.connect();
+    });
+
+    // Close the connection to the driver after the tests have completed.
+    tearDownAll(() async {
+      if (driver != null) {
+        driver.close();
+      }
+    });
+
+    final addTaskButton = find.byValueKey('add_task');
 
     test('Enter Task Details and verify on Task page screen', () async {
       await driver.tap(addTaskButton);
@@ -47,11 +77,11 @@ void main() {
 
       var taskTitle = find.byValueKey('taskTitle');
       var taskProjectName = find.byValueKey('taskProjectName');
-     // var taskLabel = find.byValueKey('taskLabel');
+      // var taskLabel = find.byValueKey('taskLabel');
 
       expect(await driver.getText(taskTitle), "First Task");
       expect(await driver.getText(taskProjectName), "Inbox");
-     // expect(await driver.getText(taskLabel), "");
+      // expect(await driver.getText(taskLabel), "");
     });
   });
 }

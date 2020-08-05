@@ -13,6 +13,7 @@ import 'package:flutter_app/pages/tasks/task_widgets.dart';
 
 class HomePage extends StatelessWidget {
   final TaskBloc _taskBloc = TaskBloc(TaskDB.get());
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class HomePage extends StatelessWidget {
       _taskBloc.updateFilters(filter);
     });
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: StreamBuilder<String>(
             initialData: 'Today',
@@ -32,6 +34,12 @@ class HomePage extends StatelessWidget {
               );
             }),
         actions: <Widget>[buildPopupMenu(context)],
+        leading: new IconButton(
+            icon: new Icon(
+              Icons.view_headline,
+              key: ValueKey("drawer"),
+            ),
+            onPressed: () => _scaffoldKey.currentState.openDrawer()),
       ),
       floatingActionButton: FloatingActionButton(
         key: ValueKey("add_task"),

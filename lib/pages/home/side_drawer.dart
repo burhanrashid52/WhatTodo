@@ -57,7 +57,10 @@ class SideDrawer extends StatelessWidget {
                 Navigator.pop(context);
               },
               leading: Icon(Icons.calendar_today),
-              title: Text("Today")),
+              title: Text(
+                "Today",
+                key: ValueKey("today"),
+              )),
           ListTile(
             onTap: () {
               homeBloc.applyFilter("Next 7 Days", Filter.byNextWeek());

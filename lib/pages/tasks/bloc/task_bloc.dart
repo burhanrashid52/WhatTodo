@@ -65,9 +65,8 @@ class TaskBloc implements BlocBase {
 
   void filterTasksForNextWeek() {
     var dateTime = DateTime.now();
-    var taskStartTime =
-        DateTime(dateTime.year, dateTime.month, dateTime.day)
-            .millisecondsSinceEpoch;
+    var taskStartTime = DateTime(dateTime.year, dateTime.month, dateTime.day)
+        .millisecondsSinceEpoch;
     var taskEndTime =
         DateTime(dateTime.year, dateTime.month, dateTime.day + 7, 23, 59)
             .millisecondsSinceEpoch;
@@ -138,6 +137,11 @@ class TaskBloc implements BlocBase {
         case FILTER_STATUS.BY_STATUS:
           filterByStatus(_lastFilterStatus.status);
           break;
+
+        default:
+          {
+            filterTodayTasks();
+          }
       }
     }
   }
