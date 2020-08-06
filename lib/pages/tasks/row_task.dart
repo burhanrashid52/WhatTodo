@@ -39,7 +39,7 @@ class TaskRow extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
                     child: Text(tasks.title,
-                        key: ValueKey("taskTitle"),
+                        key: ValueKey("taskTitle_${tasks.id}"),
                         style: TextStyle(
                             fontSize: FONT_SIZE_TITLE,
                             fontWeight: FontWeight.bold)),
@@ -54,7 +54,7 @@ class TaskRow extends StatelessWidget {
                           getFormattedDate(tasks.dueDate),
                           style: TextStyle(
                               color: Colors.grey, fontSize: FONT_SIZE_DATE),
-                          key: Key(date_label),
+                          key: ValueKey("taskDueDate__${tasks.id}"),
                         ),
                         Expanded(
                           child: Column(
@@ -64,7 +64,8 @@ class TaskRow extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
                                   Text(tasks.projectName,
-                                      key: ValueKey("taskProjectName"),
+                                      key: ValueKey(
+                                          "taskProjectName_${tasks.id}"),
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontSize: FONT_SIZE_LABEL)),
@@ -112,7 +113,7 @@ class TaskRow extends StatelessWidget {
         padding: const EdgeInsets.only(
             left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
         child: Text(tasks.labelList.join("  "),
-            key: ValueKey("taskLabels"),
+            key: ValueKey("taskLabels_${tasks.id}"),
             style: TextStyle(fontSize: FONT_SIZE_LABEL)),
       );
     }

@@ -2,48 +2,6 @@ import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Home Page', () {
-    final homeTitle = find.byValueKey('home_title');
-    final addTaskButton = find.byValueKey('add_task');
-
-    FlutterDriver driver;
-
-    // Connect to the Flutter driver before running any tests.
-    setUpAll(() async {
-      driver = await FlutterDriver.connect();
-    });
-
-    // Close the connection to the driver after the tests have completed.
-    tearDownAll(() async {
-      if (driver != null) {
-        driver.close();
-      }
-    });
-
-    test('Today in Title', () async {
-      var emptyTaskMessage = find.byValueKey('messageInCenter');
-      expect(await driver.getText(homeTitle), "Today");
-      expect(await driver.getText(emptyTaskMessage), "No Task Added");
-    });
-
-    test('Show Data in Home Page', () async {
-      await driver.requestData("addTask");
-      var drawer = find.byValueKey('drawer');
-      await driver.tap(drawer);
-
-      var today = find.byValueKey('today');
-      await driver.tap(today);
-
-      var taskTitle = find.byValueKey('taskTitle');
-      var taskProjectName = find.byValueKey('taskProjectName');
-      expect(await driver.getText(homeTitle), "Today");
-
-      expect(await driver.getText(taskTitle), "Test Tile");
-      expect(await driver.getText(taskProjectName), "Inbox");
-
-      await driver.requestData("clearTask");
-    });
-  });
 
   group("Add Tasks", () {
     FlutterDriver driver;

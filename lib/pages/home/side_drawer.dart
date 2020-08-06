@@ -44,7 +44,10 @@ class SideDrawer extends StatelessWidget {
           ),
           ListTile(
               leading: Icon(Icons.inbox),
-              title: Text("Inbox"),
+              title: Text(
+                "Inbox",
+                key: ValueKey("inbox"),
+              ),
               onTap: () {
                 var project = Project.getInbox();
                 homeBloc.applyFilter(
@@ -53,6 +56,7 @@ class SideDrawer extends StatelessWidget {
               }),
           ListTile(
               onTap: () {
+                print("Clicked Today");
                 homeBloc.applyFilter("Today", Filter.byToday());
                 Navigator.pop(context);
               },
@@ -67,7 +71,10 @@ class SideDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
             leading: Icon(Icons.calendar_today),
-            title: Text("Next 7 Days"),
+            title: Text(
+              "Next 7 Days",
+              key: ValueKey("next7Days"),
+            ),
           ),
           BlocProvider(
             bloc: ProjectBloc(ProjectDB.get()),

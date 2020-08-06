@@ -46,4 +46,12 @@ class LabelDB {
     }
     return projects;
   }
+
+  Future deleteLabel(int labelId) async {
+    var db = await _appDatabase.getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawDelete(
+          'DELETE FROM ${Label.tblLabel} WHERE ${Label.dbId}==$labelId;');
+    });
+  }
 }

@@ -10,7 +10,7 @@ class TaskBloc implements BlocBase {
   /// Synchronous Stream to handle the provision of the movie genres
   ///
   StreamController<List<Tasks>> _taskController =
-      StreamController<List<Tasks>>.broadcast();
+  StreamController<List<Tasks>>.broadcast();
 
   Stream<List<Tasks>> get tasks => _taskController.stream;
 
@@ -33,7 +33,7 @@ class TaskBloc implements BlocBase {
   void _filterTask(int taskStartTime, int taskEndTime, TaskStatus status) {
     _taskDb
         .getTasks(
-            startDate: taskStartTime, endDate: taskEndTime, taskStatus: status)
+        startDate: taskStartTime, endDate: taskEndTime, taskStatus: status)
         .then((tasks) {
       _updateTaskStream(tasks);
     });
@@ -51,12 +51,14 @@ class TaskBloc implements BlocBase {
 
   void filterTodayTasks() {
     final dateTime = DateTime.now();
-    final int taskStartTime =
-        DateTime(dateTime.year, dateTime.month, dateTime.day)
-            .millisecondsSinceEpoch;
-    final int taskEndTime =
-        DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
-            .millisecondsSinceEpoch;
+
+    var startDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
+    final int taskStartTime = startDate.millisecondsSinceEpoch;
+    print("Start :"+startDate.toString());
+
+    var endDate = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59);
+    final int taskEndTime = endDate.millisecondsSinceEpoch;
+    print("End :"+endDate.toString());
 
     // Read all today's tasks from database
     _filterTask(taskStartTime, taskEndTime, TaskStatus.PENDING);
@@ -137,11 +139,6 @@ class TaskBloc implements BlocBase {
         case FILTER_STATUS.BY_STATUS:
           filterByStatus(_lastFilterStatus.status);
           break;
-
-        default:
-          {
-            filterTodayTasks();
-          }
       }
     }
   }
