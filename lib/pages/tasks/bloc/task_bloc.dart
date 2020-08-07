@@ -54,11 +54,9 @@ class TaskBloc implements BlocBase {
 
     var startDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
     final int taskStartTime = startDate.millisecondsSinceEpoch;
-    print("Start :"+startDate.toString());
 
     var endDate = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59);
     final int taskEndTime = endDate.millisecondsSinceEpoch;
-    print("End :"+endDate.toString());
 
     // Read all today's tasks from database
     _filterTask(taskStartTime, taskEndTime, TaskStatus.PENDING);

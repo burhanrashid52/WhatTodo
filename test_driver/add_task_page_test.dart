@@ -29,12 +29,13 @@ void main() {
       var addTitle = find.byValueKey('addTitle');
       await driver.tap(addTitle);
       await driver.enterText("First Task");
+      //TODO: 1. Add Project in selection 2. Add Label from dialog 3. Change due date
 
       var addTask = find.byValueKey('addTask');
       await driver.tap(addTask);
 
-      var taskTitle = find.byValueKey('taskTitle');
-      var taskProjectName = find.byValueKey('taskProjectName');
+      var taskTitle = find.byValueKey('taskTitle_1');
+      var taskProjectName = find.byValueKey('taskProjectName_1');
       // var taskLabel = find.byValueKey('taskLabel');
 
       expect(await driver.getText(taskTitle), "First Task");
