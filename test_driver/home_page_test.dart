@@ -22,8 +22,8 @@ void main() {
     });
 
     test('Today in Title', () async {
-      var emptyTaskMessage = find.byValueKey('messageInCenter');
       expect(await driver.getText(homeTitle), "Today");
+      var emptyTaskMessage = find.byValueKey('messageInCenter');
       expect(await driver.getText(emptyTaskMessage), "No Task Added");
     });
 
@@ -31,7 +31,7 @@ void main() {
       /*This delayed allows to load the database for the first time.
         It's hacky solution to avoid flakiness
       */
-      await Future.delayed(const Duration(seconds: 1), (){});
+      await Future.delayed(const Duration(seconds: 1), () {});
 
       var drawer = find.byValueKey('drawer');
       await driver.tap(drawer);
@@ -94,5 +94,39 @@ void main() {
       expect(await driver.getText(taskTitle3), "Task Three");
       expect(await driver.getText(taskProjectName3), "Work");
     });
+
+    test('Show Personal project Tasks', () async {
+      var drawer = find.byValueKey('drawer');
+      await driver.tap(drawer);
+
+      var next7Days = find.byValueKey('drawerProjects');
+      await driver.tap(next7Days);
+
+      var personalProject = find.byValueKey('Personal_2');
+      await driver.tap(personalProject);
+
+      var taskTitle2 = find.byValueKey('taskTitle_2');
+      var taskProjectName2 = find.byValueKey('taskProjectName_2');
+
+      expect(await driver.getText(taskTitle2), "Task Two");
+      expect(await driver.getText(taskProjectName2), "Personal");
+    });
+
+    test('Show No Travel project Tasks Found', () async {
+      var drawer = find.byValueKey('drawer');
+      await driver.tap(drawer);
+
+      var next7Days = find.byValueKey('drawerProjects');
+      await driver.tap(next7Days);
+
+      var personalProject = find.byValueKey('Travel_4');
+      await driver.tap(personalProject);
+
+      var emptyTaskMessage = find.byValueKey('messageInCenter');
+      expect(await driver.getText(emptyTaskMessage), "No Task Added");
+
+    });
+
+    //TODO: Add test for tasks Label Filter
   });
 }

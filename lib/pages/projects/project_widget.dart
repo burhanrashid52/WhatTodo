@@ -32,6 +32,7 @@ class ProjectExpansionTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+      key: ValueKey("drawerProjects"),
       leading: Icon(Icons.book),
       title: Text("Projects",
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
@@ -82,6 +83,7 @@ class ProjectRow extends StatelessWidget {
         height: 24.0,
       ),
       title: Text(project.name),
+      key: ValueKey("${project.name}_${project.id}"),
       trailing: Container(
         height: 10.0,
         width: 10.0,

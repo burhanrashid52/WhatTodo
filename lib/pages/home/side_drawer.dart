@@ -56,7 +56,6 @@ class SideDrawer extends StatelessWidget {
               }),
           ListTile(
               onTap: () {
-                print("Clicked Today");
                 homeBloc.applyFilter("Today", Filter.byToday());
                 Navigator.pop(context);
               },
