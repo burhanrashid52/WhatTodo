@@ -16,9 +16,13 @@ class AddProject extends StatelessWidget {
     String projectName = "";
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Project"),
+        title: Text(
+          "Add Project",
+          key: ValueKey("titleAddProject"),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
+          key: ValueKey("addProjectButton"),
           child: Icon(
             Icons.send,
             color: Colors.white,
@@ -40,6 +44,7 @@ class AddProject extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                key: ValueKey("textFormProjectName"),
                 decoration: InputDecoration(hintText: "Project Name"),
                 maxLength: 20,
                 validator: (value) {

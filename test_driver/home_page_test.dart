@@ -72,7 +72,7 @@ void main() {
       var drawer = find.byValueKey('drawer');
       await driver.tap(drawer);
 
-      var next7Days = find.byValueKey('next7Days');
+      var next7Days = find.byValueKey('drawerProjects');
       await driver.tap(next7Days);
       expect(await driver.getText(homeTitle), "Next 7 Days");
 
@@ -99,8 +99,8 @@ void main() {
       var drawer = find.byValueKey('drawer');
       await driver.tap(drawer);
 
-      var next7Days = find.byValueKey('drawerProjects');
-      await driver.tap(next7Days);
+      var drawerProjects = find.byValueKey('drawerProjects');
+      await driver.tap(drawerProjects);
 
       var personalProject = find.byValueKey('Personal_2');
       await driver.tap(personalProject);
@@ -116,8 +116,8 @@ void main() {
       var drawer = find.byValueKey('drawer');
       await driver.tap(drawer);
 
-      var next7Days = find.byValueKey('drawerProjects');
-      await driver.tap(next7Days);
+      var drawerProjects = find.byValueKey('drawerProjects');
+      await driver.tap(drawerProjects);
 
       var personalProject = find.byValueKey('Travel_4');
       await driver.tap(personalProject);

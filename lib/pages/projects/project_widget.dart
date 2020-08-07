@@ -44,6 +44,7 @@ class ProjectExpansionTileWidget extends StatelessWidget {
     List<Widget> projectWidgetList = List();
     _projects.forEach((project) => projectWidgetList.add(ProjectRow(project)));
     projectWidgetList.add(ListTile(
+      key: ValueKey("addProject"),
       leading: Icon(Icons.add),
       title: Text("Add Project"),
       onTap: () async {
@@ -82,8 +83,10 @@ class ProjectRow extends StatelessWidget {
         width: 24.0,
         height: 24.0,
       ),
-      title: Text(project.name),
-      key: ValueKey("${project.name}_${project.id}"),
+      title: Text(
+        project.name,
+        key: ValueKey("${project.name}_${project.id}"),
+      ),
       trailing: Container(
         height: 10.0,
         width: 10.0,
