@@ -33,6 +33,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+      key: ValueKey("drawerLabels"),
       leading: Icon(Icons.label),
       title: Text("Labels",
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
@@ -46,7 +47,10 @@ class LabelExpansionTileWidget extends StatelessWidget {
     _labels.forEach((label) => projectWidgetList.add(LabelRow(label)));
     projectWidgetList.add(ListTile(
         leading: Icon(Icons.add),
-        title: Text("Add Label"),
+        title: Text(
+          "Add Label",
+          key: ValueKey("addLabel"),
+        ),
         onTap: () async {
           Navigator.pop(context);
 
@@ -81,7 +85,10 @@ class LabelRow extends StatelessWidget {
         width: 24.0,
         height: 24.0,
       ),
-      title: Text("@ ${label.name}"),
+      title: Text(
+        "@ ${label.name}",
+        key: ValueKey("${label.name}_${label.id}"),
+      ),
       trailing: Container(
         height: 10.0,
         width: 10.0,

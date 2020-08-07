@@ -26,9 +26,13 @@ class AddLabel extends StatelessWidget {
     return Scaffold(
       key: _scaffoldState,
       appBar: AppBar(
-        title: Text("Add Label"),
+        title: Text(
+          "Add Label",
+          key: ValueKey("titleAddLabel"),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
+          key: ValueKey("addLabelButton"),
           child: Icon(
             Icons.send,
             color: Colors.white,
@@ -49,6 +53,7 @@ class AddLabel extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                key: ValueKey("textFormLabelName"),
                 decoration: InputDecoration(hintText: "Label Name"),
                 maxLength: 20,
                 validator: (value) {
