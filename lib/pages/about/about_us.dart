@@ -7,7 +7,10 @@ class AboutUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("About"),
+        title: Text(
+          "About",
+          key: ValueKey("titleAbout"),
+        ),
       ),
       body: Container(
         child: Padding(
@@ -18,15 +21,23 @@ class AboutUsScreen extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     ListTile(
-                        leading:
-                            Icon(Icons.bug_report, color: Colors.black),
-                        title: Text("Rpeort an Issue"),
-                        subtitle: Text("Having an issue ? Report it here"),
+                        leading: Icon(Icons.bug_report, color: Colors.black),
+                        title: Text(
+                          "Report an Issue",
+                          key: ValueKey("titleReport"),
+                        ),
+                        subtitle: Text(
+                          "Having an issue ? Report it here",
+                          key: ValueKey("subtitleReport"),
+                        ),
                         onTap: () => launchURL(ISSUE_URL)),
                     ListTile(
                       leading: Icon(Icons.update, color: Colors.black),
                       title: Text("Version"),
-                      subtitle: Text("0.0.1"),
+                      subtitle: Text(
+                        "1.0.0",
+                        key: ValueKey("versionNumber"),
+                      ),
                     )
                   ],
                 ),
@@ -44,21 +55,28 @@ class AboutUsScreen extends StatelessWidget {
                               fontSize: FONT_MEDIUM)),
                     ),
                     ListTile(
-                      leading:
-                          Icon(Icons.perm_identity, color: Colors.black),
-                      title: Text("Burhanuddin Rashid"),
-                      subtitle: Text("burhanrashid52"),
+                      leading: Icon(Icons.perm_identity, color: Colors.black),
+                      title: Text(
+                        "Burhanuddin Rashid",
+                        key: ValueKey("authorName"),
+                      ),
+                      subtitle: Text(
+                        "burhanrashid52",
+                        key: ValueKey("authorUsername"),
+                      ),
                       onTap: () => launchURL(GITHUB_URL),
                     ),
                     ListTile(
-                        leading:
-                            Icon(Icons.bug_report, color: Colors.black),
+                        leading: Icon(Icons.bug_report, color: Colors.black),
                         title: Text("Fork on Github"),
                         onTap: () => launchURL(PROJECT_URL)),
                     ListTile(
                         leading: Icon(Icons.email, color: Colors.black),
                         title: Text("Send an Email"),
-                        subtitle: Text("burhanrashid5253@gmail.com"),
+                        subtitle: Text(
+                          "burhanrashid5253@gmail.com",
+                          key: ValueKey("authorEmail"),
+                        ),
                         onTap: () => launchURL(EMAIL_URL)),
                   ],
                 ),
@@ -81,7 +99,10 @@ class AboutUsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           IconButton(
-                            icon: Image.asset("assets/twitter_logo.png",scale: 8.75,),
+                            icon: Image.asset(
+                              "assets/twitter_logo.png",
+                              scale: 8.75,
+                            ),
                             onPressed: () => launchURL(TWITTER_URL),
                           ),
                           IconButton(
@@ -100,7 +121,7 @@ class AboutUsScreen extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0, left: 16.0),
-                      child: Text("Apache Licenese",
+                      child: Text("Apache Licensee",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -109,7 +130,7 @@ class AboutUsScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: ListTile(
-                        subtitle: Text("Copyright 2018 Burhanuddin Rashid"
+                        subtitle: Text("Copyright 2020 Burhanuddin Rashid"
                             '\n\nLicensed under the Apache License, Version 2.0 (the "License") you may not use this file except in compliance with the License. You may obtain a copy of the License at'
                             "\n\n\nhttp://www.apache.org/licenses/LICENSE-2.0"
                             '\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.'),
