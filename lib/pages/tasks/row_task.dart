@@ -21,6 +21,7 @@ class TaskRow extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
+            key: ValueKey("taskPriority_${tasks.id}"),
             margin: const EdgeInsets.symmetric(vertical: PADDING_TINY),
             decoration: BoxDecoration(
               border: Border(
@@ -54,7 +55,7 @@ class TaskRow extends StatelessWidget {
                           getFormattedDate(tasks.dueDate),
                           style: TextStyle(
                               color: Colors.grey, fontSize: FONT_SIZE_DATE),
-                          key: ValueKey("taskDueDate__${tasks.id}"),
+                          key: ValueKey("taskDueDate_${tasks.id}"),
                         ),
                         Expanded(
                           child: Column(
