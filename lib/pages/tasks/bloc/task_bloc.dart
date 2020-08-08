@@ -10,7 +10,7 @@ class TaskBloc implements BlocBase {
   /// Synchronous Stream to handle the provision of the movie genres
   ///
   StreamController<List<Tasks>> _taskController =
-  StreamController<List<Tasks>>.broadcast();
+      StreamController<List<Tasks>>.broadcast();
 
   Stream<List<Tasks>> get tasks => _taskController.stream;
 
@@ -33,7 +33,7 @@ class TaskBloc implements BlocBase {
   void _filterTask(int taskStartTime, int taskEndTime, TaskStatus status) {
     _taskDb
         .getTasks(
-        startDate: taskStartTime, endDate: taskEndTime, taskStatus: status)
+            startDate: taskStartTime, endDate: taskEndTime, taskStatus: status)
         .then((tasks) {
       _updateTaskStream(tasks);
     });
@@ -174,4 +174,11 @@ class Filter {
   Filter.byStatus(this.status) {
     filterStatus = FILTER_STATUS.BY_STATUS;
   }
+
+  bool operator ==(o) =>
+      o is Filter &&
+      o.labelName == labelName &&
+      o.projectId == projectId &&
+      o.filterStatus == filterStatus &&
+      o.status == status;
 }

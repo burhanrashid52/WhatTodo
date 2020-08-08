@@ -75,11 +75,13 @@ class ProjectRow extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
     return ListTile(
+      key: ValueKey("tile_${project.name}_${project.id}"),
       onTap: () {
         homeBloc.applyFilter(project.name, Filter.byProject(project.id));
         Navigator.pop(context);
       },
       leading: Container(
+        key: ValueKey("space_${project.name}_${project.id}"),
         width: 24.0,
         height: 24.0,
       ),
@@ -91,6 +93,7 @@ class ProjectRow extends StatelessWidget {
         height: 10.0,
         width: 10.0,
         child: CircleAvatar(
+          key: ValueKey("dot_${project.name}_${project.id}"),
           backgroundColor: Color(project.colorValue),
         ),
       ),

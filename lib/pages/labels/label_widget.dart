@@ -77,6 +77,7 @@ class LabelRow extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
     return ListTile(
+      key: ValueKey("tile_${label.name}_${label.id}"),
       onTap: () {
         homeBloc.applyFilter("@ ${label.name}", Filter.byLabel(label.name));
         Navigator.pop(context);
@@ -84,6 +85,7 @@ class LabelRow extends StatelessWidget {
       leading: Container(
         width: 24.0,
         height: 24.0,
+        key: ValueKey("space_${label.name}_${label.id}"),
       ),
       title: Text(
         "@ ${label.name}",
@@ -95,6 +97,7 @@ class LabelRow extends StatelessWidget {
         child: Icon(
           Icons.label,
           size: 16.0,
+          key: ValueKey("icon_${label.name}_${label.id}"),
           color: Color(label.colorValue),
         ),
       ),
