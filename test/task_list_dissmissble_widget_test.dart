@@ -17,9 +17,9 @@ void main() {
 
     //Return empty task list
     when(mockTaskDb.getTasks(
-            startDate: anyNamed("startDate"),
-            endDate: anyNamed("endDate"),
-            taskStatus: anyNamed("taskStatus")))
+        startDate: anyNamed("startDate"),
+        endDate: anyNamed("endDate"),
+        taskStatus: anyNamed("taskStatus")))
         .thenAnswer((_) => Future.value(List.empty()));
 
     var taskBloc = TaskBloc(mockTaskDb);
@@ -50,9 +50,9 @@ void main() {
 
     //Return empty task list
     when(mockTaskDb.getTasks(
-            startDate: anyNamed("startDate"),
-            endDate: anyNamed("endDate"),
-            taskStatus: anyNamed("taskStatus")))
+        startDate: anyNamed("startDate"),
+        endDate: anyNamed("endDate"),
+        taskStatus: anyNamed("taskStatus")))
         .thenAnswer((_) => Future.value([testTask1, testTask2, testTask3]));
 
     var taskBloc = TaskBloc(mockTaskDb);
@@ -84,9 +84,9 @@ void main() {
 
     //Return empty task list
     when(mockTaskDb.getTasks(
-            startDate: anyNamed("startDate"),
-            endDate: anyNamed("endDate"),
-            taskStatus: anyNamed("taskStatus")))
+        startDate: anyNamed("startDate"),
+        endDate: anyNamed("endDate"),
+        taskStatus: anyNamed("taskStatus")))
         .thenAnswer((_) => Future.value([testTask1, testTask2]));
 
     when(mockTaskDb.deleteTask(any)).thenAnswer((_) => Future.value());
@@ -101,9 +101,9 @@ void main() {
 
     //Return task list after delete
     when(mockTaskDb.getTasks(
-            startDate: anyNamed("startDate"),
-            endDate: anyNamed("endDate"),
-            taskStatus: anyNamed("taskStatus")))
+        startDate: anyNamed("startDate"),
+        endDate: anyNamed("endDate"),
+        taskStatus: anyNamed("taskStatus")))
         .thenAnswer((_) => Future.value([testTask2]));
 
     // Swipe the item to dismiss it.
