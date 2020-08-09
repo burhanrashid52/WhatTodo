@@ -11,13 +11,21 @@ extension TestWrapMaterialApp on Widget {
     );
   }
 
-  Widget wrapMaterialAppWithBlock(BlocBase myBloc) {
+  Widget wrapMaterialAppWithBloc<T extends BlocBase>(T myBloc) {
     return MaterialApp(
       home: BlocProvider(bloc: myBloc, child: this),
     );
   }
 
-  Widget wrapScaffoldWithBlock<T extends BlocBase>(T myBloc) {
+  Widget wrapWithScaffold() {
+    return MaterialApp(
+      home: Scaffold(
+        body: this,
+      ),
+    );
+  }
+
+  Widget wrapScaffoldWithBloc<T extends BlocBase>(T myBloc) {
     return MaterialApp(
       home: Scaffold(
         body: BlocProvider(bloc: myBloc, child: this),

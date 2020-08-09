@@ -17,7 +17,7 @@ main() {
         id: 1, name: "Personal", colorName: "Red", colorCode: Colors.red.value);
 
     await tester
-        .pumpWidget(ProjectRow(testProject).wrapScaffoldWithBlock(homeBloc));
+        .pumpWidget(ProjectRow(testProject).wrapScaffoldWithBloc(homeBloc));
 
     expect(find.text(testProject.name), findsOneWidget);
 
@@ -36,7 +36,7 @@ main() {
         id: 1, name: "Personal", colorName: "Red", colorCode: Colors.red.value);
 
     await tester
-        .pumpWidget(ProjectRow(testProject).wrapScaffoldWithBlock(homeBloc));
+        .pumpWidget(ProjectRow(testProject).wrapScaffoldWithBloc(homeBloc));
 
     expect(homeBloc.title, emitsInOrder([testProject.name]));
     expect(homeBloc.filter, emitsInOrder([Filter.byProject(testProject.id)]));
@@ -52,7 +52,7 @@ main() {
         colorCode: Colors.green.value);
 
     await tester
-        .pumpWidget(LabelRow(testLabel).wrapScaffoldWithBlock(homeBloc));
+        .pumpWidget(LabelRow(testLabel).wrapScaffoldWithBloc(homeBloc));
 
     expect(find.text("@ ${testLabel.name}"), findsOneWidget);
 
@@ -73,7 +73,7 @@ main() {
         colorCode: Colors.green.value);
 
     await tester
-        .pumpWidget(LabelRow(testLabel).wrapScaffoldWithBlock(homeBloc));
+        .pumpWidget(LabelRow(testLabel).wrapScaffoldWithBloc(homeBloc));
 
     expect(homeBloc.title, emitsInOrder(["@ ${testLabel.name}"]));
     expect(homeBloc.filter, emitsInOrder([Filter.byLabel(testLabel.name)]));

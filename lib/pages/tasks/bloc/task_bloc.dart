@@ -17,8 +17,6 @@ class TaskBloc implements BlocBase {
   ///
   StreamController<int> _cmdController = StreamController<int>.broadcast();
 
-  //StreamSink get getMovieGenres => _cmdController.sink;
-
   TaskDB _taskDb;
   List<Tasks> _tasksList;
   Filter _lastFilterStatus;

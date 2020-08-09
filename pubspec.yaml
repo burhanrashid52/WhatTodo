@@ -12,7 +12,6 @@ dependencies:
   url_launcher : ^4.0.0
   path_provider: ^0.4.1
   rxdart: ^0.19.0
-  mockito: ^4.1.1
 
 dev_dependencies:
   flutter_driver:
@@ -20,6 +19,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   test: any
+  mockito: ^4.1.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
