@@ -33,7 +33,7 @@ class TasksPage extends StatelessWidget {
                   itemCount: list.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Dismissible(
-                        key: ObjectKey(list[index]),
+                        key: ValueKey("swipe_${list[index].id}_$index"),
                         onDismissed: (DismissDirection direction) {
                           var taskID = list[index].id;
                           final TaskBloc _tasksBloc =
@@ -47,22 +47,19 @@ class TasksPage extends StatelessWidget {
                             _tasksBloc.delete(taskID);
                             message = "Task deleted";
                           }
-                          SnackBar snackbar =
-                              SnackBar(content: Text(message));
+                          SnackBar snackbar = SnackBar(content: Text(message));
                           Scaffold.of(context).showSnackBar(snackbar);
                         },
                         background: Container(
                           color: Colors.red,
                           child: ListTile(
-                            leading:
-                                Icon(Icons.delete, color: Colors.white),
+                            leading: Icon(Icons.delete, color: Colors.white),
                           ),
                         ),
                         secondaryBackground: Container(
                           color: Colors.green,
                           child: ListTile(
-                            trailing:
-                                Icon(Icons.check, color: Colors.white),
+                            trailing: Icon(Icons.check, color: Colors.white),
                           ),
                         ),
                         child: TaskRow(list[index]));

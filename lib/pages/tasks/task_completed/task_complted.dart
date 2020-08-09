@@ -17,7 +17,7 @@ class TaskCompletedPage extends StatelessWidget {
         appBar: AppBar(
           title: Text("Task Completed"),
         ),
-        body: StreamBuilder(
+        body: StreamBuilder<List<Tasks>>(
             stream: _taskBloc.tasks,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -25,7 +25,8 @@ class TaskCompletedPage extends StatelessWidget {
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
                       return Dismissible(
-                          key: ObjectKey(snapshot.data[index]),
+                          key: ValueKey(
+                              "swipe_completed_${snapshot.data[index].id}_$index"),
                           direction: DismissDirection.endToStart,
                           background: Container(),
                           onDismissed: (DismissDirection directions) {

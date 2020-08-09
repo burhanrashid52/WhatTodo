@@ -39,6 +39,7 @@ class TaskCompletedRow extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
                     child: Text(tasks.title,
+                        key: ValueKey("task_completed_${tasks.id}"),
                         style: TextStyle(
                             decoration: TextDecoration.lineThrough,
                             fontSize: FONT_SIZE_TITLE,
