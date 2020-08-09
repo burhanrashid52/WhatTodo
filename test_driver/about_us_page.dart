@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/main.dart' as app;
 import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_driver/driver_extension.dart';
 

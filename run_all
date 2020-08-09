@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Running Test..."
+
+flutter drive --target=test_driver/about_us_page.dart
+flutter drive --target=test_driver/add_label_page.dart
+flutter drive --target=test_driver/add_project_page.dart
+flutter drive --target=test_driver/add_task_page.dart
+flutter drive --target=test_driver/completed_tasks_page.dart
+flutter drive --target=test_driver/home_page.dart
+
+echo "Running Test Completed!!"

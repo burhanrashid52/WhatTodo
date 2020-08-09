@@ -36,11 +36,9 @@ void main() {
 
       var taskTitle = find.byValueKey('taskTitle_1');
       var taskProjectName = find.byValueKey('taskProjectName_1');
-      // var taskLabel = find.byValueKey('taskLabel');
 
       expect(await driver.getText(taskTitle), "First Task");
       expect(await driver.getText(taskProjectName), "Inbox");
-      // expect(await driver.getText(taskLabel), "");
     });
   });
 }
