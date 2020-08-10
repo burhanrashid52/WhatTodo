@@ -10,7 +10,7 @@ class HomeBloc implements BlocBase {
 
   Stream<String> get title => _titleController.stream;
 
-  BehaviorSubject<Filter> _filterController = BehaviorSubject<Filter>();
+  StreamController<Filter> _filterController = StreamController<Filter>();
 
   Stream<Filter> get filter => _filterController.stream;
 
