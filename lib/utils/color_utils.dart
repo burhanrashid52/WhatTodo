@@ -7,6 +7,11 @@ class ColorPalette {
   final int colorValue;
 
   ColorPalette(this.colorName, this.colorValue);
+
+  bool operator ==(o) =>
+      o is ColorPalette &&
+      o.colorValue == colorValue &&
+      o.colorName == colorName;
 }
 
 var colorsPalettes = <ColorPalette>[

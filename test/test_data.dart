@@ -4,9 +4,13 @@ import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
 
-var testProject1 = Project.create("Personal", Colors.red.value, "Red");
-var testProject2 = Project.create("Work", Colors.black.value, "Black");
-var testProject3 = Project.create("Travel", Colors.orange.value, "Orange");
+var testProject1 = Project.getInbox();
+var testProject2 = Project.update(
+    id: 2, name: "Personal", colorCode: Colors.red.value, colorName: "Red");
+var testProject3 = Project.update(
+    id: 3, name: "Work", colorCode: Colors.black.value, colorName: "Black");
+var testProject4 = Project.update(
+    id: 4, name: "Travel", colorCode: Colors.orange.value, colorName: "Orange");
 
 var testLabel1 = Label.create("Android", Colors.green.value, "Green");
 var testLabel2 = Label.create("Flutter", Colors.lightBlue.value, "Blue Light");

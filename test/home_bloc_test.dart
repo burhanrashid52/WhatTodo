@@ -7,12 +7,20 @@ void main() {
     var homeBloc = HomeBloc();
 
     test("Updating title Test", () async {
-      expect(homeBloc.title, emitsInOrder(["My Title", "My New Title"]));
+      expect(
+          homeBloc.title,
+          emitsInOrder(
+            [
+              "My Title",
+              "My New Title",
+            ],
+          ));
+
       homeBloc.updateTitle("My Title");
       homeBloc.updateTitle("My New Title");
     });
 
-    test("Updating title Test", () async {
+    test("Updating Filter Test", () async {
       expect(
           homeBloc.title,
           emitsInOrder(
@@ -23,6 +31,7 @@ void main() {
               "My New Title",
             ],
           ));
+
       expect(
           homeBloc.filter,
           emitsInOrder(
