@@ -86,7 +86,7 @@ class AddTaskScreen extends StatelessWidget {
           ),
           ListTile(
               leading: Icon(Icons.label),
-              title: Text("Lables"),
+              title: Text("Labels"),
               subtitle: StreamBuilder(
                 stream: createTaskBloc.labelSelection,
                 initialData: "No Labels",
@@ -100,7 +100,7 @@ class AddTaskScreen extends StatelessWidget {
             title: Text("Comments"),
             subtitle: Text("No Comments"),
             onTap: () {
-              showSnackbar(_scaffoldState, "Comming Soon");
+              showSnackbar(_scaffoldState, "Coming Soon");
             },
           ),
           ListTile(
@@ -108,7 +108,7 @@ class AddTaskScreen extends StatelessWidget {
             title: Text("Reminder"),
             subtitle: Text("No Reminder"),
             onTap: () {
-              showSnackbar(_scaffoldState, "Comming Soon");
+              showSnackbar(_scaffoldState, "Coming Soon");
             },
           )
         ],
