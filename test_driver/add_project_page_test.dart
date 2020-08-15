@@ -6,9 +6,9 @@ void main() {
   group("Add Projects", () {
     FlutterDriver driver;
     final sideDrawer = find.byValueKey(SideDrawerKeys.DRAWER);
-    final drawerProjects = find.byValueKey('drawerProjects');
-    final addProject = find.byValueKey('addProject');
-    final titleAddProject = find.byValueKey('titleAddProject');
+    final drawerProjects = find.byValueKey(SideDrawerKeys.DRAWER_PROJECTS);
+    final addProject = find.byValueKey(SideDrawerKeys.ADD_PROJECT);
+    final titleAddProject = find.byValueKey(AddProjectKeys.TITLE_ADD_PROJECT);
 
     // Connect to the Flutter driver before running any tests.
     setUpAll(() async {
@@ -37,11 +37,11 @@ void main() {
       await driver.tap(drawerProjects);
       await driver.tap(addProject);
 
-      var addProjectNameField = find.byValueKey('textFormProjectName');
+      var addProjectNameField = find.byValueKey(AddProjectKeys.TEXT_FORM_PROJECT_NAME);
       await driver.tap(addProjectNameField);
       await driver.enterText("Personal");
 
-      var addProjectButton = find.byValueKey('addProjectButton');
+      var addProjectButton = find.byValueKey(AddProjectKeys.ADD_PROJECT_BUTTON);
       await driver.tap(addProjectButton);
 
       await driver.tap(sideDrawer);

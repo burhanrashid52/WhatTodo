@@ -12,6 +12,14 @@ class SideDrawerKeys {
   static const DRAWER = 'drawer';
   static const DRAWER_LABELS = 'drawerLabels';
   static const ADD_LABEL = 'addLabel';
+  static const DRAWER_PROJECTS = 'drawerProjects';
+  static const ADD_PROJECT = 'addProject';
+}
+
+class AddProjectKeys {
+  static const TITLE_ADD_PROJECT = 'titleAddProject';
+  static const TEXT_FORM_PROJECT_NAME = 'textFormProjectName';
+  static const ADD_PROJECT_BUTTON = 'addProjectButton';
 }
 
 class AddLabelKeys {

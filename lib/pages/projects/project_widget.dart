@@ -6,6 +6,7 @@ import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
+import 'package:flutter_app/utils/keys.dart';
 
 class ProjectPage extends StatelessWidget {
   @override
@@ -32,7 +33,7 @@ class ProjectExpansionTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      key: ValueKey("drawerProjects"),
+      key: ValueKey(SideDrawerKeys.DRAWER_PROJECTS),
       leading: Icon(Icons.book),
       title: Text("Projects",
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
@@ -44,7 +45,7 @@ class ProjectExpansionTileWidget extends StatelessWidget {
     List<Widget> projectWidgetList = List();
     _projects.forEach((project) => projectWidgetList.add(ProjectRow(project)));
     projectWidgetList.add(ListTile(
-      key: ValueKey("addProject"),
+      key: ValueKey(SideDrawerKeys.ADD_PROJECT),
       leading: Icon(Icons.add),
       title: Text("Add Project"),
       onTap: () async {

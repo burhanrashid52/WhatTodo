@@ -4,6 +4,7 @@ import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
+import 'package:flutter_app/utils/keys.dart';
 
 class AddProject extends StatelessWidget {
   final expansionTile = GlobalKey<CollapsibleExpansionTileState>();
@@ -18,11 +19,11 @@ class AddProject extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Add Project",
-          key: ValueKey("titleAddProject"),
+          key: ValueKey(AddProjectKeys.TITLE_ADD_PROJECT),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          key: ValueKey("addProjectButton"),
+          key: ValueKey(AddProjectKeys.ADD_PROJECT_BUTTON),
           child: Icon(
             Icons.send,
             color: Colors.white,
@@ -44,7 +45,7 @@ class AddProject extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                key: ValueKey("textFormProjectName"),
+                key: ValueKey(AddProjectKeys.TEXT_FORM_PROJECT_NAME),
                 decoration: InputDecoration(hintText: "Project Name"),
                 maxLength: 20,
                 validator: (value) {
