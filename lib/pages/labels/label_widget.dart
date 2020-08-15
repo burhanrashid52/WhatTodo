@@ -7,6 +7,7 @@ import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
 import 'package:flutter_app/pages/labels/label_bloc.dart';
+import 'package:flutter_app/utils/keys.dart';
 
 class LabelPage extends StatelessWidget {
   @override
@@ -33,7 +34,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      key: ValueKey("drawerLabels"),
+      key: ValueKey(SideDrawerKeys.DRAWER_LABELS),
       leading: Icon(Icons.label),
       title: Text("Labels",
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
@@ -49,7 +50,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
         leading: Icon(Icons.add),
         title: Text(
           "Add Label",
-          key: ValueKey("addLabel"),
+          key: ValueKey(SideDrawerKeys.ADD_LABEL),
         ),
         onTap: () async {
           Navigator.pop(context);

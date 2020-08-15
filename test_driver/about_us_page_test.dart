@@ -1,16 +1,17 @@
+import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
   group("About Screen", () {
     FlutterDriver driver;
-    final titleAbout = find.byValueKey('titleAbout');
-    final titleReport = find.byValueKey('titleReport');
-    final subtitleReport = find.byValueKey('subtitleReport');
-    final authorName = find.byValueKey('authorName');
-    final authorUsername = find.byValueKey('authorUsername');
-    final authorEmail = find.byValueKey('authorEmail');
-    final versionNumber = find.byValueKey('versionNumber');
+    final titleAbout = find.byValueKey(AboutUsKeys.TITLE_ABOUT);
+    final titleReport = find.byValueKey(AboutUsKeys.TITLE_REPORT);
+    final subtitleReport = find.byValueKey(AboutUsKeys.SUBTITLE_REPORT);
+    final authorName = find.byValueKey(AboutUsKeys.AUTHOR_NAME);
+    final authorUsername = find.byValueKey(AboutUsKeys.AUTHOR_USERNAME);
+    final authorEmail = find.byValueKey(AboutUsKeys.AUTHOR_EMAIL);
+    final versionNumber = find.byValueKey(AboutUsKeys.VERSION_NUMBER);
 
     // Connect to the Flutter driver before running any tests.
     setUpAll(() async {

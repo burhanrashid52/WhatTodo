@@ -1,3 +1,4 @@
+import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
@@ -25,7 +26,7 @@ void main() {
       */
       await Future.delayed(const Duration(seconds: 1), () {});
 
-      var drawer = find.byValueKey('drawer');
+      var drawer = find.byValueKey(SideDrawerKeys.DRAWER);
       await driver.tap(drawer);
 
       var today = find.byValueKey('today');

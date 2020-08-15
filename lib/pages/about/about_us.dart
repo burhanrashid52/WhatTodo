@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/utils/app_constant.dart';
 import 'package:flutter_app/utils/app_util.dart';
+import 'package:flutter_app/utils/keys.dart';
 
 class AboutUsScreen extends StatelessWidget {
   @override
@@ -9,7 +10,7 @@ class AboutUsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "About",
-          key: ValueKey("titleAbout"),
+          key: ValueKey(AboutUsKeys.TITLE_ABOUT),
         ),
       ),
       body: Container(
@@ -24,11 +25,11 @@ class AboutUsScreen extends StatelessWidget {
                         leading: Icon(Icons.bug_report, color: Colors.black),
                         title: Text(
                           "Report an Issue",
-                          key: ValueKey("titleReport"),
+                          key: ValueKey(AboutUsKeys.TITLE_REPORT),
                         ),
                         subtitle: Text(
                           "Having an issue ? Report it here",
-                          key: ValueKey("subtitleReport"),
+                          key: ValueKey(AboutUsKeys.SUBTITLE_REPORT),
                         ),
                         onTap: () => launchURL(ISSUE_URL)),
                     ListTile(
@@ -36,7 +37,7 @@ class AboutUsScreen extends StatelessWidget {
                       title: Text("Version"),
                       subtitle: Text(
                         "1.0.0",
-                        key: ValueKey("versionNumber"),
+                        key: ValueKey(AboutUsKeys.VERSION_NUMBER),
                       ),
                     )
                   ],
@@ -58,11 +59,11 @@ class AboutUsScreen extends StatelessWidget {
                       leading: Icon(Icons.perm_identity, color: Colors.black),
                       title: Text(
                         "Burhanuddin Rashid",
-                        key: ValueKey("authorName"),
+                        key: ValueKey(AboutUsKeys.AUTHOR_NAME),
                       ),
                       subtitle: Text(
                         "burhanrashid52",
-                        key: ValueKey("authorUsername"),
+                        key: ValueKey(AboutUsKeys.AUTHOR_USERNAME),
                       ),
                       onTap: () => launchURL(GITHUB_URL),
                     ),
@@ -75,7 +76,7 @@ class AboutUsScreen extends StatelessWidget {
                         title: Text("Send an Email"),
                         subtitle: Text(
                           "burhanrashid5253@gmail.com",
-                          key: ValueKey("authorEmail"),
+                          key: ValueKey(AboutUsKeys.AUTHOR_EMAIL),
                         ),
                         onTap: () => launchURL(EMAIL_URL)),
                   ],

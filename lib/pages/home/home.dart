@@ -10,6 +10,7 @@ import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
 import 'package:flutter_app/pages/tasks/task_widgets.dart';
+import 'package:flutter_app/utils/keys.dart';
 
 class HomePage extends StatelessWidget {
   final TaskBloc _taskBloc = TaskBloc(TaskDB.get());
@@ -37,7 +38,7 @@ class HomePage extends StatelessWidget {
         leading: new IconButton(
             icon: new Icon(
               Icons.view_headline,
-              key: ValueKey("drawer"),
+              key: ValueKey(SideDrawerKeys.DRAWER),
             ),
             onPressed: () => _scaffoldKey.currentState.openDrawer()),
       ),

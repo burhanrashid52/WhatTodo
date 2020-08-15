@@ -1,10 +1,11 @@
+import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
   group("Add Projects", () {
     FlutterDriver driver;
-    final sideDrawer = find.byValueKey('drawer');
+    final sideDrawer = find.byValueKey(SideDrawerKeys.DRAWER);
     final drawerProjects = find.byValueKey('drawerProjects');
     final addProject = find.byValueKey('addProject');
     final titleAddProject = find.byValueKey('titleAddProject');

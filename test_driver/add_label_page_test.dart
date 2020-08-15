@@ -1,13 +1,14 @@
+import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
   group("Add Labels", () {
     FlutterDriver driver;
-    final sideDrawer = find.byValueKey('drawer');
-    final drawerLabels = find.byValueKey('drawerLabels');
-    final addLabel = find.byValueKey('addLabel');
-    final titleAddLabel = find.byValueKey('titleAddLabel');
+    final sideDrawer = find.byValueKey(SideDrawerKeys.DRAWER);
+    final drawerLabels = find.byValueKey(SideDrawerKeys.DRAWER_LABELS);
+    final addLabel = find.byValueKey(SideDrawerKeys.ADD_LABEL);
+    final titleAddLabel = find.byValueKey(AddLabelKeys.TITLE_ADD_LABEL);
 
     // Connect to the Flutter driver before running any tests.
     setUpAll(() async {
@@ -36,11 +37,12 @@ void main() {
       await driver.tap(drawerLabels);
       await driver.tap(addLabel);
 
-      var addLabelNameField = find.byValueKey('textFormLabelName');
+      var addLabelNameField =
+          find.byValueKey(AddLabelKeys.TEXT_FORM_LABEL_NAME);
       await driver.tap(addLabelNameField);
       await driver.enterText("Android");
 
-      var addLabelButton = find.byValueKey('addLabelButton');
+      var addLabelButton = find.byValueKey(AddLabelKeys.ADD_LABEL_BUTTON);
       await driver.tap(addLabelButton);
 
       await driver.tap(sideDrawer);

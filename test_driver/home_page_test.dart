@@ -1,3 +1,4 @@
+import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
@@ -33,7 +34,7 @@ void main() {
       */
       await Future.delayed(const Duration(seconds: 1), () {});
 
-      var drawer = find.byValueKey('drawer');
+      var drawer = find.byValueKey(SideDrawerKeys.DRAWER);
       await driver.tap(drawer);
 
       var today = find.byValueKey('today');
@@ -54,7 +55,7 @@ void main() {
     });
 
     test('Show Inbox Tasks', () async {
-      var drawer = find.byValueKey('drawer');
+      var drawer = find.byValueKey(SideDrawerKeys.DRAWER);
       await driver.tap(drawer);
 
       var inbox = find.byValueKey('inbox');
@@ -69,7 +70,7 @@ void main() {
     });
 
     test('Show Next 7 days Tasks', () async {
-      var drawer = find.byValueKey('drawer');
+      var drawer = find.byValueKey(SideDrawerKeys.DRAWER);
       await driver.tap(drawer);
 
       var next7Days = find.byValueKey('drawerProjects');
@@ -96,7 +97,7 @@ void main() {
     });
 
     test('Show Personal project Tasks', () async {
-      var drawer = find.byValueKey('drawer');
+      var drawer = find.byValueKey(SideDrawerKeys.DRAWER);
       await driver.tap(drawer);
 
       var drawerProjects = find.byValueKey('drawerProjects');
@@ -113,7 +114,7 @@ void main() {
     });
 
     test('Show No Travel project Tasks Found', () async {
-      var drawer = find.byValueKey('drawer');
+      var drawer = find.byValueKey(SideDrawerKeys.DRAWER);
       await driver.tap(drawer);
 
       var drawerProjects = find.byValueKey('drawerProjects');
@@ -124,7 +125,6 @@ void main() {
 
       var emptyTaskMessage = find.byValueKey('messageInCenter');
       expect(await driver.getText(emptyTaskMessage), "No Task Added");
-
     });
 
     //TODO: Add test for tasks Label Filter

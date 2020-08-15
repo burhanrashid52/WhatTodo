@@ -5,6 +5,7 @@ import 'package:flutter_app/pages/labels/label_bloc.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
+import 'package:flutter_app/utils/keys.dart';
 
 class AddLabel extends StatelessWidget {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
@@ -28,11 +29,11 @@ class AddLabel extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Add Label",
-          key: ValueKey("titleAddLabel"),
+          key: ValueKey(AddLabelKeys.TITLE_ADD_LABEL),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          key: ValueKey("addLabelButton"),
+          key: ValueKey(AddLabelKeys.ADD_LABEL_BUTTON),
           child: Icon(
             Icons.send,
             color: Colors.white,
@@ -53,7 +54,7 @@ class AddLabel extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                key: ValueKey("textFormLabelName"),
+                key: ValueKey(AddLabelKeys.TEXT_FORM_LABEL_NAME),
                 decoration: InputDecoration(hintText: "Label Name"),
                 maxLength: 20,
                 validator: (value) {
