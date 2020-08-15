@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
             onPressed: () => _scaffoldKey.currentState.openDrawer()),
       ),
       floatingActionButton: FloatingActionButton(
-        key: ValueKey("add_task"),
+        key: ValueKey(HomePageKeys.ADD_NEW_TASK_BUTTON),
         child: Icon(
           Icons.add,
           color: Colors.white,

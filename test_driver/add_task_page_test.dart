@@ -1,8 +1,8 @@
+import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
-
   group("Add Tasks", () {
     FlutterDriver driver;
 
@@ -18,20 +18,20 @@ void main() {
       }
     });
 
-    final addTaskButton = find.byValueKey('add_task');
+    final addNewTaskButton = find.byValueKey(HomePageKeys.ADD_NEW_TASK_BUTTON);
 
     test('Enter Task Details and verify on Task page screen', () async {
-      await driver.tap(addTaskButton);
+      await driver.tap(addNewTaskButton);
 
-      var addTaskTitle = find.byValueKey('add_task_title');
+      var addTaskTitle = find.byValueKey(AddTaskKeys.ADD_TASK_TITLE);
       expect(await driver.getText(addTaskTitle), "Add Task");
 
-      var addTitle = find.byValueKey('addTitle');
+      var addTitle = find.byValueKey(AddTaskKeys.ADD_TITLE);
       await driver.tap(addTitle);
       await driver.enterText("First Task");
       //TODO: 1. Add Project in selection 2. Add Label from dialog 3. Change due date
 
-      var addTask = find.byValueKey('addTask');
+      var addTask = find.byValueKey(AddTaskKeys.ADD_TASK);
       await driver.tap(addTask);
 
       var taskTitle = find.byValueKey('taskTitle_1');

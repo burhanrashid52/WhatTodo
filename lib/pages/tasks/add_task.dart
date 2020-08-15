@@ -9,6 +9,7 @@ import 'package:flutter_app/pages/tasks/bloc/add_task_bloc.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';
+import 'package:flutter_app/utils/keys.dart';
 
 class AddTaskScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
@@ -22,7 +23,7 @@ class AddTaskScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Add Task",
-          key: ValueKey("add_task_title"),
+          key: ValueKey(AddTaskKeys.ADD_TASK_TITLE),
         ),
       ),
       body: ListView(
@@ -31,7 +32,7 @@ class AddTaskScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                  key: ValueKey("addTitle"),
+                  key: ValueKey(AddTaskKeys.ADD_TITLE),
                   validator: (value) {
                     var msg = value.isEmpty ? "Title Cannot be Empty" : null;
                     return msg;
@@ -114,7 +115,7 @@ class AddTaskScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          key: ValueKey("addTask"),
+          key: ValueKey(AddTaskKeys.ADD_TASK),
           child: Icon(Icons.send, color: Colors.white),
           onPressed: () {
             if (_formState.currentState.validate()) {

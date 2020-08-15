@@ -27,3 +27,13 @@ class AddLabelKeys {
   static const ADD_LABEL_BUTTON = 'addLabelButton';
   static const TITLE_ADD_LABEL = 'titleAddLabel';
 }
+
+class AddTaskKeys {
+  static const ADD_TASK_TITLE = 'add_task_title';
+  static const ADD_TITLE = 'addTitle';
+  static const ADD_TASK = 'addTask';
+}
+
+class HomePageKeys {
+  static const ADD_NEW_TASK_BUTTON = 'add_new_task_button';
+}
