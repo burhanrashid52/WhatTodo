@@ -29,7 +29,7 @@ void main() {
       var drawer = find.byValueKey(SideDrawerKeys.DRAWER);
       await driver.tap(drawer);
 
-      var today = find.byValueKey('today');
+      var today = find.byValueKey(SideDrawerKeys.TODAY);
       await driver.tap(today);
 
       var firstTaskListItem = find.byValueKey('swipe_1_0');
@@ -39,8 +39,8 @@ void main() {
           firstTaskListItem, -300, 0, Duration(milliseconds: 500));
       await Future.delayed(const Duration(seconds: 1), () {});
 
-      await driver.tap(find.byValueKey('popup_action'));
-      await driver.tap(find.byValueKey('completed_tasks'));
+      await driver.tap(find.byValueKey(CompletedTaskPageKeys.POPUP_ACTION));
+      await driver.tap(find.byValueKey(CompletedTaskPageKeys.COMPLETED_TASKS));
 
       var firstCompletedTaskListItem = find.byValueKey('task_completed_1');
       expect(await driver.getText(firstCompletedTaskListItem), "Task One");

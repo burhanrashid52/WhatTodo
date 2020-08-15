@@ -37,7 +37,7 @@ void main() {
       var drawer = find.byValueKey(SideDrawerKeys.DRAWER);
       await driver.tap(drawer);
 
-      var today = find.byValueKey('today');
+      var today = find.byValueKey(SideDrawerKeys.TODAY);
       await driver.tap(today);
       expect(await driver.getText(homeTitle), "Today");
 

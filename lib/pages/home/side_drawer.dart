@@ -10,6 +10,7 @@ import 'package:flutter_app/pages/labels/label_bloc.dart';
 import 'package:flutter_app/pages/labels/label_widget.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/pages/projects/project_widget.dart';
+import 'package:flutter_app/utils/keys.dart';
 
 class SideDrawer extends StatelessWidget {
   @override
@@ -62,7 +63,7 @@ class SideDrawer extends StatelessWidget {
               leading: Icon(Icons.calendar_today),
               title: Text(
                 "Today",
-                key: ValueKey("today"),
+                key: ValueKey(SideDrawerKeys.TODAY),
               )),
           ListTile(
             onTap: () {

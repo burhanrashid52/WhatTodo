@@ -14,6 +14,7 @@ class SideDrawerKeys {
   static const ADD_LABEL = 'addLabel';
   static const DRAWER_PROJECTS = 'drawerProjects';
   static const ADD_PROJECT = 'addProject';
+  static const TODAY = 'today';
 }
 
 class AddProjectKeys {
@@ -36,4 +37,9 @@ class AddTaskKeys {
 
 class HomePageKeys {
   static const ADD_NEW_TASK_BUTTON = 'add_new_task_button';
+}
+
+class CompletedTaskPageKeys {
+  static const POPUP_ACTION = 'popup_action';
+  static const COMPLETED_TASKS = 'completed_tasks';
 }

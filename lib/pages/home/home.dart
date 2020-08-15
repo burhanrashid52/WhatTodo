@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
 // not shown here).
   Widget buildPopupMenu(BuildContext context) {
     return PopupMenuButton<MenuItem>(
-      key: ValueKey("popup_action"),
+      key: ValueKey(CompletedTaskPageKeys.POPUP_ACTION),
       onSelected: (MenuItem result) async {
         switch (result) {
           case MenuItem.taskCompleted:
@@ -91,7 +91,7 @@ class HomePage extends StatelessWidget {
           value: MenuItem.taskCompleted,
           child: const Text(
             'Completed Tasks',
-            key: ValueKey("completed_tasks"),
+            key: ValueKey(CompletedTaskPageKeys.COMPLETED_TASKS),
           ),
         )
       ],
