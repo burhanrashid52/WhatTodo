@@ -47,7 +47,7 @@ class SideDrawer extends StatelessWidget {
               leading: Icon(Icons.inbox),
               title: Text(
                 "Inbox",
-                key: ValueKey("inbox"),
+                key: ValueKey(SideDrawerKeys.INBOX),
               ),
               onTap: () {
                 var project = Project.getInbox();
@@ -73,7 +73,7 @@ class SideDrawer extends StatelessWidget {
             leading: Icon(Icons.calendar_today),
             title: Text(
               "Next 7 Days",
-              key: ValueKey("next7Days"),
+              key: ValueKey(SideDrawerKeys.NEXT_7_DAYS),
             ),
           ),
           BlocProvider(

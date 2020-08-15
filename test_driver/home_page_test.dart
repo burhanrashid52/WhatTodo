@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Home Page', () {
-    final homeTitle = find.byValueKey('home_title');
+    final homeTitle = find.byValueKey(HomePageKeys.HOME_TITLE);
 
     FlutterDriver driver;
 
@@ -24,7 +24,7 @@ void main() {
 
     test('Today in Title', () async {
       expect(await driver.getText(homeTitle), "Today");
-      var emptyTaskMessage = find.byValueKey('messageInCenter');
+      var emptyTaskMessage = find.byValueKey(HomePageKeys.MESSAGE_IN_CENTER);
       expect(await driver.getText(emptyTaskMessage), "No Task Added");
     });
 
@@ -58,7 +58,7 @@ void main() {
       var drawer = find.byValueKey(SideDrawerKeys.DRAWER);
       await driver.tap(drawer);
 
-      var inbox = find.byValueKey('inbox');
+      var inbox = find.byValueKey(SideDrawerKeys.INBOX);
       await driver.tap(inbox);
 
       var taskTitle1 = find.byValueKey('taskTitle_1');
@@ -73,7 +73,7 @@ void main() {
       var drawer = find.byValueKey(SideDrawerKeys.DRAWER);
       await driver.tap(drawer);
 
-      var next7Days = find.byValueKey(SideDrawerKeys.DRAWER_PROJECTS);
+      var next7Days = find.byValueKey(SideDrawerKeys.NEXT_7_DAYS);
       await driver.tap(next7Days);
       expect(await driver.getText(homeTitle), "Next 7 Days");
 
@@ -123,7 +123,7 @@ void main() {
       var personalProject = find.byValueKey('Travel_4');
       await driver.tap(personalProject);
 
-      var emptyTaskMessage = find.byValueKey('messageInCenter');
+      var emptyTaskMessage = find.byValueKey(HomePageKeys.MESSAGE_IN_CENTER);
       expect(await driver.getText(emptyTaskMessage), "No Task Added");
     });
 

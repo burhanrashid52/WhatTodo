@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/utils/app_constant.dart';
+import 'package:flutter_app/utils/keys.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 showSnackbar(GlobalKey<ScaffoldState> scaffoldState, String message,
@@ -28,7 +29,7 @@ class MessageInCenterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(_message,
-          key: ValueKey("messageInCenter"),
+          key: ValueKey(HomePageKeys.MESSAGE_IN_CENTER),
           style: TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
     );
   }

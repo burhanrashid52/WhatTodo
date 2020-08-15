@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
             builder: (context, snapshot) {
               return Text(
                 snapshot.data,
-                key: ValueKey('home_title'),
+                key: ValueKey(HomePageKeys.HOME_TITLE),
               );
             }),
         actions: <Widget>[buildPopupMenu(context)],
