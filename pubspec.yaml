@@ -1,6 +1,9 @@
 name: flutter_app
 description: A new Flutter application.
 
+environment:
+  sdk: '>=2.10.0 <3.0.0'
+
 dependencies:
   flutter:
     sdk: flutter
@@ -20,6 +23,7 @@ dev_dependencies:
     sdk: flutter
   test: any
   mockito: ^4.1.1
+  integration_test: ^1.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
