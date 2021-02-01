@@ -36,7 +36,9 @@ class LabelBloc implements BlocBase {
 
   void _loadLabels() {
     _labelDB.getLabels().then((labels) {
-      _labelController.sink.add(List.unmodifiable(labels));
+      if (!_labelController.isClosed) {
+        _labelController.sink.add(List.unmodifiable(labels));
+      }
     });
   }
 
