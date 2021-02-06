@@ -31,7 +31,9 @@ class ProjectBloc implements BlocBase {
 
   void _loadProjects(bool isInboxVisible) {
     _projectDB.getProjects(isInboxVisible: isInboxVisible).then((projects) {
-      _projectController.sink.add(projects);
+      if (!_projectController.isClosed) {
+        _projectController.sink.add(projects);
+      }
     });
   }
 
@@ -46,7 +48,7 @@ class ProjectBloc implements BlocBase {
     _colorController.sink.add(colorPalette);
   }
 
-  void refresh(){
+  void refresh() {
     _loadProjects(isInboxVisible);
   }
 }

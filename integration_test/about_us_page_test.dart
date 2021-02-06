@@ -8,7 +8,11 @@ void main() {
 
   group("About Screen", () {
     testWidgets('Profile Details', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: AboutUsScreen()));
+      await tester.pumpWidget(
+        MaterialApp(
+          home: AboutUsScreen(),
+        ),
+      );
       expect(find.text("About"), findsOneWidget);
       expect(find.text("Report an Issue"), findsOneWidget);
       expect(find.text("Having an issue ? Report it here"), findsOneWidget);

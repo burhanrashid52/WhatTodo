@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/main.dart' as app;
 import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+
+import 'test_helper.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -13,9 +14,9 @@ void main() {
       app.main();
 
       await tester.pumpAndSettle();
-      var sideDrawer = find.byKey(ValueKey(SideDrawerKeys.DRAWER));
-      var drawerLabels = find.byKey(ValueKey(SideDrawerKeys.DRAWER_LABELS));
-      var addLabel = find.byKey(ValueKey(SideDrawerKeys.ADD_LABEL));
+      var sideDrawer = find.byValueKey(SideDrawerKeys.DRAWER);
+      var drawerLabels = find.byValueKey(SideDrawerKeys.DRAWER_LABELS);
+      var addLabel = find.byValueKey(SideDrawerKeys.ADD_LABEL);
       await tester.tap(sideDrawer);
       await tester.pumpAndSettle();
 
@@ -30,13 +31,12 @@ void main() {
 
     testWidgets('Enter Label Details and verify on Side drawer screen',
         (WidgetTester tester) async {
-
       app.main();
       await tester.pumpAndSettle();
 
-      var sideDrawer = find.byKey(ValueKey(SideDrawerKeys.DRAWER));
-      var drawerLabels = find.byKey(ValueKey(SideDrawerKeys.DRAWER_LABELS));
-      var addLabel = find.byKey(ValueKey(SideDrawerKeys.ADD_LABEL));
+      var sideDrawer = find.byValueKey(SideDrawerKeys.DRAWER);
+      var drawerLabels = find.byValueKey(SideDrawerKeys.DRAWER_LABELS);
+      var addLabel = find.byValueKey(SideDrawerKeys.ADD_LABEL);
       await tester.tap(sideDrawer);
       await tester.pumpAndSettle();
 
@@ -47,12 +47,12 @@ void main() {
       await tester.pumpAndSettle();
 
       var addLabelNameField =
-          find.byKey(ValueKey(AddLabelKeys.TEXT_FORM_LABEL_NAME));
+          find.byValueKey(AddLabelKeys.TEXT_FORM_LABEL_NAME);
 
       await tester.enterText(addLabelNameField, "Android");
       await tester.pumpAndSettle();
 
-      var addLabelButton = find.byKey(ValueKey(AddLabelKeys.ADD_LABEL_BUTTON));
+      var addLabelButton = find.byValueKey(AddLabelKeys.ADD_LABEL_BUTTON);
       await tester.tap(addLabelButton);
       await tester.pumpAndSettle();
 
