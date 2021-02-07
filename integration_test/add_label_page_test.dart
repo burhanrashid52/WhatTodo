@@ -12,19 +12,13 @@ void main() {
     testWidgets('Test Add Label screen display on click of Add Label button',
         (WidgetTester tester) async {
       app.main();
-
-      await tester.pumpAndSettle();
-      var sideDrawer = find.byValueKey(SideDrawerKeys.DRAWER);
-      var drawerLabels = find.byValueKey(SideDrawerKeys.DRAWER_LABELS);
-      var addLabel = find.byValueKey(SideDrawerKeys.ADD_LABEL);
-      await tester.tap(sideDrawer);
       await tester.pumpAndSettle();
 
-      await tester.tap(drawerLabels);
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER);
 
-      await tester.tap(addLabel);
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER_LABELS);
+
+      await tester.tapAndSettle(SideDrawerKeys.ADD_LABEL);
 
       expect(find.text("Add Label"), findsOneWidget);
     });
@@ -34,17 +28,11 @@ void main() {
       app.main();
       await tester.pumpAndSettle();
 
-      var sideDrawer = find.byValueKey(SideDrawerKeys.DRAWER);
-      var drawerLabels = find.byValueKey(SideDrawerKeys.DRAWER_LABELS);
-      var addLabel = find.byValueKey(SideDrawerKeys.ADD_LABEL);
-      await tester.tap(sideDrawer);
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER);
 
-      await tester.tap(drawerLabels);
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER_LABELS);
 
-      await tester.tap(addLabel);
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.ADD_LABEL);
 
       var addLabelNameField =
           find.byValueKey(AddLabelKeys.TEXT_FORM_LABEL_NAME);
@@ -52,15 +40,11 @@ void main() {
       await tester.enterText(addLabelNameField, "Android");
       await tester.pumpAndSettle();
 
-      var addLabelButton = find.byValueKey(AddLabelKeys.ADD_LABEL_BUTTON);
-      await tester.tap(addLabelButton);
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(AddLabelKeys.ADD_LABEL_BUTTON);
 
-      await tester.tap(sideDrawer);
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER);
 
-      await tester.tap(drawerLabels);
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER_LABELS);
 
       expect(find.text("@ Android"), findsOneWidget);
       //TODO Match the Label color as well

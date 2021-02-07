@@ -16,11 +16,9 @@ void main() {
       await tester.pumpAndSettle();
       await seedDataInDb();
 
-      await tester.tap(find.byValueKey(SideDrawerKeys.DRAWER));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER);
 
-      await tester.tap(find.byValueKey(SideDrawerKeys.TODAY));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.TODAY);
 
 
       //swipe left to mark as complete
@@ -28,11 +26,9 @@ void main() {
       await tester.drag(firstTaskListItem, const Offset(-300.0, 0.0));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byValueKey(CompletedTaskPageKeys.POPUP_ACTION));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(CompletedTaskPageKeys.POPUP_ACTION);
 
-      await tester.tap(find.byValueKey(CompletedTaskPageKeys.COMPLETED_TASKS));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(CompletedTaskPageKeys.COMPLETED_TASKS);
 
       expect(find.text("Task One"), findsOneWidget);
 

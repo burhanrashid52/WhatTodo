@@ -8,15 +8,12 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group("Add Tasks", () {
-
     testWidgets('Enter Task Details and verify on Task page screen',
         (WidgetTester tester) async {
-
       app.main();
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byValueKey(HomePageKeys.ADD_NEW_TASK_BUTTON));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(HomePageKeys.ADD_NEW_TASK_BUTTON);
 
       expect(find.text("Add Task"), findsOneWidget);
 
@@ -25,12 +22,10 @@ void main() {
       await tester.pumpAndSettle();
       //TODO: 1. Add Project in selection 2. Add Label from dialog 3. Change due date
 
-      await tester.tap(find.byValueKey(AddTaskKeys.ADD_TASK));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(AddTaskKeys.ADD_TASK);
 
       expect(find.text("First Task"), findsOneWidget);
       expect(find.text("Inbox"), findsOneWidget);
-
     });
   });
 }

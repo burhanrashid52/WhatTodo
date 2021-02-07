@@ -13,16 +13,13 @@ void main() {
         'Test Add Project screen display on click of Add Project button',
         (WidgetTester tester) async {
       app.main();
-
-      await tester.pumpAndSettle();
-      await tester.tap(find.byValueKey(SideDrawerKeys.DRAWER));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byValueKey(SideDrawerKeys.DRAWER_PROJECTS));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER);
 
-      await tester.tap(find.byValueKey(SideDrawerKeys.ADD_PROJECT));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER_PROJECTS);
+
+      await tester.tapAndSettle(SideDrawerKeys.ADD_PROJECT);
 
       expect(find.text("Add Project"), findsOneWidget);
     }, skip: true);
@@ -32,27 +29,21 @@ void main() {
       app.main();
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byValueKey(SideDrawerKeys.DRAWER));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER);
 
-      await tester.tap(find.byValueKey(SideDrawerKeys.DRAWER_PROJECTS));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER_PROJECTS);
 
-      await tester.tap(find.byValueKey(SideDrawerKeys.ADD_PROJECT));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.ADD_PROJECT);
 
       final addProjectName =
           find.byValueKey(AddProjectKeys.TEXT_FORM_PROJECT_NAME);
       await tester.enterText(addProjectName, "Personal");
 
-      await tester.tap(find.byValueKey(AddProjectKeys.ADD_PROJECT_BUTTON));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(AddProjectKeys.ADD_PROJECT_BUTTON);
 
-      await tester.tap(find.byValueKey(SideDrawerKeys.DRAWER));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER);
 
-      await tester.tap(find.byValueKey(SideDrawerKeys.DRAWER_PROJECTS));
-      await tester.pumpAndSettle();
+      await tester.tapAndSettle(SideDrawerKeys.DRAWER_PROJECTS);
 
       expect(find.text("Personal"), findsOneWidget);
       //TODO Match the project color as well
