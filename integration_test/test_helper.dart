@@ -12,11 +12,19 @@ extension TestFinder on CommonFinders {
   }
 }
 
+extension TestWidgetTester on WidgetTester {
+  Future<void> tapAndSettle(String key) async {
+    await this.tap(find.byKey(ValueKey(key)));
+    await pumpAndSettle();
+  }
+}
+
 seedDataInDb() async {
   var projectDB = ProjectDB.get();
   await projectDB.insertOrReplace(testProject1);
   await projectDB.insertOrReplace(testProject2);
   await projectDB.insertOrReplace(testProject3);
+  await projectDB.insertOrReplace(testProject4);
 
   var labelDB = LabelDB.get();
   await labelDB.updateLabels(testLabel1);
@@ -29,7 +37,7 @@ seedDataInDb() async {
   await taskDB.updateTask(testTask3);
 }
 
-void cleanDb() async {
+cleanDb() async {
   var projectDB = ProjectDB.get();
   projectDB.deleteProject(1);
   projectDB.deleteProject(2);
