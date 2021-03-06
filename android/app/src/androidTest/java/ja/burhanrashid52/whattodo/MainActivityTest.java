@@ -1,7 +1,7 @@
-package com.burhanrashid52.whattodo;
+package ja.burhanrashid52.whattodo;
 
 import androidx.test.rule.ActivityTestRule;
-import com.burhanrashid52.whattodo.MainActivity;
+import ja.burhanrashid52.whattodo.MainActivity;
 import dev.flutter.plugins.integration_test.FlutterTestRunner;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
