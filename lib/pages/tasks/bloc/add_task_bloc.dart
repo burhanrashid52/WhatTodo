@@ -43,7 +43,7 @@ class AddTaskBloc implements BlocBase {
 
   Stream<String> get labelSelection => _labelSelected.stream;
 
-  List<Label> _selectedLabelList = List();
+  List<Label> _selectedLabelList = [];
 
   List<Label> get selectedLabels => _selectedLabelList;
 
@@ -93,7 +93,7 @@ class AddTaskBloc implements BlocBase {
   }
 
   void _buildLabelsString() {
-    List<String> selectedLabelNameList = List();
+    List<String> selectedLabelNameList = [];
     _selectedLabelList.forEach((label) {
       selectedLabelNameList.add("@${label.name}");
     });
@@ -111,7 +111,7 @@ class AddTaskBloc implements BlocBase {
   Observable<String> createTask() {
     return Observable.zip3(selectedProject, dueDateSelected, prioritySelected,
         (Project project, int dueDateSelected, Status status) {
-      List<int> labelIds = List();
+      List<int> labelIds = [];
       _selectedLabelList.forEach((label) {
         labelIds.add(label.id);
       });

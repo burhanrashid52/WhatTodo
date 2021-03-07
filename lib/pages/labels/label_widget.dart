@@ -44,7 +44,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
 
   List<Widget> buildLabels(BuildContext context) {
     LabelBloc _labelBloc = BlocProvider.of(context);
-    List<Widget> projectWidgetList = List();
+    List<Widget> projectWidgetList = [];
     _labels.forEach((label) => projectWidgetList.add(LabelRow(label)));
     projectWidgetList.add(ListTile(
         leading: Icon(Icons.add),

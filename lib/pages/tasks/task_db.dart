@@ -44,7 +44,7 @@ class TaskDB {
   }
 
   List<Tasks> _bindData(List<Map<String, dynamic>> result) {
-    List<Tasks> tasks = List();
+    List<Tasks> tasks = [];
     for (Map<String, dynamic> item in result) {
       var myTask = Tasks.fromMap(item);
       myTask.projectName = item[Project.dbName];

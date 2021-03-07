@@ -42,7 +42,7 @@ class ProjectExpansionTileWidget extends StatelessWidget {
   }
 
   List<Widget> buildProjects(BuildContext context) {
-    List<Widget> projectWidgetList = List();
+    List<Widget> projectWidgetList = [];
     _projects.forEach((project) => projectWidgetList.add(ProjectRow(project)));
     projectWidgetList.add(ListTile(
       key: ValueKey(SideDrawerKeys.ADD_PROJECT),

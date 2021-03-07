@@ -8,7 +8,7 @@ import 'package:flutter_app/utils/app_constant.dart';
 class TaskRow extends StatelessWidget {
   final Tasks tasks;
   static final date_label = "Date";
-  final List<String> labelNames = List();
+  final List<String> labelNames = [];
 
   TaskRow(this.tasks);
 

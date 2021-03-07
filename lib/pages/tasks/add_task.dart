@@ -12,14 +12,12 @@ import 'package:flutter_app/utils/date_util.dart';
 import 'package:flutter_app/utils/keys.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     AddTaskBloc createTaskBloc = BlocProvider.of(context);
     return Scaffold(
-      key: _scaffoldState,
       appBar: AppBar(
         title: Text(
           "Add Task",
@@ -101,7 +99,7 @@ class AddTaskScreen extends StatelessWidget {
             title: Text("Comments"),
             subtitle: Text("No Comments"),
             onTap: () {
-              showSnackbar(_scaffoldState, "Coming Soon");
+              showSnackbar(context, "Coming Soon");
             },
           ),
           ListTile(
@@ -109,7 +107,7 @@ class AddTaskScreen extends StatelessWidget {
             title: Text("Reminder"),
             subtitle: Text("No Reminder"),
             onTap: () {
-              showSnackbar(_scaffoldState, "Coming Soon");
+              showSnackbar(context, "Coming Soon");
             },
           )
         ],
@@ -164,7 +162,7 @@ class AddTaskScreen extends StatelessWidget {
         builder: (BuildContext dialogContext) {
           return StreamBuilder(
               stream: createTaskBloc.projects,
-              initialData: List<Project>(),
+              initialData: <Project>[],
               builder: (context, snapshot) {
                 return SimpleDialog(
                   title: const Text('Select Project'),
@@ -182,7 +180,7 @@ class AddTaskScreen extends StatelessWidget {
         builder: (BuildContext context) {
           return StreamBuilder(
               stream: createTaskBloc.labels,
-              initialData: List<Label>(),
+              initialData: <Label>[],
               builder: (context, snapshot) {
                 return SimpleDialog(
                   title: const Text('Select Labels'),
@@ -197,7 +195,7 @@ class AddTaskScreen extends StatelessWidget {
     BuildContext context,
     List<Project> projectList,
   ) {
-    List<Widget> projects = List();
+    List<Widget> projects = [];
     projectList.forEach((project) {
       projects.add(ListTile(
         leading: Container(
@@ -222,7 +220,7 @@ class AddTaskScreen extends StatelessWidget {
     BuildContext context,
     List<Label> labelList,
   ) {
-    List<Widget> labels = List();
+    List<Widget> labels = [];
     labelList.forEach((label) {
       labels.add(ListTile(
         leading: Icon(Icons.label, color: Color(label.colorValue), size: 18.0),

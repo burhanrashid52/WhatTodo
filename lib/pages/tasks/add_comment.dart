@@ -21,14 +21,14 @@ Future<String> showCommentDialog(BuildContext context) async {
         return AlertDialog(
           content: TextField(),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
                 onPressed: () {
                   Navigator.pop(context,"");
                 },
                 child: Text("CANCEL",
                     style:
                         TextStyle(color: Theme.of(context).accentColor))),
-            FlatButton(
+            TextButton(
                 onPressed:() {},
                 child: Text("SAVE",
                     style: TextStyle(color: Theme.of(context).accentColor)))

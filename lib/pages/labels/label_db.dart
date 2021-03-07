@@ -39,7 +39,7 @@ class LabelDB {
   Future<List<Label>> getLabels() async {
     var db = await _appDatabase.getDb();
     var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
-    List<Label> labels = List();
+    List<Label> labels = [];
     for (Map<String, dynamic> item in result) {
       var myLabels = Label.fromMap(item);
       labels.add(myLabels);

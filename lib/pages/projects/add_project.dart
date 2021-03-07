@@ -86,7 +86,7 @@ class AddProject extends StatelessWidget {
   }
 
   List<Widget> buildMaterialColors(ProjectBloc projectBloc) {
-    List<Widget> projectWidgetList = List();
+    List<Widget> projectWidgetList = [];
     colorsPalettes.forEach((colors) {
       projectWidgetList.add(ListTile(
         leading: Container(

@@ -9,7 +9,6 @@ import 'package:flutter_app/utils/keys.dart';
 
 class AddLabel extends StatelessWidget {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   final expansionTile = GlobalKey<CollapsibleExpansionTileState>();
 
   @override
@@ -19,13 +18,12 @@ class AddLabel extends StatelessWidget {
     String labelName = "";
     labelBloc.labelsExist.listen((isExist) {
       if (isExist) {
-        showSnackbar(_scaffoldState, "Label already exists");
+        showSnackbar(context, "Label already exists");
       } else {
         Navigator.pop(context);
       }
     });
     return Scaffold(
-      key: _scaffoldState,
       appBar: AppBar(
         title: Text(
           "Add Label",
@@ -93,7 +91,7 @@ class AddLabel extends StatelessWidget {
   }
 
   List<Widget> buildMaterialColors(LabelBloc labelBloc) {
-    List<Widget> projectWidgetList = List();
+    List<Widget> projectWidgetList = [];
     colorsPalettes.forEach((colors) {
       projectWidgetList.add(ListTile(
         leading: Icon(

@@ -48,7 +48,7 @@ class TasksPage extends StatelessWidget {
                             message = "Task deleted";
                           }
                           SnackBar snackbar = SnackBar(content: Text(message));
-                          Scaffold.of(context).showSnackBar(snackbar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
                         },
                         background: Container(
                           color: Colors.red,

@@ -36,7 +36,7 @@ class TaskCompletedPage extends StatelessWidget {
                                   taskID, TaskStatus.PENDING);
                               SnackBar snackbar =
                                   SnackBar(content: Text("Task Undo"));
-                              Scaffold.of(context).showSnackBar(snackbar);
+                              ScaffoldMessenger.of(context).showSnackBar(snackbar);
                             }
                           },
                           secondaryBackground: Container(
