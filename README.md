@@ -1,6 +1,7 @@
 # WhatTodo
 
 [![Codemagic build status](https://api.codemagic.io/apps/5d43b6fe9585dc25b92df7d2/5d43b6fe9585dc25b92df7d1/status_badge.svg)](https://codemagic.io/apps/5d43b6fe9585dc25b92df7d2/5d43b6fe9585dc25b92df7d1/latest_build) ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg) ![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg) [![Uplabs](https://img.shields.io/badge/Uplabs-WhatTodo-orange.svg)](https://www.uplabs.com/posts/whattodo) [![FlutterWeekly](https://img.shields.io/badge/Flutter%20Weekly-%2319-pink.svg)](https://mailchi.mp/193f2a7fe907/flutter-weekly-257173) [![AwesomeAndroid](https://img.shields.io/badge/Awesome%20Android-%23101-yellow.svg)](https://android.libhunt.com/newsletter/101)
+<a href="https://www.buymeacoffee.com/burhanrashid52" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
 ![logo](/assets/Logo/horizontal.png)
 
@@ -8,6 +9,7 @@ Life can feel overwhelming. But it doesn’t have to.
 
 A Simple To-do app design in flutter to keep track of your task on daily basis. You can add project, labels and due-date to your tasks
 
+[<img src="https://raw.githubusercontent.com/steverichey/google-play-badge-svg/master/img/en_get.svg" width="300">](https://play.google.com/store/apps/details?id=ja.burhanrashid52.whattodo)
 
 ## Features
 
