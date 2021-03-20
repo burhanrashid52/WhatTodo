@@ -4,16 +4,17 @@ import 'package:flutter_app/pages/tasks/row_task.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/pages/tasks/task_widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'task_list_dissmissble_widget_test.mocks.dart';
 import 'test_data.dart';
 import 'test_helpers.dart';
 
-class MockTaskDb extends Mock implements TaskDB {}
-
+@GenerateMocks([TaskDB])
 void main() {
   testWidgets(("Task page with empty task list"), (tester) async {
-    final mockTaskDb = MockTaskDb();
+    final mockTaskDb = MockTaskDB();
 
     //Return empty task list
     when(mockTaskDb.getTasks(
@@ -37,7 +38,7 @@ void main() {
   });
 
   testWidgets(("Task page with 3 task list"), (tester) async {
-    final mockTaskDb = MockTaskDb();
+    final mockTaskDb = MockTaskDB();
 
     testTask1.projectName = testProject1.name;
     testTask1.projectColor = testProject1.colorValue;
@@ -67,14 +68,14 @@ void main() {
     taskBloc.refresh();
     await tester.pump();
     expect(find.byType(TaskRow), findsNWidgets(3));
-    expect(find.text(testTask1.title), findsOneWidget);
-    expect(find.text(testTask2.title), findsOneWidget);
-    expect(find.text(testTask3.title), findsOneWidget);
+    expect(find.text(testTask1.title!), findsOneWidget);
+    expect(find.text(testTask2.title!), findsOneWidget);
+    expect(find.text(testTask3.title!), findsOneWidget);
     expect(find.text("No Task Added"), findsNothing);
   });
 
   testWidgets(("Swipe left to mark task as completed"), (tester) async {
-    final mockTaskDb = MockTaskDb();
+    final mockTaskDb = MockTaskDB();
 
     testTask1.projectName = testProject1.name;
     testTask1.projectColor = testProject1.colorValue;
@@ -113,8 +114,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(TaskRow), findsNWidgets(1));
-    expect(find.text(testTask1.title), findsNothing);
-    expect(find.text(testTask2.title), findsOneWidget);
+    expect(find.text(testTask1.title!), findsNothing);
+    expect(find.text(testTask2.title!), findsOneWidget);
     expect(verify(mockTaskDb.deleteTask(captureAny)).captured.single,
         testTask1.id);
   });

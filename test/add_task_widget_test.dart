@@ -8,8 +8,10 @@ import 'package:flutter_app/pages/tasks/bloc/add_task_bloc.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'add_task_widget_test.mocks.dart';
 import 'test_data.dart';
 import 'test_helpers.dart';
 
@@ -19,7 +21,7 @@ class FakeTaskDb implements TaskDB {
 
   Future updateTask(Tasks task, {List<int>? labelIDs}) async {
     this.task = task;
-    this.labelIds = labelIDs;
+    this.labelIds = labelIDs!;
     return Future.value();
   }
 
@@ -55,18 +57,16 @@ class FakeTaskDb implements TaskDB {
   }
 }
 
-class MockProjectDb extends Mock implements ProjectDB {}
 
-class MockLabelDb extends Mock implements LabelDB {}
-
+@GenerateMocks([ProjectDB, LabelDB])
 void main() {
   group("Add Task", () {
     testWidgets("Add Task", (tester) async {
-      final mockProjectDb = MockProjectDb();
+      final mockProjectDb = MockProjectDB();
       when(mockProjectDb.getProjects(isInboxVisible: true)).thenAnswer(
-          (_) => Future.value([testProject1, testProject2, testProject3]));
+          (_) async => [testProject1, testProject2, testProject3]);
 
-      final mockLabelDb = MockLabelDb();
+      final mockLabelDb = MockLabelDB();
       when(mockLabelDb.getLabels()).thenAnswer(
           (_) => Future.value([testLabel1, testLabel2, testLabel3]));
 
