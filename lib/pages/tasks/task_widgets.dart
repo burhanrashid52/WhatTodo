@@ -13,7 +13,7 @@ class TasksPage extends StatelessWidget {
       stream: _tasksBloc.tasks,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return _buildTaskList(snapshot.data);
+          return _buildTaskList(snapshot.data!);
         } else {
           return Center(
             child: CircularProgressIndicator(),
@@ -35,7 +35,7 @@ class TasksPage extends StatelessWidget {
                     return Dismissible(
                         key: ValueKey("swipe_${list[index].id}_$index"),
                         onDismissed: (DismissDirection direction) {
-                          var taskID = list[index].id;
+                          var taskID = list[index].id!;
                           final TaskBloc _tasksBloc =
                               BlocProvider.of<TaskBloc>(context);
                           String message = "";

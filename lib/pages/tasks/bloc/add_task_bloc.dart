@@ -108,20 +108,21 @@ class AddTaskBloc implements BlocBase {
     lastPrioritySelection = priority;
   }
 
-  Observable<String> createTask() {
-    return Observable.zip3(selectedProject, dueDateSelected, prioritySelected,
+  Stream createTask() {
+    return ZipStream.zip3(selectedProject, dueDateSelected, prioritySelected,
         (Project project, int dueDateSelected, Status status) {
       List<int> labelIds = [];
       _selectedLabelList.forEach((label) {
-        labelIds.add(label.id);
+        labelIds.add(label.id!);
       });
 
       var task = Tasks.create(
         title: updateTitle,
         dueDate: dueDateSelected,
         priority: status,
-        projectId: project.id,
+        projectId: project.id!,
       );
+
       _taskDB.updateTask(task, labelIDs: labelIds).then((task) {
         Notification.onDone();
       });

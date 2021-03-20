@@ -7,12 +7,12 @@ class Label {
   static final dbColorCode = "colorCode";
   static final dbColorName = "colorName";
 
-  int id, colorValue;
-  String name, colorName;
+  int? id, colorValue;
+  String? name, colorName;
 
   Label.create(this.name, this.colorValue, this.colorName);
 
-  Label.update({@required this.id, name = "", colorCode = "", colorName = ""}) {
+  Label.update({required this.id, name = "", colorCode = "", colorName = ""}) {
     if (name != "") {
       this.name = name;
     }

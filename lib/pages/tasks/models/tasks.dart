@@ -11,18 +11,19 @@ class Tasks {
   static final dbStatus = "status";
   static final dbProjectID = "projectId";
 
-  String title, comment, projectName;
-  int id, dueDate, projectId, projectColor;
-  Status priority;
-  TaskStatus tasksStatus;
-  List<String> labelList = [];
+  String? title, comment, projectName;
+  int? id, dueDate, projectId, projectColor;
+  Status? priority;
+  TaskStatus? tasksStatus;
+  List<String>? labelList = [];
 
-  Tasks.create(
-      {@required this.title,
-      @required this.projectId,
-      this.comment = "",
-      this.dueDate = -1,
-      this.priority = Status.PRIORITY_4}) {
+  Tasks.create({
+    required this.title,
+    required this.projectId,
+    this.comment = "",
+    this.dueDate = -1,
+    this.priority = Status.PRIORITY_4,
+  }) {
     if (this.dueDate == -1) {
       this.dueDate = DateTime.now().millisecondsSinceEpoch;
     }
@@ -31,14 +32,15 @@ class Tasks {
 
   bool operator ==(o) => o is Tasks && o.id == id;
 
-  Tasks.update(
-      {@required this.id,
-      @required this.title,
-      @required this.projectId,
-      this.comment = "",
-      this.dueDate =-1,
-      this.priority = Status.PRIORITY_4,
-      this.tasksStatus = TaskStatus.PENDING}) {
+  Tasks.update({
+    required this.id,
+    required this.title,
+    required this.projectId,
+    this.comment = "",
+    this.dueDate = -1,
+    this.priority = Status.PRIORITY_4,
+    this.tasksStatus = TaskStatus.PENDING,
+  }) {
     if (this.dueDate == -1) {
       this.dueDate = DateTime.now().millisecondsSinceEpoch;
     }

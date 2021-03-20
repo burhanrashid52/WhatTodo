@@ -13,7 +13,7 @@ class AddProject extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProjectBloc _projectBloc = BlocProvider.of(context);
-    ColorPalette currentSelectedPalette;
+    late ColorPalette currentSelectedPalette;
     String projectName = "";
     return Scaffold(
       appBar: AppBar(
@@ -29,8 +29,8 @@ class AddProject extends StatelessWidget {
             color: Colors.white,
           ),
           onPressed: () {
-            if (_formState.currentState.validate()) {
-              _formState.currentState.save();
+            if (_formState.currentState!.validate()) {
+              _formState.currentState!.save();
               var project = Project.create(
                   projectName,
                   currentSelectedPalette.colorValue,
@@ -49,10 +49,10 @@ class AddProject extends StatelessWidget {
                 decoration: InputDecoration(hintText: "Project Name"),
                 maxLength: 20,
                 validator: (value) {
-                  return value.isEmpty ? "Project name cannot be empty" : null;
+                  return value!.isEmpty ? "Project name cannot be empty" : null;
                 },
                 onSaved: (value) {
-                  projectName = value;
+                  projectName = value!;
                 },
               ),
             ),
@@ -60,21 +60,21 @@ class AddProject extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: StreamBuilder(
+            child: StreamBuilder<ColorPalette>(
               stream: _projectBloc.colorSelection,
               initialData: ColorPalette("Grey", Colors.grey.value),
               builder: (context, snapshot) {
-                currentSelectedPalette = snapshot.data;
+                currentSelectedPalette = snapshot.data!;
                 return CollapsibleExpansionTile(
                   key: expansionTile,
                   leading: Container(
                     width: 12.0,
                     height: 12.0,
                     child: CircleAvatar(
-                      backgroundColor: Color(snapshot.data.colorValue),
+                      backgroundColor: Color(snapshot.data!.colorValue),
                     ),
                   ),
-                  title: Text(snapshot.data.colorName),
+                  title: Text(snapshot.data!.colorName),
                   children: buildMaterialColors(_projectBloc),
                 );
               },
@@ -98,7 +98,7 @@ class AddProject extends StatelessWidget {
         ),
         title: Text(colors.colorName),
         onTap: () {
-          expansionTile.currentState.collapse();
+          expansionTile.currentState!.collapse();
           projectBloc.updateColorSelection(
             ColorPalette(colors.colorName, colors.colorValue),
           );

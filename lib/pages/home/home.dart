@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
             stream: homeBloc.title,
             builder: (context, snapshot) {
               return Text(
-                snapshot.data,
+                snapshot.data!,
                 key: ValueKey(HomePageKeys.HOME_TITLE),
               );
             }),
@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
               Icons.view_headline,
               key: ValueKey(SideDrawerKeys.DRAWER),
             ),
-            onPressed: () => _scaffoldKey.currentState.openDrawer()),
+            onPressed: () => _scaffoldKey.currentState!.openDrawer()),
       ),
       floatingActionButton: FloatingActionButton(
         key: ValueKey(HomePageKeys.ADD_NEW_TASK_BUTTON),

@@ -16,7 +16,7 @@ class ProjectPage extends StatelessWidget {
       stream: projectBloc.projects,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ProjectExpansionTileWidget(snapshot.data);
+          return ProjectExpansionTileWidget(snapshot.data!);
         } else {
           return CircularProgressIndicator();
         }
@@ -78,7 +78,7 @@ class ProjectRow extends StatelessWidget {
     return ListTile(
       key: ValueKey("tile_${project.name}_${project.id}"),
       onTap: () {
-        homeBloc.applyFilter(project.name, Filter.byProject(project.id));
+        homeBloc.applyFilter(project.name!, Filter.byProject(project.id!));
         Navigator.pop(context);
       },
       leading: Container(
@@ -87,7 +87,7 @@ class ProjectRow extends StatelessWidget {
         height: 24.0,
       ),
       title: Text(
-        project.name,
+        project.name!,
         key: ValueKey("${project.name}_${project.id}"),
       ),
       trailing: Container(
@@ -95,7 +95,7 @@ class ProjectRow extends StatelessWidget {
         width: 10.0,
         child: CircleAvatar(
           key: ValueKey("dot_${project.name}_${project.id}"),
-          backgroundColor: Color(project.colorValue),
+          backgroundColor: Color(project.colorValue!),
         ),
       ),
     );

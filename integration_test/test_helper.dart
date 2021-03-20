@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';

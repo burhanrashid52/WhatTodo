@@ -8,8 +8,8 @@ class Project {
   static final dbColorCode = "colorCode";
   static final dbColorName = "colorName";
 
-  int id, colorValue;
-  String name, colorName;
+  int? id, colorValue;
+  String? name, colorName;
 
   Project.create(this.name, this.colorValue, this.colorName);
 

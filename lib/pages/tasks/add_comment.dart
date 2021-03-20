@@ -14,7 +14,7 @@ class _AddCommentDialogState extends State<AddCommentDialog> {
   }
 }
 
-Future<String> showCommentDialog(BuildContext context) async {
+Future<String?> showCommentDialog(BuildContext context) async {
   return await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
@@ -23,13 +23,12 @@ Future<String> showCommentDialog(BuildContext context) async {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Navigator.pop(context,"");
+                  Navigator.pop(context, "");
                 },
                 child: Text("CANCEL",
-                    style:
-                        TextStyle(color: Theme.of(context).accentColor))),
+                    style: TextStyle(color: Theme.of(context).accentColor))),
             TextButton(
-                onPressed:() {},
+                onPressed: () {},
                 child: Text("SAVE",
                     style: TextStyle(color: Theme.of(context).accentColor)))
           ],

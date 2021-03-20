@@ -22,16 +22,16 @@ class TaskCompletedPage extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
-                    itemCount: snapshot.data.length,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       return Dismissible(
                           key: ValueKey(
-                              "swipe_completed_${snapshot.data[index].id}_$index"),
+                              "swipe_completed_${snapshot.data![index].id}_$index"),
                           direction: DismissDirection.endToStart,
                           background: Container(),
                           onDismissed: (DismissDirection directions) {
                             if (directions == DismissDirection.endToStart) {
-                              var taskID = snapshot.data[index].id;
+                              final taskID = snapshot.data![index].id!;
                               _taskBloc.updateStatus(
                                   taskID, TaskStatus.PENDING);
                               SnackBar snackbar =
@@ -48,7 +48,7 @@ class TaskCompletedPage extends StatelessWidget {
                                       fontWeight: FontWeight.bold)),
                             ),
                           ),
-                          child: TaskCompletedRow(snapshot.data[index]));
+                          child: TaskCompletedRow(snapshot.data![index]));
                     });
               } else {
                 return Center(child: CircularProgressIndicator());

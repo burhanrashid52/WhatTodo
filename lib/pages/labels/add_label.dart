@@ -13,7 +13,7 @@ class AddLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorPalette currentSelectedPalette;
+    late ColorPalette currentSelectedPalette;
     LabelBloc labelBloc = BlocProvider.of(context);
     String labelName = "";
     labelBloc.labelsExist.listen((isExist) {
@@ -37,8 +37,8 @@ class AddLabel extends StatelessWidget {
             color: Colors.white,
           ),
           onPressed: () async {
-            if (_formState.currentState.validate()) {
-              _formState.currentState.save();
+            if (_formState.currentState!.validate()) {
+              _formState.currentState!.save();
               var label = Label.create(
                   labelName,
                   currentSelectedPalette.colorValue,
@@ -56,10 +56,10 @@ class AddLabel extends StatelessWidget {
                 decoration: InputDecoration(hintText: "Label Name"),
                 maxLength: 20,
                 validator: (value) {
-                  return value.isEmpty ? "Label Cannot be empty" : null;
+                  return value!.isEmpty ? "Label Cannot be empty" : null;
                 },
                 onSaved: (value) {
-                  labelName = value;
+                  labelName = value!;
                 },
               ),
             ),
@@ -71,7 +71,7 @@ class AddLabel extends StatelessWidget {
               stream: labelBloc.colorSelection,
               initialData: ColorPalette("Grey", Colors.grey.value),
               builder: (context, snapshot) {
-                currentSelectedPalette = snapshot.data;
+                currentSelectedPalette = snapshot.data!;
                 return CollapsibleExpansionTile(
                   key: expansionTile,
                   leading: Icon(
@@ -101,7 +101,7 @@ class AddLabel extends StatelessWidget {
         ),
         title: Text(colors.colorName),
         onTap: () {
-          expansionTile.currentState.collapse();
+          expansionTile.currentState!.collapse();
           labelBloc.updateColorSelection(
             ColorPalette(colors.colorName, colors.colorValue),
           );

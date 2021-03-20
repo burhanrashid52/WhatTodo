@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_test/flutter_test.dart';
