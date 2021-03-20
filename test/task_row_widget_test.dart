@@ -19,7 +19,7 @@ void main() {
 
     var container = tester.findWidgetByKey<Container>("taskPriority_1");
     expect(
-        container.getBorderLeftColor(), priorityColor[testTask.priority.index]);
+        container.getBorderLeftColor(), priorityColor[testTask.priority!.index]);
   }
 
   testWidgets("Task row smoke test without labels",
@@ -40,13 +40,13 @@ void main() {
     var wrapMaterialApp = TaskRow(testTask1).wrapMaterialApp();
     await tester.pumpWidget(wrapMaterialApp);
 
-    expect(find.text(testTask1.title), findsOneWidget);
-    expect(find.text(testTask1.projectName), findsOneWidget);
+    expect(find.text(testTask1.title!), findsOneWidget);
+    expect(find.text(testTask1.projectName!), findsOneWidget);
     expect(find.text('Aug  15'), findsOneWidget);
 
     var container = tester.findWidgetByKey<Container>("taskPriority_1");
     expect(container.getBorderLeftColor(),
-        priorityColor[testTask1.priority.index]);
+        priorityColor[testTask1.priority!.index]);
 
     //Test no label is visible
     expect(find.byKey(ValueKey("taskLabels_1")), findsNothing);
@@ -70,8 +70,8 @@ void main() {
     var wrapMaterialApp = TaskRow(testTask1).wrapMaterialApp();
     await tester.pumpWidget(wrapMaterialApp);
 
-    expect(find.text(testTask1.title), findsOneWidget);
-    expect(find.text(testTask1.projectName), findsOneWidget);
+    expect(find.text(testTask1.title!), findsOneWidget);
+    expect(find.text(testTask1.projectName!), findsOneWidget);
     expect(find.text('Aug  15'), findsOneWidget);
 
     //Test labels are visible

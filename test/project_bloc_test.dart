@@ -12,7 +12,7 @@ class MockProjectDb extends Mock implements ProjectDB {}
 class FakeProjectDb extends Fake implements ProjectDB {
   var isInboxVisible = false;
   List<Project> projectList = List.empty(growable: true);
-  Project lastProjectCreated;
+  late Project lastProjectCreated;
 
   @override
   Future<List<Project>> getProjects({bool isInboxVisible = true}) async {

@@ -14,10 +14,10 @@ import 'test_data.dart';
 import 'test_helpers.dart';
 
 class FakeTaskDb implements TaskDB {
-  Tasks task;
-  List<int> labelIds;
+  Tasks? task;
+  List<int>? labelIds;
 
-  Future updateTask(Tasks task, {List<int> labelIDs}) async {
+  Future updateTask(Tasks task, {List<int>? labelIDs}) async {
     this.task = task;
     this.labelIds = labelIDs;
     return Future.value();
@@ -31,19 +31,19 @@ class FakeTaskDb implements TaskDB {
 
   @override
   Future<List<Tasks>> getTasks(
-      {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) {
+      {int startDate = 0, int endDate = 0, TaskStatus? taskStatus}) {
     // TODO: implement getTasks
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Tasks>> getTasksByLabel(String labelName, {TaskStatus status}) {
+  Future<List<Tasks>> getTasksByLabel(String labelName, {TaskStatus? status}) {
     // TODO: implement getTasksByLabel
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Tasks>> getTasksByProject(int projectId, {TaskStatus status}) {
+  Future<List<Tasks>> getTasksByProject(int projectId, {TaskStatus? status}) {
     // TODO: implement getTasksByProject
     throw UnimplementedError();
   }
@@ -89,9 +89,9 @@ void main() {
       await tester.tap(addTaskButtonFinder);
       await tester.pump();
 
-      expect(fakeTaskDb.task.title, "My Task");
-      expect(fakeTaskDb.task.priority, Status.PRIORITY_4);
-      expect(fakeTaskDb.task.projectId, Project.getInbox().id);
+      expect(fakeTaskDb.task!.title, "My Task");
+      expect(fakeTaskDb.task!.priority, Status.PRIORITY_4);
+      expect(fakeTaskDb.task!.projectId, Project.getInbox().id);
       expect(fakeTaskDb.labelIds, []);
     });
   });
