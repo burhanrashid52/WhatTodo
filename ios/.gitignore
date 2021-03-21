@@ -31,6 +31,7 @@ xcuserdata
 Icon?
 .tags*
 
+**/.symlinks/
 /Flutter/app.flx
 /Flutter/app.zip
 /Flutter/flutter_assets/
