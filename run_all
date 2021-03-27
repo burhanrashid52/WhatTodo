@@ -1,9 +1,0 @@
-#!/bin/bash
-
-echo "Running Test..."
-
-flutter drive \
-  --driver=test_driver/integration_test_driver.dart \
-  --target=integration_test/main.dart
-
-echo "Running Test Completed!!"

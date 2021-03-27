@@ -9,20 +9,10 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group("Add Projects", () {
-    testWidgets(
-        'Test Add Project screen display on click of Add Project button',
-        (WidgetTester tester) async {
-      app.main();
-      await tester.pumpAndSettle();
 
-      await tester.tapAndSettle(SideDrawerKeys.DRAWER);
-
-      await tester.tapAndSettle(SideDrawerKeys.DRAWER_PROJECTS);
-
-      await tester.tapAndSettle(SideDrawerKeys.ADD_PROJECT);
-
-      expect(find.text("Add Project"), findsOneWidget);
-    }, skip: true);
+    setUp(() async {
+      await cleanDb();
+    });
 
     testWidgets('Enter Project Details and verify on Side drawer screen',
         (WidgetTester tester) async {

@@ -5,11 +5,9 @@ import 'add_project_page_test.dart' as project;
 import 'add_task_page_test.dart' as tasks;
 import 'completed_tasks_page_test.dart' as tasks_completed;
 import 'home_page_test.dart' as home;
-import 'whattodo_tests.dart' as whattodo;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  whattodo.main();
   home.main();
   tasks.main();
   tasks_completed.main();

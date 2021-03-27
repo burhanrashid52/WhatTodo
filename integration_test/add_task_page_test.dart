@@ -7,7 +7,13 @@ import 'test_helper.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+
   group("Add Tasks", () {
+
+    setUp(() async {
+      await cleanDb();
+    });
+
     testWidgets('Enter Task Details and verify on Task page screen',
         (WidgetTester tester) async {
       app.main();

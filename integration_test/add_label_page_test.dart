@@ -9,18 +9,8 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group("Add Labels", () {
-    testWidgets('Test Add Label screen display on click of Add Label button',
-        (WidgetTester tester) async {
-      app.main();
-      await tester.pumpAndSettle();
-
-      await tester.tapAndSettle(SideDrawerKeys.DRAWER);
-
-      await tester.tapAndSettle(SideDrawerKeys.DRAWER_LABELS);
-
-      await tester.tapAndSettle(SideDrawerKeys.ADD_LABEL);
-
-      expect(find.text("Add Label"), findsOneWidget);
+    setUp(() async {
+      await cleanDb();
     });
 
     testWidgets('Enter Label Details and verify on Side drawer screen',

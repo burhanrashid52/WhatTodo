@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
+import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
+import 'package:flutter_app/pages/tasks/models/tasks.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -39,13 +42,20 @@ seedDataInDb() async {
 
 cleanDb() async {
   var projectDB = ProjectDB.get();
-  projectDB.deleteProject(1);
-  projectDB.deleteProject(2);
-  projectDB.deleteProject(3);
-  projectDB.deleteProject(4);
+  List<Project> projects = await projectDB.getProjects(isInboxVisible: false);
+  projects.forEach((project) {
+    projectDB.deleteProject(project.id);
+  });
 
   var labelDB = LabelDB.get();
-  labelDB.deleteLabel(1);
-  labelDB.deleteLabel(2);
-  labelDB.deleteLabel(3);
+  List<Label> labels = await labelDB.getLabels();
+  labels.forEach((label) {
+    labelDB.deleteLabel(label.id);
+  });
+
+  var taskDb = TaskDB.get();
+  List<Tasks> tasks = await taskDb.getTasks();
+  tasks.forEach((task) {
+    taskDb.deleteTask(task.id);
+  });
 }
