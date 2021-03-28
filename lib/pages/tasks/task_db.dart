@@ -19,7 +19,7 @@ class TaskDB {
     return _taskDb;
   }
 
-  Future<List<Tasks>?> getTasks(
+  Future<List<Tasks>> getTasks(
       {int startDate = 0, int endDate = 0, TaskStatus? taskStatus}) async {
     var db = await _appDatabase.getDb();
     var whereClause = startDate > 0 && endDate > 0
@@ -58,7 +58,7 @@ class TaskDB {
     return tasks;
   }
 
-  Future<List<Tasks>?> getTasksByProject(int projectId,
+  Future<List<Tasks>> getTasksByProject(int projectId,
       {TaskStatus? status}) async {
     var db = await _appDatabase.getDb();
     String whereStatus = status != null
@@ -73,7 +73,7 @@ class TaskDB {
     return _bindData(result);
   }
 
-  Future<List<Tasks>?> getTasksByLabel(String labelName,
+  Future<List<Tasks>> getTasksByLabel(String labelName,
       {TaskStatus? status}) async {
     var db = await _appDatabase.getDb();
     String whereStatus = status != null
@@ -109,7 +109,7 @@ class TaskDB {
     await db.transaction((Transaction txn) async {
       int id = await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks.dbProjectID},${Tasks.dbComment},${Tasks.dbDueDate},${Tasks.dbPriority},${Tasks.dbStatus})'
-          ' VALUES(${task.id}, "${task.title}", ${task.projectId},"${task.comment}", ${task.dueDate},${task.priority!.index},${task.tasksStatus!.index})');
+          ' VALUES(${task.id}, "${task.title}", ${task.projectId},"${task.comment}", ${task.dueDate},${task.priority.index},${task.tasksStatus!.index})');
       if (id > 0 && labelIDs != null && labelIDs.length > 0) {
         labelIDs.forEach((labelId) {
           txn.rawInsert('INSERT OR REPLACE INTO '

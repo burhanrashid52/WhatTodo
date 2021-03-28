@@ -37,8 +37,8 @@ class AddLabel extends StatelessWidget {
             color: Colors.white,
           ),
           onPressed: () async {
-            if (_formState.currentState!.validate()) {
-              _formState.currentState!.save();
+            if (_formState.currentState?.validate() ?? false) {
+              _formState.currentState?.save();
               var label = Label.create(
                   labelName,
                   currentSelectedPalette.colorValue,

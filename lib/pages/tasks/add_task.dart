@@ -51,7 +51,7 @@ class AddTaskScreen extends StatelessWidget {
             subtitle: StreamBuilder<Project>(
               stream: createTaskBloc.selectedProject,
               initialData: Project.getInbox(),
-              builder: (context, snapshot) => Text(snapshot.data!.name!),
+              builder: (context, snapshot) => Text(snapshot.data!.name),
             ),
             onTap: () {
               _showProjectsDialog(createTaskBloc, context);
@@ -203,10 +203,10 @@ class AddTaskScreen extends StatelessWidget {
           width: 12.0,
           height: 12.0,
           child: CircleAvatar(
-            backgroundColor: Color(project.colorValue!),
+            backgroundColor: Color(project.colorValue),
           ),
         ),
-        title: Text(project.name!),
+        title: Text(project.name),
         onTap: () {
           createTaskBloc.projectSelected(project);
           Navigator.pop(context);
@@ -224,8 +224,8 @@ class AddTaskScreen extends StatelessWidget {
     List<Widget> labels = [];
     labelList.forEach((label) {
       labels.add(ListTile(
-        leading: Icon(Icons.label, color: Color(label.colorValue!), size: 18.0),
-        title: Text(label.name!),
+        leading: Icon(Icons.label, color: Color(label.colorValue), size: 18.0),
+        title: Text(label.name),
         trailing: createTaskBloc.selectedLabels.contains(label)
             ? Icon(Icons.close)
             : Container(width: 18.0, height: 18.0),

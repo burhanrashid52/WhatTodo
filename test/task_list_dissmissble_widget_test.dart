@@ -68,9 +68,9 @@ void main() {
     taskBloc.refresh();
     await tester.pump();
     expect(find.byType(TaskRow), findsNWidgets(3));
-    expect(find.text(testTask1.title!), findsOneWidget);
-    expect(find.text(testTask2.title!), findsOneWidget);
-    expect(find.text(testTask3.title!), findsOneWidget);
+    expect(find.text(testTask1.title), findsOneWidget);
+    expect(find.text(testTask2.title), findsOneWidget);
+    expect(find.text(testTask3.title), findsOneWidget);
     expect(find.text("No Task Added"), findsNothing);
   });
 
@@ -114,8 +114,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(TaskRow), findsNWidgets(1));
-    expect(find.text(testTask1.title!), findsNothing);
-    expect(find.text(testTask2.title!), findsOneWidget);
+    expect(find.text(testTask1.title), findsNothing);
+    expect(find.text(testTask2.title), findsOneWidget);
     expect(verify(mockTaskDb.deleteTask(captureAny)).captured.single,
         testTask1.id);
   });

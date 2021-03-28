@@ -1,5 +1,4 @@
 import 'package:flutter_app/models/priority.dart';
-import 'package:meta/meta.dart';
 
 class Tasks {
   static final tblTask = "Tasks";
@@ -11,11 +10,13 @@ class Tasks {
   static final dbStatus = "status";
   static final dbProjectID = "projectId";
 
-  String? title, comment, projectName;
-  int? id, dueDate, projectId, projectColor;
-  Status? priority;
+  String title, comment;
+  String? projectName;
+  int? id, projectColor;
+  int dueDate, projectId;
+  Status priority;
   TaskStatus? tasksStatus;
-  List<String>? labelList = [];
+  List<String> labelList = [];
 
   Tasks.create({
     required this.title,

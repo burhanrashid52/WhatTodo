@@ -19,7 +19,7 @@ main() {
     await tester
         .pumpWidget(ProjectRow(testProject).wrapScaffoldWithBloc(homeBloc));
 
-    expect(find.text(testProject.name!), findsOneWidget);
+    expect(find.text(testProject.name), findsOneWidget);
 
     final circleAvatar = tester.findWidgetByKey<CircleAvatar>("dot_Personal_1");
     expect(circleAvatar.backgroundColor!.value, testProject.colorValue);
@@ -76,7 +76,7 @@ main() {
         .pumpWidget(LabelRow(testLabel).wrapScaffoldWithBloc(homeBloc));
 
     expect(homeBloc.title, emitsInOrder(["@ ${testLabel.name}"]));
-    expect(homeBloc.filter, emitsInOrder([Filter.byLabel(testLabel.name!)]));
+    expect(homeBloc.filter, emitsInOrder([Filter.byLabel(testLabel.name)]));
     await tester.tap(find.byKey(ValueKey("tile_Android_1")));
   });
 }

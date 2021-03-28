@@ -19,7 +19,7 @@ class TaskBloc implements BlocBase {
 
   TaskDB _taskDb;
   late List<Tasks> _tasksList;
-  Filter? _lastFilterStatus;
+  late Filter _lastFilterStatus;
 
   TaskBloc(this._taskDb) {
     filterTodayTasks();
@@ -33,7 +33,7 @@ class TaskBloc implements BlocBase {
         .getTasks(
             startDate: taskStartTime, endDate: taskEndTime, taskStatus: status)
         .then((tasks) {
-      _updateTaskStream(tasks!);
+      _updateTaskStream(tasks);
     });
   }
 
@@ -114,28 +114,26 @@ class TaskBloc implements BlocBase {
   }
 
   void refresh() {
-    if (_lastFilterStatus != null) {
-      switch (_lastFilterStatus!.filterStatus!) {
-        case FILTER_STATUS.BY_TODAY:
-          filterTodayTasks();
-          break;
+    switch (_lastFilterStatus.filterStatus!) {
+      case FILTER_STATUS.BY_TODAY:
+        filterTodayTasks();
+        break;
 
-        case FILTER_STATUS.BY_WEEK:
-          filterTasksForNextWeek();
-          break;
+      case FILTER_STATUS.BY_WEEK:
+        filterTasksForNextWeek();
+        break;
 
-        case FILTER_STATUS.BY_LABEL:
-          filterByLabel(_lastFilterStatus!.labelName!);
-          break;
+      case FILTER_STATUS.BY_LABEL:
+        filterByLabel(_lastFilterStatus.labelName!);
+        break;
 
-        case FILTER_STATUS.BY_PROJECT:
-          filterByProject(_lastFilterStatus!.projectId!);
-          break;
+      case FILTER_STATUS.BY_PROJECT:
+        filterByProject(_lastFilterStatus.projectId!);
+        break;
 
-        case FILTER_STATUS.BY_STATUS:
-          filterByStatus(_lastFilterStatus!.status!);
-          break;
-      }
+      case FILTER_STATUS.BY_STATUS:
+        filterByStatus(_lastFilterStatus.status!);
+        break;
     }
   }
 

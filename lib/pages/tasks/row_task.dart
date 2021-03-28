@@ -27,7 +27,7 @@ class TaskRow extends StatelessWidget {
               border: Border(
                 left: BorderSide(
                   width: 4.0,
-                  color: priorityColor[tasks.priority!.index],
+                  color: priorityColor[tasks.priority.index],
                 ),
               ),
             ),
@@ -39,20 +39,20 @@ class TaskRow extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(
                         left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
-                    child: Text(tasks.title!,
+                    child: Text(tasks.title,
                         key: ValueKey("taskTitle_${tasks.id}"),
                         style: TextStyle(
                             fontSize: FONT_SIZE_TITLE,
                             fontWeight: FontWeight.bold)),
                   ),
-                  getLabels(tasks.labelList!),
+                  getLabels(tasks.labelList),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
                     child: Row(
                       children: <Widget>[
                         Text(
-                          getFormattedDate(tasks.dueDate!),
+                          getFormattedDate(tasks.dueDate),
                           style: TextStyle(
                               color: Colors.grey, fontSize: FONT_SIZE_DATE),
                           key: ValueKey("taskDueDate_${tasks.id}"),
@@ -113,7 +113,7 @@ class TaskRow extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(
             left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
-        child: Text(tasks.labelList!.join("  "),
+        child: Text(tasks.labelList.join("  "),
             key: ValueKey("taskLabels_${tasks.id}"),
             style: TextStyle(fontSize: FONT_SIZE_LABEL)),
       );

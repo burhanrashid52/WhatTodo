@@ -26,7 +26,7 @@ class TaskCompletedRow extends StatelessWidget {
               border: Border(
                 left: BorderSide(
                   width: 4.0,
-                  color: priorityColor[tasks.priority!.index],
+                  color: priorityColor[tasks.priority.index],
                 ),
               ),
             ),
@@ -38,21 +38,21 @@ class TaskCompletedRow extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(
                         left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
-                    child: Text(tasks.title!,
+                    child: Text(tasks.title,
                         key: ValueKey("task_completed_${tasks.id}"),
                         style: TextStyle(
                             decoration: TextDecoration.lineThrough,
                             fontSize: FONT_SIZE_TITLE,
                             fontWeight: FontWeight.bold)),
                   ),
-                  getLabels(tasks.labelList!),
+                  getLabels(tasks.labelList),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
                     child: Row(
                       children: <Widget>[
                         Text(
-                          getFormattedDate(tasks.dueDate!),
+                          getFormattedDate(tasks.dueDate),
                           style: TextStyle(
                               color: Colors.grey, fontSize: FONT_SIZE_DATE),
                           key: Key(date_label),
@@ -111,7 +111,7 @@ class TaskCompletedRow extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(
             left: PADDING_SMALL, bottom: PADDING_VERY_SMALL),
-        child: Text(tasks.labelList!.join("  "),
+        child: Text(tasks.labelList.join("  "),
             style: TextStyle(
                 decoration: TextDecoration.lineThrough,
                 fontSize: FONT_SIZE_LABEL)),

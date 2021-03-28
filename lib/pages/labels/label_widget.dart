@@ -80,7 +80,7 @@ class LabelRow extends StatelessWidget {
     return ListTile(
       key: ValueKey("tile_${label.name}_${label.id}"),
       onTap: () {
-        homeBloc.applyFilter("@ ${label.name}", Filter.byLabel(label.name!));
+        homeBloc.applyFilter("@ ${label.name}", Filter.byLabel(label.name));
         Navigator.pop(context);
       },
       leading: Container(
@@ -99,7 +99,7 @@ class LabelRow extends StatelessWidget {
           Icons.label,
           size: 16.0,
           key: ValueKey("icon_${label.name}_${label.id}"),
-          color: Color(label.colorValue!),
+          color: Color(label.colorValue),
         ),
       ),
     );
