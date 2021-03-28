@@ -39,7 +39,9 @@ class TaskBloc implements BlocBase {
 
   void _updateTaskStream(List<Tasks> tasks) {
     _tasksList = tasks;
-    _taskController.sink.add(UnmodifiableListView<Tasks>(_tasksList));
+    if (!_taskController.isClosed) {
+      _taskController.sink.add(UnmodifiableListView<Tasks>(_tasksList));
+    }
   }
 
   void dispose() {

@@ -10,7 +10,6 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Home Page', () {
-
     testWidgets('Today in Title', (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle();
@@ -32,8 +31,6 @@ void main() {
 
       expect(find.text("Task Two"), findsOneWidget);
       expect(find.text("Personal"), findsOneWidget);
-
-      await cleanDb();
     });
 
     testWidgets('Show Inbox Tasks', (WidgetTester tester) async {
@@ -45,7 +42,6 @@ void main() {
 
       expect(find.text("Task One"), findsOneWidget);
       expect(find.text("Inbox"), findsNWidgets(2));
-      await cleanDb();
     });
 
     testWidgets('Show Next 7 days Tasks', (WidgetTester tester) async {
@@ -65,8 +61,6 @@ void main() {
 
       expect(find.text("Task Three"), findsOneWidget);
       expect(find.text("Work"), findsOneWidget);
-
-      await cleanDb();
     });
 
     testWidgets('Show Personal project Tasks', (WidgetTester tester) async {
@@ -93,11 +87,13 @@ void main() {
       await tester.tapAndSettle('Travel_4');
 
       expect(find.text("No Task Added"), findsOneWidget);
-
-      await cleanDb();
     });
 
     //TODO: Add test for tasks Label Filter
+  });
+
+  tearDown(() async {
+    await cleanDb();
   });
 }
 

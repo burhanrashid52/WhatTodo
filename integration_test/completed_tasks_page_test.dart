@@ -11,7 +11,6 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Completed Tasks Page', () {
-
     testWidgets('Show Today Tasks', (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle();
@@ -20,7 +19,6 @@ void main() {
       await tester.tapAndSettle(SideDrawerKeys.DRAWER);
 
       await tester.tapAndSettle(SideDrawerKeys.TODAY);
-
 
       //swipe left to mark as complete
       var firstTaskListItem = find.byValueKey('swipe_1_0');
@@ -42,6 +40,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text("Task One"), findsOneWidget);
+    });
+
+    tearDown(() async {
+      await cleanDb();
     });
   });
 }
