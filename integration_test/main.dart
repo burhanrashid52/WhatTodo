@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'about_us_page_test.dart' as about;
 import 'add_label_page_test.dart' as label;
 import 'add_project_page_test.dart' as project;

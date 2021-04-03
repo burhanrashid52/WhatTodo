@@ -36,11 +36,12 @@ class HomePage extends StatelessWidget {
             }),
         actions: <Widget>[buildPopupMenu(context)],
         leading: new IconButton(
-            icon: new Icon(
-              Icons.view_headline,
-              key: ValueKey(SideDrawerKeys.DRAWER),
-            ),
-            onPressed: () => _scaffoldKey.currentState?.openDrawer()),
+          icon: new Icon(
+            Icons.menu,
+            key: ValueKey(SideDrawerKeys.DRAWER),
+          ),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         key: ValueKey(HomePageKeys.ADD_NEW_TASK_BUTTON),
@@ -73,6 +74,7 @@ class HomePage extends StatelessWidget {
 // not shown here).
   Widget buildPopupMenu(BuildContext context) {
     return PopupMenuButton<MenuItem>(
+      icon: Icon(Icons.adaptive.more),
       key: ValueKey(CompletedTaskPageKeys.POPUP_ACTION),
       onSelected: (MenuItem result) async {
         switch (result) {
