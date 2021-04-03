@@ -17,7 +17,7 @@ class LabelPage extends StatelessWidget {
       stream: labelBloc.labels,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return LabelExpansionTileWidget(snapshot.data);
+          return LabelExpansionTileWidget(snapshot.data!);
         } else {
           return CircularProgressIndicator();
         }
@@ -44,7 +44,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
 
   List<Widget> buildLabels(BuildContext context) {
     LabelBloc _labelBloc = BlocProvider.of(context);
-    List<Widget> projectWidgetList = List();
+    List<Widget> projectWidgetList = [];
     _labels.forEach((label) => projectWidgetList.add(LabelRow(label)));
     projectWidgetList.add(ListTile(
         leading: Icon(Icons.add),

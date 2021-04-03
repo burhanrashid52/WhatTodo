@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
 class HomeBloc implements BlocBase {
   StreamController<String> _titleController =

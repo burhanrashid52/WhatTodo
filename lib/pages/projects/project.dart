@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 class Project {
   static final tblProject = "projects";
@@ -8,12 +7,13 @@ class Project {
   static final dbColorCode = "colorCode";
   static final dbColorName = "colorName";
 
-  int id, colorValue;
-  String name, colorName;
+  int? id;
+  late int colorValue;
+  late String name, colorName;
 
   Project.create(this.name, this.colorValue, this.colorName);
 
-  Project.update({@required this.id, name, colorCode = "", colorName = ""}) {
+  Project.update({required this.id, name, colorCode = "", colorName = ""}) {
     if (name != "") {
       this.name = name;
     }

@@ -16,7 +16,7 @@ class ProjectPage extends StatelessWidget {
       stream: projectBloc.projects,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ProjectExpansionTileWidget(snapshot.data);
+          return ProjectExpansionTileWidget(snapshot.data!);
         } else {
           return CircularProgressIndicator();
         }
@@ -42,7 +42,7 @@ class ProjectExpansionTileWidget extends StatelessWidget {
   }
 
   List<Widget> buildProjects(BuildContext context) {
-    List<Widget> projectWidgetList = List();
+    List<Widget> projectWidgetList = [];
     _projects.forEach((project) => projectWidgetList.add(ProjectRow(project)));
     projectWidgetList.add(ListTile(
       key: ValueKey(SideDrawerKeys.ADD_PROJECT),
@@ -78,7 +78,7 @@ class ProjectRow extends StatelessWidget {
     return ListTile(
       key: ValueKey("tile_${project.name}_${project.id}"),
       onTap: () {
-        homeBloc.applyFilter(project.name, Filter.byProject(project.id));
+        homeBloc.applyFilter(project.name, Filter.byProject(project.id!));
         Navigator.pop(context);
       },
       leading: Container(

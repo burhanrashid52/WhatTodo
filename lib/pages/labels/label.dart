@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 class Label {
   static final tblLabel = "labels";
   static final dbId = "id";
@@ -7,12 +5,13 @@ class Label {
   static final dbColorCode = "colorCode";
   static final dbColorName = "colorName";
 
-  int id, colorValue;
-  String name, colorName;
+  int? id;
+  late int colorValue;
+  late String name, colorName;
 
   Label.create(this.name, this.colorValue, this.colorName);
 
-  Label.update({@required this.id, name = "", colorCode = "", colorName = ""}) {
+  Label.update({required this.id, name = "", colorCode = "", colorName = ""}) {
     if (name != "") {
       this.name = name;
     }

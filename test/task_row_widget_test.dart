@@ -41,7 +41,7 @@ void main() {
     await tester.pumpWidget(wrapMaterialApp);
 
     expect(find.text(testTask1.title), findsOneWidget);
-    expect(find.text(testTask1.projectName), findsOneWidget);
+    expect(find.text(testTask1.projectName!), findsOneWidget);
     expect(find.text('Aug  15'), findsOneWidget);
 
     var container = tester.findWidgetByKey<Container>("taskPriority_1");
@@ -71,7 +71,7 @@ void main() {
     await tester.pumpWidget(wrapMaterialApp);
 
     expect(find.text(testTask1.title), findsOneWidget);
-    expect(find.text(testTask1.projectName), findsOneWidget);
+    expect(find.text(testTask1.projectName!), findsOneWidget);
     expect(find.text('Aug  15'), findsOneWidget);
 
     //Test labels are visible

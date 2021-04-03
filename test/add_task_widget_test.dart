@@ -8,18 +8,20 @@ import 'package:flutter_app/pages/tasks/bloc/add_task_bloc.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'add_task_widget_test.mocks.dart';
 import 'test_data.dart';
 import 'test_helpers.dart';
 
 class FakeTaskDb implements TaskDB {
-  Tasks task;
-  List<int> labelIds;
+  Tasks? task;
+  List<int>? labelIds;
 
-  Future updateTask(Tasks task, {List<int> labelIDs}) async {
+  Future updateTask(Tasks task, {List<int>? labelIDs}) async {
     this.task = task;
-    this.labelIds = labelIDs;
+    this.labelIds = labelIDs!;
     return Future.value();
   }
 
@@ -31,19 +33,19 @@ class FakeTaskDb implements TaskDB {
 
   @override
   Future<List<Tasks>> getTasks(
-      {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) {
+      {int startDate = 0, int endDate = 0, TaskStatus? taskStatus}) {
     // TODO: implement getTasks
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Tasks>> getTasksByLabel(String labelName, {TaskStatus status}) {
+  Future<List<Tasks>> getTasksByLabel(String labelName, {TaskStatus? status}) {
     // TODO: implement getTasksByLabel
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Tasks>> getTasksByProject(int projectId, {TaskStatus status}) {
+  Future<List<Tasks>> getTasksByProject(int projectId, {TaskStatus? status}) {
     // TODO: implement getTasksByProject
     throw UnimplementedError();
   }
@@ -55,18 +57,16 @@ class FakeTaskDb implements TaskDB {
   }
 }
 
-class MockProjectDb extends Mock implements ProjectDB {}
 
-class MockLabelDb extends Mock implements LabelDB {}
-
+@GenerateMocks([ProjectDB, LabelDB])
 void main() {
   group("Add Task", () {
     testWidgets("Add Task", (tester) async {
-      final mockProjectDb = MockProjectDb();
+      final mockProjectDb = MockProjectDB();
       when(mockProjectDb.getProjects(isInboxVisible: true)).thenAnswer(
-          (_) => Future.value([testProject1, testProject2, testProject3]));
+          (_) async => [testProject1, testProject2, testProject3]);
 
-      final mockLabelDb = MockLabelDb();
+      final mockLabelDb = MockLabelDB();
       when(mockLabelDb.getLabels()).thenAnswer(
           (_) => Future.value([testLabel1, testLabel2, testLabel3]));
 
@@ -89,9 +89,9 @@ void main() {
       await tester.tap(addTaskButtonFinder);
       await tester.pump();
 
-      expect(fakeTaskDb.task.title, "My Task");
-      expect(fakeTaskDb.task.priority, Status.PRIORITY_4);
-      expect(fakeTaskDb.task.projectId, Project.getInbox().id);
+      expect(fakeTaskDb.task!.title, "My Task");
+      expect(fakeTaskDb.task!.priority, Status.PRIORITY_4);
+      expect(fakeTaskDb.task!.projectId, Project.getInbox().id);
       expect(fakeTaskDb.labelIds, []);
     });
   });

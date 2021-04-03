@@ -17,7 +17,7 @@ class AppDatabase {
   //private internal constructor to make it singleton
   AppDatabase._internal();
 
-  Database _database;
+  late Database _database;
 
   static AppDatabase get() {
     return _appDatabase;
@@ -68,13 +68,13 @@ class AppDatabase {
   }
 
   Future _createLabelTable(Database db) {
-    return db.transaction((Transaction txn) {
-      txn.execute("CREATE TABLE ${Label.tblLabel} ("
+    return db.transaction((Transaction txn) async {
+      await txn.execute("CREATE TABLE ${Label.tblLabel} ("
           "${Label.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
           "${Label.dbName} TEXT,"
           "${Label.dbColorName} TEXT,"
           "${Label.dbColorCode} INTEGER);");
-      txn.execute("CREATE TABLE ${TaskLabels.tblTaskLabel} ("
+      await txn.execute("CREATE TABLE ${TaskLabels.tblTaskLabel} ("
           "${TaskLabels.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
           "${TaskLabels.dbTaskId} INTEGER,"
           "${TaskLabels.dbLabelId} INTEGER,"

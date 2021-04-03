@@ -18,8 +18,8 @@ class TaskBloc implements BlocBase {
   StreamController<int> _cmdController = StreamController<int>.broadcast();
 
   TaskDB _taskDb;
-  List<Tasks> _tasksList;
-  Filter _lastFilterStatus;
+  late List<Tasks> _tasksList;
+  late Filter _lastFilterStatus;
 
   TaskBloc(this._taskDb) {
     filterTodayTasks();
@@ -116,28 +116,26 @@ class TaskBloc implements BlocBase {
   }
 
   void refresh() {
-    if (_lastFilterStatus != null) {
-      switch (_lastFilterStatus.filterStatus) {
-        case FILTER_STATUS.BY_TODAY:
-          filterTodayTasks();
-          break;
+    switch (_lastFilterStatus.filterStatus!) {
+      case FILTER_STATUS.BY_TODAY:
+        filterTodayTasks();
+        break;
 
-        case FILTER_STATUS.BY_WEEK:
-          filterTasksForNextWeek();
-          break;
+      case FILTER_STATUS.BY_WEEK:
+        filterTasksForNextWeek();
+        break;
 
-        case FILTER_STATUS.BY_LABEL:
-          filterByLabel(_lastFilterStatus.labelName);
-          break;
+      case FILTER_STATUS.BY_LABEL:
+        filterByLabel(_lastFilterStatus.labelName!);
+        break;
 
-        case FILTER_STATUS.BY_PROJECT:
-          filterByProject(_lastFilterStatus.projectId);
-          break;
+      case FILTER_STATUS.BY_PROJECT:
+        filterByProject(_lastFilterStatus.projectId!);
+        break;
 
-        case FILTER_STATUS.BY_STATUS:
-          filterByStatus(_lastFilterStatus.status);
-          break;
-      }
+      case FILTER_STATUS.BY_STATUS:
+        filterByStatus(_lastFilterStatus.status!);
+        break;
     }
   }
 
@@ -150,10 +148,10 @@ class TaskBloc implements BlocBase {
 enum FILTER_STATUS { BY_TODAY, BY_WEEK, BY_PROJECT, BY_LABEL, BY_STATUS }
 
 class Filter {
-  String labelName;
-  int projectId;
-  FILTER_STATUS filterStatus;
-  TaskStatus status;
+  String? labelName;
+  int? projectId;
+  FILTER_STATUS? filterStatus;
+  TaskStatus? status;
 
   Filter.byToday() {
     filterStatus = FILTER_STATUS.BY_TODAY;

@@ -19,7 +19,7 @@ class ProjectDB {
     var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";
     var result =
         await db.rawQuery('SELECT * FROM ${Project.tblProject} $whereClause');
-    List<Project> projects = List();
+    List<Project> projects = [];
     for (Map<String, dynamic> item in result) {
       var myProject = Project.fromMap(item);
       projects.add(myProject);

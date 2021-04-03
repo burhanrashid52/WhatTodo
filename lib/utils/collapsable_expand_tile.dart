@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 // --- Copied and slightly modified version of the ExpansionTile.
 
@@ -7,23 +6,22 @@ const Duration _kExpand = const Duration(milliseconds: 200);
 
 class CollapsibleExpansionTile extends StatefulWidget {
   const CollapsibleExpansionTile({
-    Key key,
+    Key? key,
     this.leading,
-    @required this.title,
+    required this.title,
     this.backgroundColor,
     this.onExpansionChanged,
     this.children: const <Widget>[],
     this.trailing,
     this.initiallyExpanded: false,
-  })  : assert(initiallyExpanded != null),
-        super(key: key);
+  })  : super(key: key);
 
-  final Widget leading;
+  final Widget? leading;
   final Widget title;
-  final ValueChanged<bool> onExpansionChanged;
+  final ValueChanged<bool>? onExpansionChanged;
   final List<Widget> children;
-  final Color backgroundColor;
-  final Widget trailing;
+  final Color? backgroundColor;
+  final Widget? trailing;
   final bool initiallyExpanded;
 
   @override
@@ -33,14 +31,14 @@ class CollapsibleExpansionTile extends StatefulWidget {
 
 class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  CurvedAnimation _easeOutAnimation;
-  CurvedAnimation _easeInAnimation;
-  ColorTween _borderColor;
-  ColorTween _headerColor;
-  ColorTween _iconColor;
-  ColorTween _backgroundColor;
-  Animation<double> _iconTurns;
+  late AnimationController _controller;
+  late CurvedAnimation _easeOutAnimation;
+  late CurvedAnimation _easeInAnimation;
+  late ColorTween _borderColor;
+  late ColorTween _headerColor;
+  late ColorTween _iconColor;
+  late ColorTween _backgroundColor;
+  late Animation<double> _iconTurns;
 
   bool _isExpanded = false;
 
@@ -97,15 +95,15 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
         PageStorage.of(context)?.writeState(context, _isExpanded);
       });
       if (widget.onExpansionChanged != null) {
-        widget.onExpansionChanged(_isExpanded);
+        widget.onExpansionChanged!(_isExpanded);
       }
     }
   }
 
-  Widget _buildChildren(BuildContext context, Widget child) {
+  Widget _buildChildren(BuildContext context, Widget? child) {
     final Color borderSideColor =
         _borderColor.evaluate(_easeOutAnimation) ?? Colors.transparent;
-    final Color titleColor = _headerColor.evaluate(_easeInAnimation);
+    final Color titleColor = _headerColor.evaluate(_easeInAnimation)!;
 
     return Container(
       decoration: BoxDecoration(
@@ -128,7 +126,7 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
                 style: Theme
                     .of(context)
                     .textTheme
-                    .subhead
+                    .subtitle1!
                     .copyWith(color: titleColor),
                 child: widget.title,
               ),
@@ -155,7 +153,7 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
     final ThemeData theme = Theme.of(context);
     _borderColor.end = theme.dividerColor;
     _headerColor
-      ..begin = theme.textTheme.subhead.color
+      ..begin = theme.textTheme.subtitle1!.color
       ..end = theme.accentColor;
     _iconColor
       ..begin = theme.unselectedWidgetColor

@@ -12,14 +12,12 @@ import 'package:flutter_app/utils/date_util.dart';
 import 'package:flutter_app/utils/keys.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     AddTaskBloc createTaskBloc = BlocProvider.of(context);
     return Scaffold(
-      key: _scaffoldState,
       appBar: AppBar(
         title: Text(
           "Add Task",
@@ -34,11 +32,11 @@ class AddTaskScreen extends StatelessWidget {
               child: TextFormField(
                   key: ValueKey(AddTaskKeys.ADD_TITLE),
                   validator: (value) {
-                    var msg = value.isEmpty ? "Title Cannot be Empty" : null;
+                    var msg = value!.isEmpty ? "Title Cannot be Empty" : null;
                     return msg;
                   },
                   onSaved: (value) {
-                    createTaskBloc.updateTitle = value;
+                    createTaskBloc.updateTitle = value!;
                   },
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
@@ -53,7 +51,7 @@ class AddTaskScreen extends StatelessWidget {
             subtitle: StreamBuilder<Project>(
               stream: createTaskBloc.selectedProject,
               initialData: Project.getInbox(),
-              builder: (context, snapshot) => Text(snapshot.data.name),
+              builder: (context, snapshot) => Text(snapshot.data!.name),
             ),
             onTap: () {
               _showProjectsDialog(createTaskBloc, context);
@@ -62,11 +60,11 @@ class AddTaskScreen extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.calendar_today),
             title: Text("Due Date"),
-            subtitle: StreamBuilder(
+            subtitle: StreamBuilder<int>(
               stream: createTaskBloc.dueDateSelected,
               initialData: DateTime.now().millisecondsSinceEpoch,
               builder: (context, snapshot) =>
-                  Text(getFormattedDate(snapshot.data)),
+                  Text(getFormattedDate(snapshot.data!)),
             ),
             onTap: () {
               _selectDate(context);
@@ -75,11 +73,11 @@ class AddTaskScreen extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.flag),
             title: Text("Priority"),
-            subtitle: StreamBuilder(
+            subtitle: StreamBuilder<Status>(
               stream: createTaskBloc.prioritySelected,
               initialData: Status.PRIORITY_4,
               builder: (context, snapshot) =>
-                  Text(priorityText[snapshot.data.index]),
+                  Text(priorityText[snapshot.data!.index]),
             ),
             onTap: () {
               _showPriorityDialog(createTaskBloc, context);
@@ -88,10 +86,10 @@ class AddTaskScreen extends StatelessWidget {
           ListTile(
               leading: Icon(Icons.label),
               title: Text("Labels"),
-              subtitle: StreamBuilder(
+              subtitle: StreamBuilder<String>(
                 stream: createTaskBloc.labelSelection,
                 initialData: "No Labels",
-                builder: (context, snapshot) => Text(snapshot.data),
+                builder: (context, snapshot) => Text(snapshot.data!),
               ),
               onTap: () {
                 _showLabelsDialog(context);
@@ -101,7 +99,7 @@ class AddTaskScreen extends StatelessWidget {
             title: Text("Comments"),
             subtitle: Text("No Comments"),
             onTap: () {
-              showSnackbar(_scaffoldState, "Coming Soon");
+              showSnackbar(context, "Coming Soon");
             },
           ),
           ListTile(
@@ -109,7 +107,7 @@ class AddTaskScreen extends StatelessWidget {
             title: Text("Reminder"),
             subtitle: Text("No Reminder"),
             onTap: () {
-              showSnackbar(_scaffoldState, "Coming Soon");
+              showSnackbar(context, "Coming Soon");
             },
           )
         ],
@@ -118,8 +116,8 @@ class AddTaskScreen extends StatelessWidget {
           key: ValueKey(AddTaskKeys.ADD_TASK),
           child: Icon(Icons.send, color: Colors.white),
           onPressed: () {
-            if (_formState.currentState.validate()) {
-              _formState.currentState.save();
+            if (_formState.currentState!.validate()) {
+              _formState.currentState!.save();
               createTaskBloc.createTask().listen((value) {
                 Navigator.pop(context, true);
               });
@@ -130,17 +128,18 @@ class AddTaskScreen extends StatelessWidget {
 
   Future<Null> _selectDate(BuildContext context) async {
     AddTaskBloc createTaskBloc = BlocProvider.of(context);
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+    );
     if (picked != null) {
       createTaskBloc.updateDueDate(picked.millisecondsSinceEpoch);
     }
   }
 
-  Future<Status> _showPriorityDialog(
+  Future<Status?> _showPriorityDialog(
       AddTaskBloc createTaskBloc, BuildContext context) async {
     return await showDialog<Status>(
         context: context,
@@ -157,36 +156,36 @@ class AddTaskScreen extends StatelessWidget {
         });
   }
 
-  Future<Status> _showProjectsDialog(
+  Future<Status?> _showProjectsDialog(
       AddTaskBloc createTaskBloc, BuildContext context) async {
     return showDialog<Status>(
         context: context,
         builder: (BuildContext dialogContext) {
-          return StreamBuilder(
+          return StreamBuilder<List<Project>>(
               stream: createTaskBloc.projects,
-              initialData: List<Project>(),
+              initialData: <Project>[],
               builder: (context, snapshot) {
                 return SimpleDialog(
                   title: const Text('Select Project'),
                   children:
-                      buildProjects(createTaskBloc, context, snapshot.data),
+                      buildProjects(createTaskBloc, context, snapshot.data!),
                 );
               });
         });
   }
 
-  Future<Status> _showLabelsDialog(BuildContext context) async {
+  Future<Status?> _showLabelsDialog(BuildContext context) async {
     AddTaskBloc createTaskBloc = BlocProvider.of(context);
     return showDialog<Status>(
         context: context,
         builder: (BuildContext context) {
-          return StreamBuilder(
+          return StreamBuilder<List<Label>>(
               stream: createTaskBloc.labels,
-              initialData: List<Label>(),
+              initialData: <Label>[],
               builder: (context, snapshot) {
                 return SimpleDialog(
                   title: const Text('Select Labels'),
-                  children: buildLabels(createTaskBloc, context, snapshot.data),
+                  children: buildLabels(createTaskBloc, context, snapshot.data!),
                 );
               });
         });
@@ -197,7 +196,7 @@ class AddTaskScreen extends StatelessWidget {
     BuildContext context,
     List<Project> projectList,
   ) {
-    List<Widget> projects = List();
+    List<Widget> projects = [];
     projectList.forEach((project) {
       projects.add(ListTile(
         leading: Container(
@@ -222,7 +221,7 @@ class AddTaskScreen extends StatelessWidget {
     BuildContext context,
     List<Label> labelList,
   ) {
-    List<Widget> labels = List();
+    List<Widget> labels = [];
     labelList.forEach((label) {
       labels.add(ListTile(
         leading: Icon(Icons.label, color: Color(label.colorValue), size: 18.0),

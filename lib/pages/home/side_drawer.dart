@@ -52,7 +52,7 @@ class SideDrawer extends StatelessWidget {
               onTap: () {
                 var project = Project.getInbox();
                 homeBloc.applyFilter(
-                    project.name, Filter.byProject(project.id));
+                    project.name, Filter.byProject(project.id!));
                 Navigator.pop(context);
               }),
           ListTile(

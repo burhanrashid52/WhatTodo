@@ -8,7 +8,7 @@ import 'package:flutter_app/utils/app_constant.dart';
 class TaskRow extends StatelessWidget {
   final Tasks tasks;
   static final date_label = "Date";
-  final List<String> labelNames = List();
+  final List<String> labelNames = [];
 
   TaskRow(this.tasks);
 
@@ -64,7 +64,7 @@ class TaskRow extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
-                                  Text(tasks.projectName,
+                                  Text(tasks.projectName!,
                                       key: ValueKey(
                                           "taskProjectName_${tasks.id}"),
                                       style: TextStyle(
@@ -77,7 +77,7 @@ class TaskRow extends StatelessWidget {
                                     height: 8.0,
                                     child: CircleAvatar(
                                       backgroundColor:
-                                          Color(tasks.projectColor),
+                                          Color(tasks.projectColor!),
                                     ),
                                   )
                                 ],
