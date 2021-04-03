@@ -9,7 +9,7 @@ class HomeBloc implements BlocBase {
 
   Stream<String> get title => _titleController.stream;
 
-  StreamController<Filter> _filterController = StreamController<Filter>();
+  StreamController<Filter> _filterController = StreamController<Filter>.broadcast();
 
   Stream<Filter> get filter => _filterController.stream;
 

@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/pages/labels/label_db.dart';
-import 'package:flutter_app/pages/projects/project_db.dart';
-import 'package:flutter_app/pages/tasks/bloc/add_task_bloc.dart';
-import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
-import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
+import 'package:flutter_app/pages/labels/label_db.dart';
+import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
+import 'package:flutter_app/pages/tasks/bloc/add_task_bloc.dart';
+import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
+import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/pages/tasks/task_widgets.dart';
 import 'package:flutter_app/utils/keys.dart';
 
@@ -18,9 +20,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDesktop = MediaQuery.of(context).size.width > 600;
     final HomeBloc homeBloc = BlocProvider.of(context);
-    homeBloc.filter.listen((filter) {
-      _taskBloc.updateFilters(filter);
+    scheduleMicrotask(() {
+      homeBloc.filter.listen((filter) {
+        _taskBloc.updateFilters(filter);
+      });
     });
     return Scaffold(
       key: _scaffoldKey,
@@ -35,13 +40,15 @@ class HomePage extends StatelessWidget {
               );
             }),
         actions: <Widget>[buildPopupMenu(context)],
-        leading: new IconButton(
-          icon: new Icon(
-            Icons.menu,
-            key: ValueKey(SideDrawerKeys.DRAWER),
-          ),
-          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-        ),
+        leading: isDesktop
+            ? null
+            : new IconButton(
+                icon: new Icon(
+                  Icons.menu,
+                  key: ValueKey(SideDrawerKeys.DRAWER),
+                ),
+                onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         key: ValueKey(HomePageKeys.ADD_NEW_TASK_BUTTON),
@@ -62,7 +69,7 @@ class HomePage extends StatelessWidget {
           _taskBloc.refresh();
         },
       ),
-      drawer: SideDrawer(),
+      drawer: isDesktop ? null : SideDrawer(),
       body: BlocProvider(
         bloc: _taskBloc,
         child: TasksPage(),

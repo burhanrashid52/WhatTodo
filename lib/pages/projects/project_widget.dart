@@ -7,6 +7,7 @@ import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 import 'package:flutter_app/utils/keys.dart';
+import 'package:flutter_app/utils/extension.dart';
 
 class ProjectPage extends StatelessWidget {
   @override
@@ -49,7 +50,7 @@ class ProjectExpansionTileWidget extends StatelessWidget {
       leading: Icon(Icons.add),
       title: Text("Add Project"),
       onTap: () async {
-        Navigator.pop(context);
+        context.safePop();
         ProjectBloc projectBloc = BlocProvider.of<ProjectBloc>(context);
         Widget addProject = BlocProvider(
           bloc: ProjectBloc(ProjectDB.get()),
@@ -79,7 +80,7 @@ class ProjectRow extends StatelessWidget {
       key: ValueKey("tile_${project.name}_${project.id}"),
       onTap: () {
         homeBloc.applyFilter(project.name, Filter.byProject(project.id!));
-        Navigator.pop(context);
+        context.safePop();
       },
       leading: Container(
         key: ValueKey("space_${project.name}_${project.id}"),

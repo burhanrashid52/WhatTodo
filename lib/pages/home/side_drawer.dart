@@ -11,6 +11,7 @@ import 'package:flutter_app/pages/labels/label_widget.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/pages/projects/project_widget.dart';
 import 'package:flutter_app/utils/keys.dart';
+import 'package:flutter_app/utils/extension.dart';
 
 class SideDrawer extends StatelessWidget {
   @override
@@ -53,12 +54,12 @@ class SideDrawer extends StatelessWidget {
                 var project = Project.getInbox();
                 homeBloc.applyFilter(
                     project.name, Filter.byProject(project.id!));
-                Navigator.pop(context);
+                context.safePop();
               }),
           ListTile(
               onTap: () {
                 homeBloc.applyFilter("Today", Filter.byToday());
-                Navigator.pop(context);
+                context.safePop();
               },
               leading: Icon(Icons.calendar_today),
               title: Text(
@@ -68,7 +69,7 @@ class SideDrawer extends StatelessWidget {
           ListTile(
             onTap: () {
               homeBloc.applyFilter("Next 7 Days", Filter.byNextWeek());
-              Navigator.pop(context);
+              context.safePop();
             },
             leading: Icon(Icons.calendar_today),
             title: Text(

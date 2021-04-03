@@ -8,6 +8,7 @@ import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
 import 'package:flutter_app/pages/labels/label_bloc.dart';
 import 'package:flutter_app/utils/keys.dart';
+import 'package:flutter_app/utils/extension.dart';
 
 class LabelPage extends StatelessWidget {
   @override
@@ -53,8 +54,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
           key: ValueKey(SideDrawerKeys.ADD_LABEL),
         ),
         onTap: () async {
-          Navigator.pop(context);
-
+          context.safePop();
           var blocLabelProvider = BlocProvider(
             bloc: LabelBloc(LabelDB.get()),
             child: AddLabel(),
@@ -81,7 +81,7 @@ class LabelRow extends StatelessWidget {
       key: ValueKey("tile_${label.name}_${label.id}"),
       onTap: () {
         homeBloc.applyFilter("@ ${label.name}", Filter.byLabel(label.name));
-        Navigator.pop(context);
+        context.safePop();
       },
       leading: Container(
         width: 24.0,
