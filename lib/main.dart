@@ -3,6 +3,7 @@ import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/home/home.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
+import 'package:flutter_app/utils/extension.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,7 +26,7 @@ class AdaptiveHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = MediaQuery.of(context).size.width > 600;
+    bool isDesktop = context.isDesktop();
     return isDesktop
         ? Row(
             children: [

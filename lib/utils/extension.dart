@@ -6,4 +6,8 @@ extension NavigatorExt on BuildContext {
       Navigator.pop(this, true);
     }
   }
+
+  bool isDesktop() {
+    return MediaQuery.of(this).size.width > 600;
+  }
 }

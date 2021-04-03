@@ -13,6 +13,7 @@ import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/pages/tasks/task_widgets.dart';
 import 'package:flutter_app/utils/keys.dart';
+import 'package:flutter_app/utils/extension.dart';
 
 class HomePage extends StatelessWidget {
   final TaskBloc _taskBloc = TaskBloc(TaskDB.get());
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = MediaQuery.of(context).size.width > 600;
+    bool isDesktop = context.isDesktop();
     final HomeBloc homeBloc = BlocProvider.of(context);
     scheduleMicrotask(() {
       homeBloc.filter.listen((filter) {
