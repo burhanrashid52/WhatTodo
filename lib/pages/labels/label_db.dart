@@ -47,7 +47,7 @@ class LabelDB {
     return labels;
   }
 
-  Future deleteLabel(int labelId) async {
+  Future deleteLabel(int? labelId) async {
     var db = await _appDatabase.getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawDelete(

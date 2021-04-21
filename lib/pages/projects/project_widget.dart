@@ -71,6 +71,7 @@ class ProjectRow extends StatelessWidget {
   final Project project;
 
   ProjectRow(this.project);
+  var projectDb = ProjectDB.get();
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +83,10 @@ class ProjectRow extends StatelessWidget {
         Navigator.pop(context);
       },
       leading: Container(
+        child: Icon(
+          Icons.library_books_rounded,
+          color: Color(project.colorValue),
+        ),
         key: ValueKey("space_${project.name}_${project.id}"),
         width: 24.0,
         height: 24.0,
@@ -90,13 +95,12 @@ class ProjectRow extends StatelessWidget {
         project.name,
         key: ValueKey("${project.name}_${project.id}"),
       ),
-      trailing: Container(
-        height: 10.0,
-        width: 10.0,
-        child: CircleAvatar(
-          key: ValueKey("dot_${project.name}_${project.id}"),
-          backgroundColor: Color(project.colorValue),
-        ),
+      trailing: IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () {
+          projectDb.deleteProject(project.id);
+          Navigator.pop(context);
+        },
       ),
     );
   }

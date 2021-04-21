@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
-import 'package:flutter_app/pages/labels/label_db.dart';
-import 'package:flutter_app/pages/labels/label.dart';
+import 'package:flutter_app/db/app_db.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
+import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/pages/labels/label_bloc.dart';
+import 'package:flutter_app/pages/labels/label_db.dart';
+import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 import 'package:flutter_app/utils/keys.dart';
 
 class LabelPage extends StatelessWidget {
@@ -35,7 +36,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExpansionTile(
       key: ValueKey(SideDrawerKeys.DRAWER_LABELS),
-      leading: Icon(Icons.label),
+      leading: Icon(Icons.label_outline),
       title: Text("Labels",
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
       children: buildLabels(context),
@@ -69,39 +70,62 @@ class LabelExpansionTileWidget extends StatelessWidget {
   }
 }
 
-class LabelRow extends StatelessWidget {
+class LabelRow extends StatefulWidget {
   final Label label;
 
   LabelRow(this.label);
 
   @override
+  _LabelRowState createState() => _LabelRowState();
+}
+
+class _LabelRowState extends State<LabelRow> {
+  late AppDatabase db;
+
+  var labelDB = LabelDB.get();
+
+  @override
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
     return ListTile(
-      key: ValueKey("tile_${label.name}_${label.id}"),
+      key: ValueKey("tile_${widget.label.name}_${widget.label.id}"),
       onTap: () {
-        homeBloc.applyFilter("@ ${label.name}", Filter.byLabel(label.name));
+        homeBloc.applyFilter(
+            "@ ${widget.label.name}", Filter.byLabel(widget.label.name));
         Navigator.pop(context);
       },
       leading: Container(
-        width: 24.0,
-        height: 24.0,
-        key: ValueKey("space_${label.name}_${label.id}"),
-      ),
-      title: Text(
-        "@ ${label.name}",
-        key: ValueKey("${label.name}_${label.id}"),
-      ),
-      trailing: Container(
-        height: 10.0,
-        width: 10.0,
         child: Icon(
           Icons.label,
-          size: 16.0,
-          key: ValueKey("icon_${label.name}_${label.id}"),
-          color: Color(label.colorValue),
+          size: 20,
+          color: Color(widget.label.colorValue),
+        ),
+        width: 24.0,
+        height: 24.0,
+        key: ValueKey("space_${widget.label.name}_${widget.label.id}"),
+      ),
+      title: Text(
+        "@ ${widget.label.name}",
+        key: ValueKey("${widget.label.name}_${widget.label.id}"),
+      ),
+      trailing: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+          del(widget.label.id);
+        },
+        icon: Icon(
+          Icons.delete,
+          size: 20.0,
+          key: ValueKey("icon_${widget.label.name}_${widget.label.id}"),
+          color: Colors.grey[500],
         ),
       ),
     );
+  }
+
+  del(int? id) async {
+    setState(() {
+      labelDB.deleteLabel(id);
+    });
   }
 }
