@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
@@ -67,41 +69,89 @@ class ProjectExpansionTileWidget extends StatelessWidget {
   }
 }
 
-class ProjectRow extends StatelessWidget {
+class ProjectRow extends StatefulWidget {
   final Project project;
 
   ProjectRow(this.project);
+
+  @override
+  _ProjectRowState createState() => _ProjectRowState();
+}
+
+class _ProjectRowState extends State<ProjectRow> {
   var projectDb = ProjectDB.get();
 
   @override
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
     return ListTile(
-      key: ValueKey("tile_${project.name}_${project.id}"),
+      key: ValueKey("tile_${widget.project.name}_${widget.project.id}"),
       onTap: () {
-        homeBloc.applyFilter(project.name, Filter.byProject(project.id!));
+        homeBloc.applyFilter(
+            widget.project.name, Filter.byProject(widget.project.id!));
         Navigator.pop(context);
       },
       leading: Container(
         child: Icon(
           Icons.library_books_rounded,
-          color: Color(project.colorValue),
+          color: Color(widget.project.colorValue),
         ),
-        key: ValueKey("space_${project.name}_${project.id}"),
+        key: ValueKey("space_${widget.project.name}_${widget.project.id}"),
         width: 24.0,
         height: 24.0,
       ),
       title: Text(
-        project.name,
-        key: ValueKey("${project.name}_${project.id}"),
+        widget.project.name,
+        key: ValueKey("${widget.project.name}_${widget.project.id}"),
       ),
       trailing: IconButton(
-        icon: Icon(Icons.delete),
-        onPressed: () {
-          projectDb.deleteProject(project.id);
-          Navigator.pop(context);
-        },
-      ),
+          icon: Icon(Icons.delete),
+          onPressed: () {
+            return _showMyDialog1(widget.project.id);
+          }),
+    );
+  }
+
+  _showMyDialog1(int? id) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              'Alert',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure want to delete this project? '),
+                Text(
+                    'This will also delete the project associated with this project'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                projectDb.deleteProject(id);
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

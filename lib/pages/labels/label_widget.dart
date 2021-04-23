@@ -110,8 +110,7 @@ class _LabelRowState extends State<LabelRow> {
       ),
       trailing: IconButton(
         onPressed: () {
-          Navigator.pop(context);
-          del(widget.label.id);
+          _showMyDialog1(widget.label.id);
         },
         icon: Icon(
           Icons.delete,
@@ -123,9 +122,48 @@ class _LabelRowState extends State<LabelRow> {
     );
   }
 
-  del(int? id) async {
-    setState(() {
-      labelDB.deleteLabel(id);
-    });
+  _showMyDialog1(int? id) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              'Alert',
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure want to delete this label? '),
+                Text(
+                    'This will also delete the project associated with this label'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                labelDB.deleteLabel(id);
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
