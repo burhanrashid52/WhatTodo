@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/utils/color_utils.dart';
+
+import 'project_db.dart';
 
 class ProjectBloc implements BlocBase {
   StreamController<List<Project>> _projectController =
@@ -50,5 +51,9 @@ class ProjectBloc implements BlocBase {
 
   void refresh() {
     _loadProjects(isInboxVisible);
+  }
+
+  void del(int? id) {
+    _projectDB.deleteProject(id);
   }
 }

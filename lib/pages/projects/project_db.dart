@@ -36,7 +36,7 @@ class ProjectDB {
     });
   }
 
-  Future deleteProject(int projectID) async {
+  Future deleteProject(int? projectID) async {
     var db = await _appDatabase.getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawDelete(
