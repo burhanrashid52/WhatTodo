@@ -123,6 +123,7 @@ class _LabelRowState extends State<LabelRow> {
   }
 
   _showMyDialog1(int? id) async {
+    LabelBloc _labelBloc = BlocProvider.of(context);
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -149,8 +150,8 @@ class _LabelRowState extends State<LabelRow> {
             TextButton(
               child: Text('Yes'),
               onPressed: () {
-                labelDB.deleteLabel(id);
-                Navigator.pop(context);
+                _labelBloc.del(id);
+                _labelBloc.refresh();
                 Navigator.pop(context);
               },
             ),
@@ -158,7 +159,6 @@ class _LabelRowState extends State<LabelRow> {
               child: Text('No'),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.pop(context);
               },
             ),
           ],

@@ -55,4 +55,8 @@ class LabelBloc implements BlocBase {
   void updateColorSelection(ColorPalette colorPalette) {
     _colorController.sink.add(colorPalette);
   }
+
+  void del(int? id) {
+    _labelDB.deleteLabel(id);
+  }
 }

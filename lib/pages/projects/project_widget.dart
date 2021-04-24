@@ -113,6 +113,7 @@ class _ProjectRowState extends State<ProjectRow> {
   }
 
   _showMyDialog1(int? id) async {
+    ProjectBloc projectBloc = BlocProvider.of<ProjectBloc>(context);
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -137,8 +138,8 @@ class _ProjectRowState extends State<ProjectRow> {
             TextButton(
               child: Text('Yes'),
               onPressed: () {
-                projectDb.deleteProject(id);
-                Navigator.pop(context);
+                projectBloc.del(id);
+                projectBloc.refresh();
                 Navigator.pop(context);
               },
             ),
@@ -146,7 +147,6 @@ class _ProjectRowState extends State<ProjectRow> {
               child: Text('No'),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.pop(context);
               },
             ),
           ],
