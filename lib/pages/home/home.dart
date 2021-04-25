@@ -57,7 +57,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.orange,
         onPressed: () async {
           if (context.isDesktop()) {
-            homeBloc.updateScreen("Add Task", SCREEN.ADD_TASK);
+            homeBloc.updateScreen(SCREEN.ADD_TASK);
           } else {
             await Navigator.push(
               context,
@@ -86,7 +86,7 @@ class HomePage extends StatelessWidget {
           case MenuItem.taskCompleted:
             if (context.isDesktop()) {
               var homeBloc = BlocProvider.of<HomeBloc>(context);
-              homeBloc.updateScreen("Completed Tasks", SCREEN.COMPLETED_TASK);
+              homeBloc.updateScreen(SCREEN.COMPLETED_TASK);
             } else {
               await Navigator.push(
                 context,

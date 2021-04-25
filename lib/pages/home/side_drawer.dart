@@ -33,7 +33,7 @@ class SideDrawer extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (context.isDesktop()) {
-                      homeBloc.updateScreen("About", SCREEN.ABOUT);
+                      homeBloc.updateScreen(SCREEN.ABOUT);
                     } else {
                       Navigator.push(
                         context,

@@ -31,12 +31,12 @@ class HomeBloc implements BlocBase {
 
   void applyFilter(String title, Filter filter) {
     _filterController.sink.add(filter);
-    updateScreen(title, SCREEN.HOME);
+    updateTitle(title);
+    updateScreen(SCREEN.HOME);
   }
 
-  void updateScreen(String title, SCREEN screenType) {
+  void updateScreen(SCREEN screenType) {
     _screenController.sink.add(screenType);
-    updateTitle(title);
   }
 }
 
