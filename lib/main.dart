@@ -5,6 +5,7 @@ import 'package:flutter_app/pages/home/home.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
+import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
 import 'package:flutter_app/utils/extension.dart';
 
 void main() => runApp(MyApp());
@@ -49,6 +50,8 @@ class AdaptiveHomePage extends StatelessWidget {
                             return AboutUsScreen();
                           case SCREEN.ADD_TASK:
                             return AddTaskProvider();
+                          case SCREEN.COMPLETED_TASK:
+                            return TaskCompletedPage();
                           case SCREEN.HOME:
                             return HomePage();
                         }

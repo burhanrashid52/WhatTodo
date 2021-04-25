@@ -40,4 +40,4 @@ class HomeBloc implements BlocBase {
   }
 }
 
-enum SCREEN { ABOUT, ADD_TASK, HOME }
+enum SCREEN { ABOUT, ADD_TASK, HOME, COMPLETED_TASK }
