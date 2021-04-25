@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/home/home.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
@@ -22,11 +23,10 @@ class MyApp extends StatelessWidget {
 }
 
 class AdaptiveHomePage extends StatelessWidget {
-  AdaptiveHomePage();
-
   @override
   Widget build(BuildContext context) {
     bool isDesktop = context.isDesktop();
+    HomeBloc homeBloc = BlocProvider.of(context);
     return isDesktop
         ? Row(
             children: [
@@ -38,9 +38,23 @@ class AdaptiveHomePage extends StatelessWidget {
                 width: 0.5,
               ),
               Expanded(
-                child: HomePage(),
+                child: StreamBuilder<SCREEN?>(
+                    stream: homeBloc.screens,
+                    builder: (context, snapshot) {
+                      if (snapshot.data != null) {
+                        // ignore: missing_enum_constant_in_switch
+                        switch (snapshot.data) {
+                          case SCREEN.ABOUT:
+                            return AboutUsScreen();
+                          case SCREEN.ADD_TASK:
+                          // TODO: Handle this case.
+                            break;
+                        }
+                      }
+                      return HomePage();
+                    }),
                 flex: 5,
-              ),
+              )
             ],
           )
         : HomePage();

@@ -32,11 +32,15 @@ class SideDrawer extends StatelessWidget {
                     size: 36.0,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<bool>(
-                          builder: (context) => AboutUsScreen()),
-                    );
+                    if (context.isDesktop()) {
+                      homeBloc.updateScreen("About", SCREEN.ABOUT);
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<bool>(
+                            builder: (context) => AboutUsScreen()),
+                      );
+                    }
                   })
             ],
             currentAccountPicture: CircleAvatar(
