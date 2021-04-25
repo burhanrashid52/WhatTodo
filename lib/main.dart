@@ -40,7 +40,7 @@ class AdaptiveHomePage extends StatelessWidget {
                 width: 0.5,
               ),
               Expanded(
-                child: StreamBuilder<SCREEN?>(
+                child: StreamBuilder<SCREEN>(
                     stream: homeBloc.screens,
                     builder: (context, snapshot) {
                       if (snapshot.data != null) {

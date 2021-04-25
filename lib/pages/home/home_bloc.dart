@@ -13,10 +13,10 @@ class HomeBloc implements BlocBase {
 
   Stream<Filter> get filter => _filterController.stream;
 
-  StreamController<SCREEN?> _screenController =
-      StreamController<SCREEN?>.broadcast();
+  StreamController<SCREEN> _screenController =
+      StreamController<SCREEN>.broadcast();
 
-  Stream<SCREEN?> get screens => _screenController.stream;
+  Stream<SCREEN> get screens => _screenController.stream;
 
   @override
   void dispose() {

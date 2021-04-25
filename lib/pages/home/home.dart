@@ -21,8 +21,10 @@ class HomePage extends StatelessWidget {
     bool isDesktop = context.isDesktop();
     final HomeBloc homeBloc = BlocProvider.of(context);
     scheduleMicrotask(() {
-      homeBloc.filter.listen((filter) {
+      StreamSubscription? _filterSubscription;
+      _filterSubscription = homeBloc.filter.listen((filter) {
         _taskBloc.updateFilters(filter);
+        _filterSubscription?.cancel();
       });
     });
     return Scaffold(
