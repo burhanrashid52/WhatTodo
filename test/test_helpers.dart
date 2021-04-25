@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 extension TestWrapMaterialApp on Widget {
@@ -12,7 +13,10 @@ extension TestWrapMaterialApp on Widget {
 
   Widget wrapMaterialAppWithBloc<T extends BlocBase>(T myBloc) {
     return MaterialApp(
-      home: BlocProvider(bloc: myBloc, child: this),
+      home: BlocProvider(
+        bloc: HomeBloc(),
+        child: BlocProvider(bloc: myBloc, child: this),
+      ),
     );
   }
 

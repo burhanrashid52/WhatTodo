@@ -59,15 +59,15 @@ class HomePage extends StatelessWidget {
         ),
         backgroundColor: Colors.orange,
         onPressed: () async {
-          var blocProviderAddTask = BlocProvider(
-            bloc: AddTaskBloc(TaskDB.get(), ProjectDB.get(), LabelDB.get()),
-            child: AddTaskScreen(),
-          );
-          await Navigator.push(
-            context,
-            MaterialPageRoute<bool>(builder: (context) => blocProviderAddTask),
-          );
-          _taskBloc.refresh();
+          if (context.isDesktop()) {
+            homeBloc.updateScreen("Add Task", SCREEN.ADD_TASK);
+          } else {
+            await Navigator.push(
+              context,
+              MaterialPageRoute<bool>(builder: (context) => AddTaskProvider()),
+            );
+            _taskBloc.refresh();
+          }
         },
       ),
       drawer: isDesktop ? null : SideDrawer(),

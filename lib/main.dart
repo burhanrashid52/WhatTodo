@@ -4,6 +4,7 @@ import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/home/home.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
+import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/utils/extension.dart';
 
 void main() => runApp(MyApp());
@@ -47,8 +48,9 @@ class AdaptiveHomePage extends StatelessWidget {
                           case SCREEN.ABOUT:
                             return AboutUsScreen();
                           case SCREEN.ADD_TASK:
-                          // TODO: Handle this case.
-                            break;
+                            return AddTaskProvider();
+                          case SCREEN.HOME:
+                            return HomePage();
                         }
                       }
                       return HomePage();

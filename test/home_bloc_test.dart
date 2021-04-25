@@ -4,9 +4,8 @@ import 'package:test/test.dart';
 
 void main() {
   group("Home Bloc Test", () {
-    var homeBloc = HomeBloc();
-
     test("Updating title Test", () async {
+      var homeBloc = HomeBloc();
       expect(
           homeBloc.title,
           emitsInOrder(
@@ -21,6 +20,7 @@ void main() {
     });
 
     test("Updating Filter Test", () async {
+      var homeBloc = HomeBloc();
       expect(
           homeBloc.title,
           emitsInOrder(

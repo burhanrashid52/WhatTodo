@@ -3,13 +3,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/models/priority.dart';
+import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/labels/label.dart';
+import 'package:flutter_app/pages/labels/label_db.dart';
 import 'package:flutter_app/pages/projects/project.dart';
+import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/bloc/add_task_bloc.dart';
+import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';
 import 'package:flutter_app/utils/keys.dart';
+import 'package:flutter_app/utils/extension.dart';
+
+import 'bloc/task_bloc.dart';
 
 class AddTaskScreen extends StatelessWidget {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
@@ -119,7 +126,12 @@ class AddTaskScreen extends StatelessWidget {
             if (_formState.currentState!.validate()) {
               _formState.currentState!.save();
               createTaskBloc.createTask().listen((value) {
-                Navigator.pop(context, true);
+                if (context.isDesktop()) {
+                  BlocProvider.of<HomeBloc>(context)
+                      .applyFilter("Today", Filter.byToday());
+                } else {
+                  context.safePop();
+                }
               });
             }
           }),
@@ -185,7 +197,8 @@ class AddTaskScreen extends StatelessWidget {
               builder: (context, snapshot) {
                 return SimpleDialog(
                   title: const Text('Select Labels'),
-                  children: buildLabels(createTaskBloc, context, snapshot.data!),
+                  children:
+                      buildLabels(createTaskBloc, context, snapshot.data!),
                 );
               });
         });
@@ -265,5 +278,15 @@ class AddTaskScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 18.0)),
               ),
             )));
+  }
+}
+
+class AddTaskProvider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      bloc: AddTaskBloc(TaskDB.get(), ProjectDB.get(), LabelDB.get()),
+      child: AddTaskScreen(),
+    );
   }
 }

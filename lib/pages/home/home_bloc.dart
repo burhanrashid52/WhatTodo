@@ -5,8 +5,7 @@ import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HomeBloc implements BlocBase {
-  StreamController<String> _titleController =
-      StreamController<String>.broadcast();
+  StreamController<String> _titleController = BehaviorSubject<String>();
 
   Stream<String> get title => _titleController.stream;
 
