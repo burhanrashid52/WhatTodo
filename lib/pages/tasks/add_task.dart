@@ -126,7 +126,7 @@ class AddTaskScreen extends StatelessWidget {
             if (_formState.currentState!.validate()) {
               _formState.currentState!.save();
               createTaskBloc.createTask().listen((value) {
-                if (context.isDesktop()) {
+                if (context.isWiderScreen()) {
                   BlocProvider.of<HomeBloc>(context)
                       .applyFilter("Today", Filter.byToday());
                 } else {

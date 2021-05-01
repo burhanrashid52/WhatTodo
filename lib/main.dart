@@ -4,6 +4,7 @@ import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/home/home.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
+import 'package:flutter_app/pages/projects/project_widget.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
 import 'package:flutter_app/utils/extension.dart';
@@ -16,7 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            accentColor: Colors.orange, primaryColor: const Color(0xFFDE4435)),
+          accentColor: Colors.orange,
+          primaryColor: const Color(0xFFDE4435),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
         home: BlocProvider(
           bloc: HomeBloc(),
           child: AdaptiveHomePage(),
@@ -27,13 +31,17 @@ class MyApp extends StatelessWidget {
 class AdaptiveHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = context.isDesktop();
+    bool isWiderScreen = context.isWiderScreen();
     HomeBloc homeBloc = BlocProvider.of(context);
-    return isDesktop
+    return isWiderScreen
         ? Row(
             children: [
               Expanded(
-                child: SideDrawer(),
+                child: StreamBuilder<SCREEN>(
+                    stream: homeBloc.screens,
+                    builder: (context, snapshot) {
+                      return SideDrawer();
+                    }),
                 flex: 2,
               ),
               SizedBox(
@@ -52,6 +60,8 @@ class AdaptiveHomePage extends StatelessWidget {
                             return AddTaskProvider();
                           case SCREEN.COMPLETED_TASK:
                             return TaskCompletedPage();
+                          case SCREEN.ADD_PROJECT:
+                            return AddProjectPage();
                           case SCREEN.HOME:
                             return HomePage();
                         }

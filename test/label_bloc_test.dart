@@ -78,6 +78,7 @@ void main() {
     await expectLater(
         labelBloc.labels,
         emitsInOrder([
+          [testLabel1, testLabel2],
           [testLabel1, testLabel2, testLabel3],
         ]));
   });

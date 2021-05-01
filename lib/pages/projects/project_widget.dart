@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
@@ -13,13 +15,16 @@ class ProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProjectBloc projectBloc = BlocProvider.of<ProjectBloc>(context);
+    scheduleMicrotask(() => projectBloc.refresh());
     return StreamBuilder<List<Project>>(
       stream: projectBloc.projects,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ProjectExpansionTileWidget(snapshot.data!);
         } else {
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
       },
     );
@@ -50,17 +55,18 @@ class ProjectExpansionTileWidget extends StatelessWidget {
       leading: Icon(Icons.add),
       title: Text("Add Project"),
       onTap: () async {
-        context.safePop();
         ProjectBloc projectBloc = BlocProvider.of<ProjectBloc>(context);
-        Widget addProject = BlocProvider(
-          bloc: ProjectBloc(ProjectDB.get()),
-          child: AddProject(),
-        );
-        await Navigator.push(
-            context,
-            MaterialPageRoute<bool>(
-              builder: (context) => addProject,
-            ));
+        if (context.isWiderScreen()) {
+          final homeBloc = BlocProvider.of<HomeBloc>(context);
+          homeBloc.updateScreen(SCREEN.ADD_PROJECT);
+        } else {
+          context.safePop();
+          await Navigator.push(
+              context,
+              MaterialPageRoute<bool>(
+                builder: (context) => AddProjectPage(),
+              ));
+        }
         projectBloc.refresh();
       },
     ));
@@ -99,6 +105,16 @@ class ProjectRow extends StatelessWidget {
           backgroundColor: Color(project.colorValue),
         ),
       ),
+    );
+  }
+}
+
+class AddProjectPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      bloc: ProjectBloc(ProjectDB.get()),
+      child: AddProject(),
     );
   }
 }

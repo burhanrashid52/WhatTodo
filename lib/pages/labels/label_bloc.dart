@@ -4,10 +4,11 @@ import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
 import 'package:flutter_app/utils/color_utils.dart';
+import 'package:rxdart/rxdart.dart';
 
 class LabelBloc implements BlocBase {
   StreamController<List<Label>> _labelController =
-      StreamController<List<Label>>.broadcast();
+      BehaviorSubject<List<Label>>();
 
   Stream<List<Label>> get labels => _labelController.stream;
 

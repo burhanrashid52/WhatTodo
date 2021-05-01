@@ -20,7 +20,9 @@ class LabelPage extends StatelessWidget {
         if (snapshot.hasData) {
           return LabelExpansionTileWidget(snapshot.data!);
         } else {
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
       },
     );

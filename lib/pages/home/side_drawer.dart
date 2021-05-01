@@ -14,6 +14,7 @@ import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_app/utils/extension.dart';
 
 class SideDrawer extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
@@ -32,7 +33,7 @@ class SideDrawer extends StatelessWidget {
                     size: 36.0,
                   ),
                   onPressed: () {
-                    if (context.isDesktop()) {
+                    if (context.isWiderScreen()) {
                       homeBloc.updateScreen(SCREEN.ABOUT);
                     } else {
                       Navigator.push(

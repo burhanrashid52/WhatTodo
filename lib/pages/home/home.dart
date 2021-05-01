@@ -18,13 +18,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = context.isDesktop();
+    bool isDesktop = context.isWiderScreen();
     final HomeBloc homeBloc = BlocProvider.of(context);
     scheduleMicrotask(() {
       StreamSubscription? _filterSubscription;
       _filterSubscription = homeBloc.filter.listen((filter) {
         _taskBloc.updateFilters(filter);
-        _filterSubscription?.cancel();
+        //_filterSubscription?.cancel();
       });
     });
     return Scaffold(
@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
         ),
         backgroundColor: Colors.orange,
         onPressed: () async {
-          if (context.isDesktop()) {
+          if (context.isWiderScreen()) {
             homeBloc.updateScreen(SCREEN.ADD_TASK);
           } else {
             await Navigator.push(
@@ -86,7 +86,7 @@ class HomePage extends StatelessWidget {
       onSelected: (MenuItem result) async {
         switch (result) {
           case MenuItem.taskCompleted:
-            if (context.isDesktop()) {
+            if (context.isWiderScreen()) {
               var homeBloc = BlocProvider.of<HomeBloc>(context);
               homeBloc.updateScreen(SCREEN.COMPLETED_TASK);
             } else {

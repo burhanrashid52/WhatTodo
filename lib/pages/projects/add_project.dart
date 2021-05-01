@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/keys.dart';
+import 'package:flutter_app/utils/extension.dart';
 
 class AddProject extends StatelessWidget {
   final expansionTile = GlobalKey<CollapsibleExpansionTileState>();
@@ -36,7 +38,12 @@ class AddProject extends StatelessWidget {
                   currentSelectedPalette.colorValue,
                   currentSelectedPalette.colorName);
               _projectBloc.createProject(project);
-              Navigator.pop(context, true);
+              if (context.isWiderScreen()) {
+                HomeBloc _homeBloc = BlocProvider.of<HomeBloc>(context);
+                _homeBloc.updateScreen(SCREEN.HOME);
+              }
+              context.safePop();
+              _projectBloc.refresh();
             }
           }),
       body: ListView(
