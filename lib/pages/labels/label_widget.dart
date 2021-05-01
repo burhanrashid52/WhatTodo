@@ -56,15 +56,18 @@ class LabelExpansionTileWidget extends StatelessWidget {
           key: ValueKey(SideDrawerKeys.ADD_LABEL),
         ),
         onTap: () async {
-          context.safePop();
-          var blocLabelProvider = BlocProvider(
-            bloc: LabelBloc(LabelDB.get()),
-            child: AddLabel(),
-          );
-
-          await Navigator.push(context,
-              MaterialPageRoute<bool>(builder: (context) => blocLabelProvider));
-
+          if (context.isWiderScreen()) {
+            final homeBloc = BlocProvider.of<HomeBloc>(context);
+            homeBloc.updateScreen(SCREEN.ADD_LABEL);
+          } else {
+            context.safePop();
+            await Navigator.push(
+              context,
+              MaterialPageRoute<bool>(
+                builder: (context) => AddLabelPage(),
+              ),
+            );
+          }
           _labelBloc.refresh();
         }));
     return projectWidgetList;
@@ -104,6 +107,16 @@ class LabelRow extends StatelessWidget {
           color: Color(label.colorValue),
         ),
       ),
+    );
+  }
+}
+
+class AddLabelPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      bloc: LabelBloc(LabelDB.get()),
+      child: AddLabel(),
     );
   }
 }

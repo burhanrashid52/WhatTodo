@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/pages/labels/label_bloc.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/keys.dart';
+import 'package:flutter_app/utils/extension.dart';
 
 class AddLabel extends StatelessWidget {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
@@ -16,13 +20,20 @@ class AddLabel extends StatelessWidget {
     late ColorPalette currentSelectedPalette;
     LabelBloc labelBloc = BlocProvider.of(context);
     String labelName = "";
-    labelBloc.labelsExist.listen((isExist) {
-      if (isExist) {
-        showSnackbar(context, "Label already exists");
-      } else {
-        Navigator.pop(context);
-      }
+    scheduleMicrotask(() {
+      labelBloc.labelsExist.listen((isExist) {
+        if (isExist) {
+          showSnackbar(context, "Label already exists");
+        } else {
+          context.safePop();
+          if (context.isWiderScreen()) {
+            HomeBloc _homeBloc = BlocProvider.of<HomeBloc>(context);
+            _homeBloc.updateScreen(SCREEN.HOME);
+          }
+        }
+      });
     });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

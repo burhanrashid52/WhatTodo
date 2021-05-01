@@ -4,6 +4,7 @@ import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/home/home.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
+import 'package:flutter_app/pages/labels/label_widget.dart';
 import 'package:flutter_app/pages/projects/project_widget.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
@@ -62,6 +63,8 @@ class AdaptiveHomePage extends StatelessWidget {
                             return TaskCompletedPage();
                           case SCREEN.ADD_PROJECT:
                             return AddProjectPage();
+                          case SCREEN.ADD_LABEL:
+                            return AddLabelPage();
                           case SCREEN.HOME:
                             return HomePage();
                         }
