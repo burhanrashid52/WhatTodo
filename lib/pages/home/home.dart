@@ -18,8 +18,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = context.isWiderScreen();
-    final HomeBloc homeBloc = BlocProvider.of(context);
+    final bool isWiderScreen = context.isWiderScreen();
+    final homeBloc = context.bloc<HomeBloc>();
     scheduleMicrotask(() {
       StreamSubscription? _filterSubscription;
       _filterSubscription = homeBloc.filter.listen((filter) {
@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
               );
             }),
         actions: <Widget>[buildPopupMenu(context)],
-        leading: isDesktop
+        leading: isWiderScreen
             ? null
             : new IconButton(
                 icon: new Icon(
@@ -58,18 +58,11 @@ class HomePage extends StatelessWidget {
         ),
         backgroundColor: Colors.orange,
         onPressed: () async {
-          if (context.isWiderScreen()) {
-            homeBloc.updateScreen(SCREEN.ADD_TASK);
-          } else {
-            await Navigator.push(
-              context,
-              MaterialPageRoute<bool>(builder: (context) => AddTaskProvider()),
-            );
-            _taskBloc.refresh();
-          }
+          await context.adaptiveNavigate(SCREEN.ADD_TASK, AddTaskProvider());
+          _taskBloc.refresh();
         },
       ),
-      drawer: isDesktop ? null : SideDrawer(),
+      drawer: isWiderScreen ? null : SideDrawer(),
       body: BlocProvider(
         bloc: _taskBloc,
         child: TasksPage(),
@@ -85,24 +78,16 @@ class HomePage extends StatelessWidget {
       key: ValueKey(CompletedTaskPageKeys.POPUP_ACTION),
       onSelected: (MenuItem result) async {
         switch (result) {
-          case MenuItem.taskCompleted:
-            if (context.isWiderScreen()) {
-              var homeBloc = BlocProvider.of<HomeBloc>(context);
-              homeBloc.updateScreen(SCREEN.COMPLETED_TASK);
-            } else {
-              await Navigator.push(
-                context,
-                MaterialPageRoute<bool>(
-                    builder: (context) => TaskCompletedPage()),
-              );
-              _taskBloc.refresh();
-            }
+          case MenuItem.TASK_COMPLETED:
+            await context.adaptiveNavigate(
+                SCREEN.COMPLETED_TASK, TaskCompletedPage());
+            _taskBloc.refresh();
             break;
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
         const PopupMenuItem<MenuItem>(
-          value: MenuItem.taskCompleted,
+          value: MenuItem.TASK_COMPLETED,
           child: const Text(
             'Completed Tasks',
             key: ValueKey(CompletedTaskPageKeys.COMPLETED_TASKS),
@@ -114,4 +99,4 @@ class HomePage extends StatelessWidget {
 }
 
 // This is the type used by the popup menu below.
-enum MenuItem { taskCompleted }
+enum MenuItem { TASK_COMPLETED }

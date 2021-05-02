@@ -24,57 +24,62 @@ class MyApp extends StatelessWidget {
         ),
         home: BlocProvider(
           bloc: HomeBloc(),
-          child: AdaptiveHomePage(),
+          child: AdaptiveHome(),
         ));
   }
 }
 
-class AdaptiveHomePage extends StatelessWidget {
+class AdaptiveHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    bool isWiderScreen = context.isWiderScreen();
-    HomeBloc homeBloc = BlocProvider.of(context);
-    return isWiderScreen
-        ? Row(
-            children: [
-              Expanded(
-                child: StreamBuilder<SCREEN>(
-                    stream: homeBloc.screens,
-                    builder: (context, snapshot) {
-                      return SideDrawer();
-                    }),
-                flex: 2,
-              ),
-              SizedBox(
-                width: 0.5,
-              ),
-              Expanded(
-                child: StreamBuilder<SCREEN>(
-                    stream: homeBloc.screens,
-                    builder: (context, snapshot) {
-                      if (snapshot.data != null) {
-                        // ignore: missing_enum_constant_in_switch
-                        switch (snapshot.data) {
-                          case SCREEN.ABOUT:
-                            return AboutUsScreen();
-                          case SCREEN.ADD_TASK:
-                            return AddTaskProvider();
-                          case SCREEN.COMPLETED_TASK:
-                            return TaskCompletedPage();
-                          case SCREEN.ADD_PROJECT:
-                            return AddProjectPage();
-                          case SCREEN.ADD_LABEL:
-                            return AddLabelPage();
-                          case SCREEN.HOME:
-                            return HomePage();
-                        }
-                      }
+    return context.isWiderScreen() ? WiderHomePage() : HomePage();
+  }
+}
+
+class WiderHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final homeBloc = context.bloc<HomeBloc>();
+    return Row(
+      children: [
+        Expanded(
+          child: StreamBuilder<SCREEN>(
+              stream: homeBloc.screens,
+              builder: (context, snapshot) {
+                //Refresh side drawer whenever screen is updated
+                return SideDrawer();
+              }),
+          flex: 2,
+        ),
+        SizedBox(
+          width: 0.5,
+        ),
+        Expanded(
+          child: StreamBuilder<SCREEN>(
+              stream: homeBloc.screens,
+              builder: (context, snapshot) {
+                if (snapshot.data != null) {
+                  // ignore: missing_enum_constant_in_switch
+                  switch (snapshot.data) {
+                    case SCREEN.ABOUT:
+                      return AboutUsScreen();
+                    case SCREEN.ADD_TASK:
+                      return AddTaskProvider();
+                    case SCREEN.COMPLETED_TASK:
+                      return TaskCompletedPage();
+                    case SCREEN.ADD_PROJECT:
+                      return AddProjectPage();
+                    case SCREEN.ADD_LABEL:
+                      return AddLabelPage();
+                    case SCREEN.HOME:
                       return HomePage();
-                    }),
-                flex: 5,
-              )
-            ],
-          )
-        : HomePage();
+                  }
+                }
+                return HomePage();
+              }),
+          flex: 5,
+        )
+      ],
+    );
   }
 }

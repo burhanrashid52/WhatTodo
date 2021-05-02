@@ -39,8 +39,7 @@ class AddProject extends StatelessWidget {
                   currentSelectedPalette.colorName);
               _projectBloc.createProject(project);
               if (context.isWiderScreen()) {
-                HomeBloc _homeBloc = BlocProvider.of<HomeBloc>(context);
-                _homeBloc.updateScreen(SCREEN.HOME);
+                context.bloc<HomeBloc>().updateScreen(SCREEN.HOME);
               }
               context.safePop();
               _projectBloc.refresh();

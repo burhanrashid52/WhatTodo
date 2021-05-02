@@ -15,7 +15,6 @@ class ProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProjectBloc projectBloc = BlocProvider.of<ProjectBloc>(context);
-    scheduleMicrotask(() => projectBloc.refresh());
     return StreamBuilder<List<Project>>(
       stream: projectBloc.projects,
       builder: (context, snapshot) {
@@ -55,19 +54,8 @@ class ProjectExpansionTileWidget extends StatelessWidget {
       leading: Icon(Icons.add),
       title: Text("Add Project"),
       onTap: () async {
-        ProjectBloc projectBloc = BlocProvider.of<ProjectBloc>(context);
-        if (context.isWiderScreen()) {
-          final homeBloc = BlocProvider.of<HomeBloc>(context);
-          homeBloc.updateScreen(SCREEN.ADD_PROJECT);
-        } else {
-          context.safePop();
-          await Navigator.push(
-              context,
-              MaterialPageRoute<bool>(
-                builder: (context) => AddProjectPage(),
-              ));
-        }
-        projectBloc.refresh();
+        await context.adaptiveNavigate(SCREEN.ADD_PROJECT, AddProjectPage());
+        context.bloc<ProjectBloc>().refresh();
       },
     ));
     return projectWidgetList;

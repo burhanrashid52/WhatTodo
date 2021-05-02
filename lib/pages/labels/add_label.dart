@@ -27,8 +27,7 @@ class AddLabel extends StatelessWidget {
         } else {
           context.safePop();
           if (context.isWiderScreen()) {
-            HomeBloc _homeBloc = BlocProvider.of<HomeBloc>(context);
-            _homeBloc.updateScreen(SCREEN.HOME);
+            context.bloc<HomeBloc>().updateScreen(SCREEN.HOME);
           }
         }
       });

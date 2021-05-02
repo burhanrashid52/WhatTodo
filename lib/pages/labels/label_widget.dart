@@ -46,7 +46,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
   }
 
   List<Widget> buildLabels(BuildContext context) {
-    LabelBloc _labelBloc = BlocProvider.of(context);
+    final _labelBloc = context.bloc<LabelBloc>();
     List<Widget> projectWidgetList = [];
     _labels.forEach((label) => projectWidgetList.add(LabelRow(label)));
     projectWidgetList.add(ListTile(
@@ -56,18 +56,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
           key: ValueKey(SideDrawerKeys.ADD_LABEL),
         ),
         onTap: () async {
-          if (context.isWiderScreen()) {
-            final homeBloc = BlocProvider.of<HomeBloc>(context);
-            homeBloc.updateScreen(SCREEN.ADD_LABEL);
-          } else {
-            context.safePop();
-            await Navigator.push(
-              context,
-              MaterialPageRoute<bool>(
-                builder: (context) => AddLabelPage(),
-              ),
-            );
-          }
+          await context.adaptiveNavigate(SCREEN.ADD_LABEL, AddLabelPage());
           _labelBloc.refresh();
         }));
     return projectWidgetList;
@@ -81,7 +70,7 @@ class LabelRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeBloc homeBloc = BlocProvider.of(context);
+    final homeBloc = context.bloc<HomeBloc>();
     return ListTile(
       key: ValueKey("tile_${label.name}_${label.id}"),
       onTap: () {
