@@ -24,31 +24,34 @@ class TaskCompletedPage extends StatelessWidget {
                 return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      return Dismissible(
-                          key: ValueKey(
-                              "swipe_completed_${snapshot.data![index].id}_$index"),
-                          direction: DismissDirection.endToStart,
-                          background: Container(),
-                          onDismissed: (DismissDirection directions) {
-                            if (directions == DismissDirection.endToStart) {
-                              final taskID = snapshot.data![index].id!;
-                              _taskBloc.updateStatus(
-                                  taskID, TaskStatus.PENDING);
-                              SnackBar snackbar =
-                                  SnackBar(content: Text("Task Undo"));
-                              ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                            }
-                          },
-                          secondaryBackground: Container(
-                            color: Colors.grey,
-                            child: ListTile(
-                              trailing: Text("UNDO",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
+                      return ClipRect(
+                        child: Dismissible(
+                            key: ValueKey(
+                                "swipe_completed_${snapshot.data![index].id}_$index"),
+                            direction: DismissDirection.endToStart,
+                            background: Container(),
+                            onDismissed: (DismissDirection directions) {
+                              if (directions == DismissDirection.endToStart) {
+                                final taskID = snapshot.data![index].id!;
+                                _taskBloc.updateStatus(
+                                    taskID, TaskStatus.PENDING);
+                                SnackBar snackbar =
+                                    SnackBar(content: Text("Task Undo"));
+                                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                              }
+                            },
+                            secondaryBackground: Container(
+                              color: Colors.grey,
+                              child: Align(
+                                alignment: Alignment(0.95, 0.0),
+                                child: Text("UNDO",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold)),
+                              ),
                             ),
-                          ),
-                          child: TaskCompletedRow(snapshot.data![index]));
+                            child: TaskCompletedRow(snapshot.data![index])),
+                      );
                     });
               } else {
                 return Center(child: CircularProgressIndicator());

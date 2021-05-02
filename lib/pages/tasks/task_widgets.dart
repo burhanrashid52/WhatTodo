@@ -32,37 +32,46 @@ class TasksPage extends StatelessWidget {
               child: ListView.builder(
                   itemCount: list.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Dismissible(
-                        key: ValueKey("swipe_${list[index].id}_$index"),
-                        onDismissed: (DismissDirection direction) {
-                          var taskID = list[index].id!;
-                          final TaskBloc _tasksBloc =
-                              BlocProvider.of<TaskBloc>(context);
-                          String message = "";
-                          if (direction == DismissDirection.endToStart) {
-                            _tasksBloc.updateStatus(
-                                taskID, TaskStatus.COMPLETE);
-                            message = "Task completed";
-                          } else {
-                            _tasksBloc.delete(taskID);
-                            message = "Task deleted";
-                          }
-                          SnackBar snackbar = SnackBar(content: Text(message));
-                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                        },
-                        background: Container(
-                          color: Colors.red,
-                          child: ListTile(
-                            leading: Icon(Icons.delete, color: Colors.white),
+                    return ClipRect(
+                      child: Dismissible(
+                          key: ValueKey("swipe_${list[index].id}_$index"),
+                          onDismissed: (DismissDirection direction) {
+                            var taskID = list[index].id!;
+                            final TaskBloc _tasksBloc =
+                                BlocProvider.of<TaskBloc>(context);
+                            String message = "";
+                            if (direction == DismissDirection.endToStart) {
+                              _tasksBloc.updateStatus(
+                                  taskID, TaskStatus.COMPLETE);
+                              message = "Task completed";
+                            } else {
+                              _tasksBloc.delete(taskID);
+                              message = "Task deleted";
+                            }
+                            SnackBar snackbar =
+                                SnackBar(content: Text(message));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackbar);
+                          },
+                          background: Container(
+                            color: Colors.red,
+                            child: Align(
+                              alignment: Alignment(-0.95, 0.0),
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
-                        secondaryBackground: Container(
-                          color: Colors.green,
-                          child: ListTile(
-                            trailing: Icon(Icons.check, color: Colors.white),
+                          secondaryBackground: Container(
+                            color: Colors.green,
+                            child: Align(
+                              alignment: Alignment(0.95, 0.0),
+                              child: Icon(Icons.check, color: Colors.white),
+                            ),
                           ),
-                        ),
-                        child: TaskRow(list[index]));
+                          child: TaskRow(list[index])),
+                    );
                   }),
             ),
     );
