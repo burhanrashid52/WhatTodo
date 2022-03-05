@@ -15,6 +15,7 @@
 *.ipr
 *.iws
 .idea/
+coverage
 
 # Visual Studio Code related
 .vscode/
