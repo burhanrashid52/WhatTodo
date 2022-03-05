@@ -15,17 +15,24 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    const primaryColor = Color(0xFFDE4435);
+    final theme = ThemeData(
+      primaryColor: primaryColor,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    );
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          accentColor: Colors.orange,
-          primaryColor: const Color(0xFFDE4435),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+      debugShowCheckedModeBanner: false,
+      theme: theme.copyWith(
+        colorScheme: theme.colorScheme.copyWith(
+          secondary: Colors.orange,
+          primary: primaryColor,
         ),
-        home: BlocProvider(
-          bloc: HomeBloc(),
-          child: AdaptiveHome(),
-        ));
+      ),
+      home: BlocProvider(
+        bloc: HomeBloc(),
+        child: AdaptiveHome(),
+      ),
+    );
   }
 }
 
