@@ -1,6 +1,10 @@
 name: flutter_app
 description: A new Flutter application.
 
+environment:
+  sdk: '>=2.10.0 <3.0.0'
+
+
 dependencies:
   flutter:
     sdk: flutter
@@ -9,9 +13,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.0
   english_words: ^3.1.0
-  sqflite: any
-  url_launcher : ^4.0.0
-  path_provider: ^0.4.1
+  sqflite: ^2.0.2
+  url_launcher : ^6.0.20
+  path_provider: ^2.0.9
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 // --- Copied and slightly modified version of the ExpansionTile.
 
@@ -89,7 +88,7 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
         if (_isExpanded)
           _controller.forward();
         else
-          _controller.reverse().then<void>((Null value) {
+          _controller.reverse().then<void>((value) {
             setState(() {
               // Rebuild without widget.children.
             });
@@ -125,10 +124,9 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
               onTap: toggle,
               leading: widget.leading,
               title: new DefaultTextStyle(
-                style: Theme
-                    .of(context)
+                style: Theme.of(context)
                     .textTheme
-                    .subhead
+                    .subtitle1
                     .copyWith(color: titleColor),
                 child: widget.title,
               ),
@@ -155,11 +153,11 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
     final ThemeData theme = Theme.of(context);
     _borderColor.end = theme.dividerColor;
     _headerColor
-      ..begin = theme.textTheme.subhead.color
-      ..end = theme.accentColor;
+      ..begin = theme.textTheme.subtitle1.color
+      ..end = theme.colorScheme.secondary;
     _iconColor
       ..begin = theme.unselectedWidgetColor
-      ..end = theme.accentColor;
+      ..end = theme.colorScheme.secondary;
     _backgroundColor.end = widget.backgroundColor;
 
     final bool closed = !_isExpanded && _controller.isDismissed;
