@@ -8,6 +8,7 @@
     android:label="WhatTodo">
     <activity
       android:name=".MainActivity"
+      android:exported="true"
       android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale"
       android:hardwareAccelerated="true"
       android:launchMode="singleTop"
