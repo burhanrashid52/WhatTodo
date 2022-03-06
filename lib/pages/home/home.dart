@@ -7,7 +7,6 @@ import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/row_task.dart';
 import 'package:flutter_app/pages/tasks/task_complted.dart';
-import 'package:flutter_app/utils/app_constant.dart';
 import 'package:flutter_app/utils/app_util.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,8 +33,7 @@ class _HomeState extends State<HomeScreen> {
   }
 
   void updateTasks(int taskStartTime, int taskEndTime) {
-    AppDatabase
-        .get()
+    AppDatabase.get()
         .getTasks(
             startDate: taskStartTime,
             endDate: taskEndTime,
@@ -129,8 +127,7 @@ class _HomeState extends State<HomeScreen> {
                               taskList.removeAt(index);
                             });
                             if (direction == DismissDirection.endToStart) {
-                              AppDatabase
-                                  .get()
+                              AppDatabase.get()
                                   .updateTaskStatus(taskID, TaskStatus.COMPLETE)
                                   .then((value) {
                                 showSnackbar(_scaffoldHomeState,
@@ -138,8 +135,7 @@ class _HomeState extends State<HomeScreen> {
                                     materialColor: Colors.green);
                               });
                             } else {
-                              AppDatabase
-                                  .get()
+                              AppDatabase.get()
                                   .deleteTask(taskID)
                                   .then((value) {
                                 showSnackbar(_scaffoldHomeState, "Task Deleted",
@@ -172,6 +168,7 @@ class _HomeState extends State<HomeScreen> {
 // not shown here).
   Widget buildPopupMenu() {
     return new PopupMenuButton<MenuItem>(
+      key: ValueKey('key_home_option'),
       onSelected: (MenuItem result) async {
         switch (result) {
           case MenuItem.taskCompleted:
@@ -185,11 +182,11 @@ class _HomeState extends State<HomeScreen> {
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
-            const PopupMenuItem<MenuItem>(
-              value: MenuItem.taskCompleted,
-              child: const Text('Complted Task'),
-            )
-          ],
+        const PopupMenuItem<MenuItem>(
+          value: MenuItem.taskCompleted,
+          child: const Text('Completed Task'),
+        )
+      ],
     );
   }
 }
