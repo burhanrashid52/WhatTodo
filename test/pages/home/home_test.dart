@@ -14,4 +14,16 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Completed Task'), findsOneWidget);
   });
+
+  group('Home Task List', () {
+    testWidgets('No Task Added', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: HomeScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('No Task Added'), findsOneWidget);
+    });
+  });
 }
