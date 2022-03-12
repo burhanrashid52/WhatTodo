@@ -15,7 +15,11 @@ void main() {
     );
     tasks.projectName = 'Android';
     tasks.projectColor = Colors.green.value;
-    await tester.pumpWidget(TaskRow(tasks).wrapWithMaterialApp());
+    await tester.pumpWidget(
+      TaskRow(tasks).wrapWithMaterialApp().wrapToSizeForGoldenTest(
+            Size(400, 75),
+          ),
+    );
     await tester.pumpAndSettle();
     await expectLater(
       find.byType(TaskRow),

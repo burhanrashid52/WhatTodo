@@ -6,4 +6,15 @@ extension WidgetWrapperExtension on Widget {
       home: this,
     );
   }
+
+  Widget wrapToSizeForGoldenTest(Size size) {
+    return Center(
+      child: SizedBox.fromSize(
+        size: size,
+        child: RepaintBoundary(
+          child: this,
+        ),
+      ),
+    );
+  }
 }
