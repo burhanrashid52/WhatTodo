@@ -4,6 +4,8 @@ import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_app/pages/home/home.dart';
 
+import '../../helper.dart';
+
 void main() {
   testWidgets('completed task option is available in menu',
       (WidgetTester tester) async {
@@ -49,13 +51,5 @@ class FakeAppDatabase extends AppDatabase {
     return Future.value([
       tasks,
     ]);
-  }
-}
-
-extension WidgetWrapperExtension on Widget {
-  Widget wrapWithMaterialApp() {
-    return MaterialApp(
-      home: this,
-    );
   }
 }
