@@ -25,18 +25,15 @@ void main() {
     });
     testWidgets('Show task item in list', (tester) async {
       await tester.pumpWidget(
-        TestHomeScreen().wrapWithMaterialApp(),
+        HomeScreen(
+          appDatabase: FakeAppDatabase(),
+        ).wrapWithMaterialApp(),
       );
       await tester.pumpAndSettle();
       expect(find.text('Task One'), findsOneWidget);
       expect(find.text('Android'), findsOneWidget);
     });
   });
-}
-
-class TestHomeScreen extends HomeScreen {
-  @override
-  AppDatabase get database => FakeAppDatabase();
 }
 
 class FakeAppDatabase extends AppDatabase {

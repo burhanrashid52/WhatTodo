@@ -13,7 +13,13 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeState createState() => new _HomeState();
 
-  AppDatabase get database => AppDatabase.get();
+  HomeScreen({
+    AppDatabase appDatabase,
+  }) : this.appDatabase = appDatabase ??
+            AppDatabase
+                .get(); //This will be backward compatible with all other dependencies
+
+  final AppDatabase appDatabase;
 }
 
 class _HomeState extends State<HomeScreen> {
@@ -35,7 +41,7 @@ class _HomeState extends State<HomeScreen> {
   }
 
   void updateTasks(int taskStartTime, int taskEndTime) {
-    widget.database
+    database
         .getTasks(
             startDate: taskStartTime,
             endDate: taskEndTime,
@@ -50,7 +56,7 @@ class _HomeState extends State<HomeScreen> {
   }
 
   void updateTasksByProject(Project project) {
-    widget.database.getTasksByProject(project.id).then((tasks) {
+    database.getTasksByProject(project.id).then((tasks) {
       if (tasks == null) return;
       setState(() {
         homeTitle = project.name;
@@ -61,7 +67,7 @@ class _HomeState extends State<HomeScreen> {
   }
 
   void updateTasksByLabel(Label label) {
-    widget.database.getTasksByLabel(label.name).then((tasks) {
+    database.getTasksByLabel(label.name).then((tasks) {
       if (tasks == null) return;
       setState(() {
         homeTitle = label.name;
@@ -70,6 +76,8 @@ class _HomeState extends State<HomeScreen> {
       });
     });
   }
+
+  AppDatabase get database => widget.appDatabase;
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +137,7 @@ class _HomeState extends State<HomeScreen> {
                               taskList.removeAt(index);
                             });
                             if (direction == DismissDirection.endToStart) {
-                              widget.database
+                              database
                                   .updateTaskStatus(taskID, TaskStatus.COMPLETE)
                                   .then((value) {
                                 showSnackbar(_scaffoldHomeState,
@@ -137,7 +145,7 @@ class _HomeState extends State<HomeScreen> {
                                     materialColor: Colors.green);
                               });
                             } else {
-                              widget.database.deleteTask(taskID).then((value) {
+                              database.deleteTask(taskID).then((value) {
                                 showSnackbar(_scaffoldHomeState, "Task Deleted",
                                     materialColor: Colors.red);
                               });
