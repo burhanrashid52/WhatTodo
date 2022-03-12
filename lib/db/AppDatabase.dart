@@ -12,7 +12,7 @@ import 'package:flutter_app/models/Tasks.dart';
 /// This is the singleton database class which handlers all database transactions
 /// All the task raw queries is handle here and return a Future<T> with result
 class AppDatabase {
-  static AppDatabase _appDatabase = new AppDatabase();
+  static final AppDatabase _appDatabase = new AppDatabase();
 
   AppDatabase();
 
@@ -20,10 +20,6 @@ class AppDatabase {
 
   static AppDatabase get() {
     return _appDatabase;
-  }
-
-  static void setTestInstance(AppDatabase appDatabase) {
-    _appDatabase = appDatabase;
   }
 
   bool didInit = false;

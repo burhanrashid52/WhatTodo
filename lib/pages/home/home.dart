@@ -12,6 +12,8 @@ import 'package:flutter_app/utils/app_util.dart';
 class HomeScreen extends StatefulWidget {
   @override
   _HomeState createState() => new _HomeState();
+
+  AppDatabase get database => AppDatabase.get();
 }
 
 class _HomeState extends State<HomeScreen> {
@@ -33,7 +35,7 @@ class _HomeState extends State<HomeScreen> {
   }
 
   void updateTasks(int taskStartTime, int taskEndTime) {
-    AppDatabase.get()
+    widget.database
         .getTasks(
             startDate: taskStartTime,
             endDate: taskEndTime,
@@ -48,7 +50,7 @@ class _HomeState extends State<HomeScreen> {
   }
 
   void updateTasksByProject(Project project) {
-    AppDatabase.get().getTasksByProject(project.id).then((tasks) {
+    widget.database.getTasksByProject(project.id).then((tasks) {
       if (tasks == null) return;
       setState(() {
         homeTitle = project.name;
@@ -59,7 +61,7 @@ class _HomeState extends State<HomeScreen> {
   }
 
   void updateTasksByLabel(Label label) {
-    AppDatabase.get().getTasksByLabel(label.name).then((tasks) {
+    widget.database.getTasksByLabel(label.name).then((tasks) {
       if (tasks == null) return;
       setState(() {
         homeTitle = label.name;
@@ -127,7 +129,7 @@ class _HomeState extends State<HomeScreen> {
                               taskList.removeAt(index);
                             });
                             if (direction == DismissDirection.endToStart) {
-                              AppDatabase.get()
+                              widget.database
                                   .updateTaskStatus(taskID, TaskStatus.COMPLETE)
                                   .then((value) {
                                 showSnackbar(_scaffoldHomeState,
@@ -135,9 +137,7 @@ class _HomeState extends State<HomeScreen> {
                                     materialColor: Colors.green);
                               });
                             } else {
-                              AppDatabase.get()
-                                  .deleteTask(taskID)
-                                  .then((value) {
+                              widget.database.deleteTask(taskID).then((value) {
                                 showSnackbar(_scaffoldHomeState, "Task Deleted",
                                     materialColor: Colors.red);
                               });
