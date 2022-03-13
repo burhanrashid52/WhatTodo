@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-var priorityColor = [Colors.red, Colors.orange, Colors.yellow, Colors.white];
+final priorityColor = [Colors.red, Colors.orange, Colors.yellow, Colors.grey];
 
 class ColorPalette {
   final String colorName;
