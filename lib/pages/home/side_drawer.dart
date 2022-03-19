@@ -56,7 +56,7 @@ class _SideDrawerState extends State<SideDrawer> {
   }
 
   void updateLabels() {
-    AppDatabase.get().getLabels().then((projects) {
+    database.getLabels().then((projects) {
       if (projects != null) {
         setState(() {
           labelList.clear();

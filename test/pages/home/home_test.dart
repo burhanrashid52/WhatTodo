@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
@@ -53,6 +54,22 @@ void main() {
       expect(find.text('Flutter'), findsNWidgets(2));
       expect(find.text('Task Two'), findsOneWidget);
     });
+
+    testWidgets('Filter task based on label', (tester) async {
+      await tester.pumpWidget(
+        HomeScreen(
+          appDatabase: FakeAppDatabase(),
+        ).wrapWithMaterialApp(),
+      );
+      await tester.pumpAndSettle();
+      await tester.dragFrom(
+          tester.getTopLeft(find.byType(MaterialApp)), Offset(300, 0));
+      await tester.pumpAndSettle();
+      await tester.tapAndSettle(find.text('Labels'));
+      await tester.tapAndSettle(find.text('@ Mobile'));
+      expect(find.text('Mobile'), findsOneWidget);
+      expect(find.text('Task Three'), findsOneWidget);
+    });
   });
 }
 
@@ -87,6 +104,30 @@ class FakeAppDatabase extends AppDatabase {
     final tasks = Tasks.create(
       title: 'Task Two',
       projectId: 2,
+    );
+    tasks.projectName = 'Flutter';
+    tasks.projectColor = Colors.blue.value;
+    return Future.value([
+      tasks,
+    ]);
+  }
+
+  @override
+  Future<List<Label>> getLabels() async {
+    return [
+      Label.create(
+        'Mobile',
+        Colors.blueGrey.value,
+        "Blue Grey",
+      ),
+    ];
+  }
+
+  @override
+  Future<List<Tasks>> getTasksByLabel(String labelName) {
+    final tasks = Tasks.create(
+      title: 'Task Three',
+      projectId: 3,
     );
     tasks.projectName = 'Flutter';
     tasks.projectColor = Colors.blue.value;
