@@ -71,9 +71,43 @@ void main() {
       expect(find.text('Task Three'), findsOneWidget);
     });
   });
+
+  group('Swipe Tasks', () {
+    testWidgets('Left to right to mark as completed', (tester) async {
+      final fakeAppDatabase = FakeAppDatabase();
+      await tester.pumpWidget(
+        HomeScreen(
+          appDatabase: fakeAppDatabase,
+        ).wrapWithMaterialApp(),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.drag(find.byType(Dismissible), const Offset(-500.0, 0.0));
+      await tester.pumpAndSettle();
+
+      expect(fakeAppDatabase.taskStatus, TaskStatus.COMPLETE);
+    });
+    testWidgets('right to left to delete', (tester) async {
+      final fakeAppDatabase = FakeAppDatabase();
+      await tester.pumpWidget(
+        HomeScreen(
+          appDatabase: fakeAppDatabase,
+        ).wrapWithMaterialApp(),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.drag(find.byType(Dismissible), const Offset(500.0, 0.0));
+      await tester.pumpAndSettle();
+
+      expect(fakeAppDatabase.deletedTaskId, 1);
+    });
+  });
 }
 
 class FakeAppDatabase extends AppDatabase {
+  TaskStatus taskStatus;
+  int deletedTaskId;
+
   @override
   Future<List<Tasks>> getTasks(
       {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) {
@@ -81,11 +115,18 @@ class FakeAppDatabase extends AppDatabase {
       title: 'Task One',
       projectId: 1,
     );
+    tasks.id = 1;
     tasks.projectName = 'Android';
     tasks.projectColor = Colors.green.value;
     return Future.value([
       tasks,
     ]);
+  }
+
+  @override
+  Future updateTaskStatus(int taskID, TaskStatus status) {
+    this.taskStatus = status;
+    return Future.value();
   }
 
   @override
@@ -134,5 +175,11 @@ class FakeAppDatabase extends AppDatabase {
     return Future.value([
       tasks,
     ]);
+  }
+
+  @override
+  Future deleteTask(int taskID) {
+    deletedTaskId = taskID;
+    return Future.value();
   }
 }
