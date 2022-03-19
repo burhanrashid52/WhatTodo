@@ -106,6 +106,7 @@ class _HomeState extends State<HomeScreen> {
         },
       ),
       drawer: new SideDrawer(
+        appDatabase: database,
         projectSelection: (project) {
           updateTasksByProject(project);
         },

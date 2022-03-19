@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 extension WidgetWrapperExtension on Widget {
   Widget wrapWithMaterialApp() {
@@ -16,5 +17,12 @@ extension WidgetWrapperExtension on Widget {
         ),
       ),
     );
+  }
+}
+
+extension WidgetTesterExtension on WidgetTester {
+  Future<int> tapAndSettle(Finder finder) async {
+    await tap(finder);
+    return pumpAndSettle();
   }
 }

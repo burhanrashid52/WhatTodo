@@ -11,7 +11,14 @@ class SideDrawer extends StatefulWidget {
   LabelSelection labelSelection;
   DateSelection dateSelection;
 
-  SideDrawer({this.projectSelection, this.labelSelection, this.dateSelection});
+  SideDrawer({
+    AppDatabase appDatabase,
+    this.projectSelection,
+    this.labelSelection,
+    this.dateSelection,
+  }) : this.appDatabase = appDatabase ?? AppDatabase.get();
+
+  final AppDatabase appDatabase;
 
   @override
   _SideDrawerState createState() =>
@@ -35,8 +42,10 @@ class _SideDrawerState extends State<SideDrawer> {
     updateLabels();
   }
 
+  AppDatabase get database => widget.appDatabase;
+
   void updateProjects() {
-    AppDatabase.get().getProjects(isInboxVisible: false).then((projects) {
+    database.getProjects(isInboxVisible: false).then((projects) {
       if (projects != null) {
         setState(() {
           projectList.clear();
@@ -67,7 +76,11 @@ class _SideDrawerState extends State<SideDrawer> {
             accountEmail: new Text("burhanrashid5253@gmail.com"),
             otherAccountsPictures: <Widget>[
               new IconButton(
-                  icon: new Icon(Icons.info, color: Colors.white,size: 36.0,),
+                  icon: new Icon(
+                    Icons.info,
+                    color: Colors.white,
+                    size: 36.0,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
