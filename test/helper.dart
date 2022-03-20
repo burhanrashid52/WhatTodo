@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 extension WidgetWrapperExtension on Widget {
-  Widget wrapWithMaterialApp() {
+  Widget wrapWithMaterialApp({List<NavigatorObserver> navigatorObservers}) {
     return MaterialApp(
       home: this,
+      navigatorObservers: [...?navigatorObservers],
     );
   }
 

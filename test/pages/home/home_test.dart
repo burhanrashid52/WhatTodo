@@ -34,10 +34,18 @@ void main() {
 
   group('Add Task', () {
     testWidgets('Open task completed screen', (tester) async {
+      final fakeObserver = FakeNavigatorObserver();
       await tester.pumpWidget(
-        HomeScreen().wrapWithMaterialApp(),
+        HomeScreen().wrapWithMaterialApp(
+          navigatorObservers: [fakeObserver],
+        ),
       );
       await tester.tapAndSettle(find.byType(FloatingActionButton));
+
+      //didPush route is called.
+      expect(fakeObserver.route != null, true);
+      expect(fakeObserver.previousRoute != null, true);
+
       expect(find.byType(AddTaskScreen), findsOneWidget);
     });
   });
@@ -204,5 +212,18 @@ class FakeAppDatabase extends AppDatabase {
   Future deleteTask(int taskID) {
     deletedTaskId = taskID;
     return Future.value();
+  }
+}
+
+class FakeNavigatorObserver extends NavigatorObserver {
+  Route<dynamic> route;
+
+  Route<dynamic> previousRoute;
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+    this.route = route;
+    this.previousRoute = previousRoute;
+    super.didPush(route, previousRoute);
   }
 }
