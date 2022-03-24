@@ -12,7 +12,7 @@ import 'package:flutter_app/models/Tasks.dart';
 /// This is the singleton database class which handlers all database transactions
 /// All the task raw queries is handle here and return a Future<T> with result
 class AppDatabase {
-  static final AppDatabase _appDatabase = new AppDatabase();
+  static final AppDatabase _appDatabase = AppDatabase();
 
   AppDatabase();
 
@@ -140,9 +140,9 @@ class AppDatabase {
   }
 
   List<Tasks> bindData(List<Map<String, dynamic>> result) {
-    List<Tasks> tasks = new List();
+    List<Tasks> tasks = List();
     for (Map<String, dynamic> item in result) {
-      var myTask = new Tasks.fromMap(item);
+      var myTask = Tasks.fromMap(item);
       myTask.projectName = item[Project.dbName];
       myTask.projectColor = item[Project.dbColorCode];
       var labelComma = item["labelNames"];
@@ -159,9 +159,9 @@ class AppDatabase {
     var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";
     var result =
         await db.rawQuery('SELECT * FROM ${Project.tblProject} $whereClause');
-    List<Project> projects = new List();
+    List<Project> projects = List();
     for (Map<String, dynamic> item in result) {
-      var myProject = new Project.fromMap(item);
+      var myProject = Project.fromMap(item);
       projects.add(myProject);
     }
     return projects;
@@ -170,9 +170,9 @@ class AppDatabase {
   Future<List<Label>> getLabels() async {
     var db = await _getDb();
     var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
-    List<Label> projects = new List();
+    List<Label> projects = List();
     for (Map<String, dynamic> item in result) {
-      var myProject = new Label.fromMap(item);
+      var myProject = Label.fromMap(item);
       projects.add(myProject);
     }
     return projects;

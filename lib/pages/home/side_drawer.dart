@@ -22,12 +22,12 @@ class SideDrawer extends StatefulWidget {
 
   @override
   _SideDrawerState createState() =>
-      new _SideDrawerState(projectSelection, labelSelection, dateSelection);
+      _SideDrawerState(projectSelection, labelSelection, dateSelection);
 }
 
 class _SideDrawerState extends State<SideDrawer> {
-  final List<Project> projectList = new List();
-  final List<Label> labelList = new List();
+  final List<Project> projectList = List();
+  final List<Label> labelList = List();
   ProjectSelection projectSelectionListener;
   LabelSelection labelSelectionListener;
   DateSelection dateSelectionListener;
@@ -68,15 +68,15 @@ class _SideDrawerState extends State<SideDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return new Drawer(
-      child: new ListView(
+    return Drawer(
+      child: ListView(
         children: <Widget>[
-          new UserAccountsDrawerHeader(
-            accountName: new Text("Burhanuddin Rashid"),
-            accountEmail: new Text("burhanrashid5253@gmail.com"),
+          UserAccountsDrawerHeader(
+            accountName: Text("Burhanuddin Rashid"),
+            accountEmail: Text("burhanrashid5253@gmail.com"),
             otherAccountsPictures: <Widget>[
-              new IconButton(
-                  icon: new Icon(
+              IconButton(
+                  icon: Icon(
                     Icons.info,
                     color: Colors.white,
                     size: 36.0,
@@ -84,19 +84,19 @@ class _SideDrawerState extends State<SideDrawer> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      new MaterialPageRoute<bool>(
-                          builder: (context) => new AboutUsScreen()),
+                      MaterialPageRoute<bool>(
+                          builder: (context) => AboutUsScreen()),
                     );
                   })
             ],
-            currentAccountPicture: new CircleAvatar(
+            currentAccountPicture: CircleAvatar(
               backgroundColor: Theme.of(context).accentColor,
-              backgroundImage: new AssetImage("assets/profile_pic.jpg"),
+              backgroundImage: AssetImage("assets/profile_pic.jpg"),
             ),
           ),
-          new ListTile(
-              leading: new Icon(Icons.inbox),
-              title: new Text("Inbox"),
+          ListTile(
+              leading: Icon(Icons.inbox),
+              title: Text("Inbox"),
               onTap: () {
                 if (projectSelectionListener != null) {
                   var project = Project.getInbox();
@@ -104,13 +104,13 @@ class _SideDrawerState extends State<SideDrawer> {
                   Navigator.pop(context);
                 }
               }),
-          new ListTile(
+          ListTile(
               onTap: () {
-                var dateTime = new DateTime.now();
+                var dateTime = DateTime.now();
                 var taskStartTime =
-                    new DateTime(dateTime.year, dateTime.month, dateTime.day)
+                    DateTime(dateTime.year, dateTime.month, dateTime.day)
                         .millisecondsSinceEpoch;
-                var taskEndTime = new DateTime(
+                var taskEndTime = DateTime(
                         dateTime.year, dateTime.month, dateTime.day, 23, 59)
                     .millisecondsSinceEpoch;
 
@@ -119,15 +119,15 @@ class _SideDrawerState extends State<SideDrawer> {
                 }
                 Navigator.pop(context);
               },
-              leading: new Icon(Icons.calendar_today),
-              title: new Text("Today")),
-          new ListTile(
+              leading: Icon(Icons.calendar_today),
+              title: Text("Today")),
+          ListTile(
             onTap: () {
-              var dateTime = new DateTime.now();
+              var dateTime = DateTime.now();
               var taskStartTime =
-                  new DateTime(dateTime.year, dateTime.month, dateTime.day)
+                  DateTime(dateTime.year, dateTime.month, dateTime.day)
                       .millisecondsSinceEpoch;
-              var taskEndTime = new DateTime(
+              var taskEndTime = DateTime(
                       dateTime.year, dateTime.month, dateTime.day + 7, 23, 59)
                   .millisecondsSinceEpoch;
 
@@ -136,8 +136,8 @@ class _SideDrawerState extends State<SideDrawer> {
               }
               Navigator.pop(context);
             },
-            leading: new Icon(Icons.calendar_today),
-            title: new Text("Next 7 Days"),
+            leading: Icon(Icons.calendar_today),
+            title: Text("Next 7 Days"),
           ),
           buildExpansionTile(Icons.book, "Projects"),
           buildExpansionTile(Icons.label, "Labels")
@@ -147,32 +147,32 @@ class _SideDrawerState extends State<SideDrawer> {
   }
 
   ExpansionTile buildExpansionTile(IconData icon, String projectName) {
-    return new ExpansionTile(
-      leading: new Icon(icon),
-      title: new Text(projectName,
-          style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+    return ExpansionTile(
+      leading: Icon(icon),
+      title: Text(projectName,
+          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
       children: projectName == "Projects" ? buildProjects() : buildLabels(),
     );
   }
 
   List<Widget> buildProjects() {
-    List<Widget> projectWidgetList = new List();
-    projectList.forEach((project) => projectWidgetList.add(new ProjectRow(
+    List<Widget> projectWidgetList = List();
+    projectList.forEach((project) => projectWidgetList.add(ProjectRow(
           project,
           projectSelection: (selectedProject) {
             projectSelectionListener(selectedProject);
             Navigator.pop(context);
           },
         )));
-    projectWidgetList.add(new ListTile(
-      leading: new Icon(Icons.add),
-      title: new Text("Add Project"),
+    projectWidgetList.add(ListTile(
+      leading: Icon(Icons.add),
+      title: Text("Add Project"),
       onTap: () async {
         Navigator.pop(context);
         bool isDataChanged = await Navigator.push(
             context,
-            new MaterialPageRoute<bool>(
-                builder: (context) => new AddProject()));
+            MaterialPageRoute<bool>(
+                builder: (context) => AddProject()));
 
         if (isDataChanged) {
           updateProjects();
@@ -183,21 +183,21 @@ class _SideDrawerState extends State<SideDrawer> {
   }
 
   List<Widget> buildLabels() {
-    List<Widget> projectWidgetList = new List();
+    List<Widget> projectWidgetList = List();
     labelList.forEach((label) =>
-        projectWidgetList.add(new LabelRow(label, labelSelection: (label) {
+        projectWidgetList.add(LabelRow(label, labelSelection: (label) {
           labelSelectionListener(label);
           Navigator.pop(context);
         })));
-    projectWidgetList.add(new ListTile(
-        leading: new Icon(Icons.add),
-        title: new Text("Add Label"),
+    projectWidgetList.add(ListTile(
+        leading: Icon(Icons.add),
+        title: Text("Add Label"),
         onTap: () async {
           Navigator.pop(context);
           bool isDataChanged = await Navigator.push(
               context,
-              new MaterialPageRoute<bool>(
-                  builder: (context) => new AddLabel()));
+              MaterialPageRoute<bool>(
+                  builder: (context) => AddLabel()));
 
           if (isDataChanged) {
             updateLabels();
@@ -215,22 +215,22 @@ class ProjectRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new ListTile(
+    return ListTile(
       onTap: () {
         if (projectSelection != null) {
           projectSelection(project);
         }
       },
-      leading: new Container(
+      leading: Container(
         width: 24.0,
         height: 24.0,
       ),
-      title: new Text(project.name),
-      trailing: new Container(
+      title: Text(project.name),
+      trailing: Container(
         height: 10.0,
         width: 10.0,
-        child: new CircleAvatar(
-          backgroundColor: new Color(project.colorValue),
+        child: CircleAvatar(
+          backgroundColor: Color(project.colorValue),
         ),
       ),
     );
@@ -245,24 +245,24 @@ class LabelRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new ListTile(
+    return ListTile(
       onTap: () {
         if (labelSelection != null) {
           labelSelection(label);
         }
       },
-      leading: new Container(
+      leading: Container(
         width: 24.0,
         height: 24.0,
       ),
-      title: new Text("@ ${label.name}"),
-      trailing: new Container(
+      title: Text("@ ${label.name}"),
+      trailing: Container(
         height: 10.0,
         width: 10.0,
-        child: new Icon(
+        child: Icon(
           Icons.label,
           size: 16.0,
-          color: new Color(label.colorValue),
+          color: Color(label.colorValue),
         ),
       ),
     );

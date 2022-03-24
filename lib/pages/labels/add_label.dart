@@ -10,16 +10,16 @@ import 'package:flutter_app/utils/color_utils.dart';
 
 class AddLabel extends StatefulWidget {
   @override
-  _AddLabelState createState() => new _AddLabelState();
+  _AddLabelState createState() => _AddLabelState();
 }
 
 class _AddLabelState extends State<AddLabel> {
   ColorPalette currentSelectedPalette =
-      new ColorPalette("Grey", Colors.grey.value);
+      ColorPalette("Grey", Colors.grey.value);
 
-  GlobalKey<FormState> _formState = new GlobalKey<FormState>();
-  GlobalKey<ScaffoldState> _scaffoldState = new GlobalKey<ScaffoldState>();
-  final expansionTile = new GlobalKey<CollapsibleExpansionTileState>();
+  GlobalKey<FormState> _formState = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+  final expansionTile = GlobalKey<CollapsibleExpansionTileState>();
 
   String labelName = "";
 
@@ -30,13 +30,13 @@ class _AddLabelState extends State<AddLabel> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldState,
-      appBar: new AppBar(
-        title: new Text("Add Label"),
+      appBar: AppBar(
+        title: Text("Add Label"),
       ),
-      floatingActionButton: new FloatingActionButton(
-          child: new Icon(
+      floatingActionButton: FloatingActionButton(
+          child: Icon(
             Icons.send,
             color: Colors.white,
           ),
@@ -56,13 +56,13 @@ class _AddLabelState extends State<AddLabel> {
               });
             }
           }),
-      body: new ListView(
+      body: ListView(
         children: <Widget>[
-          new Form(
-            child: new Padding(
+          Form(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new TextFormField(
-                decoration: new InputDecoration(hintText: "Label Name"),
+              child: TextFormField(
+                decoration: InputDecoration(hintText: "Label Name"),
                 maxLength: 20,
                 validator: (value) {
                   return value.isEmpty ? "Label Cannot be empty" : null;
@@ -74,16 +74,16 @@ class _AddLabelState extends State<AddLabel> {
             ),
             key: _formState,
           ),
-          new Padding(
+          Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: new CollapsibleExpansionTile(
+            child: CollapsibleExpansionTile(
               key: expansionTile,
-              leading: new Icon(
+              leading: Icon(
                 Icons.label,
                 size: 16.0,
-                color: new Color(currentSelectedPalette.colorValue),
+                color: Color(currentSelectedPalette.colorValue),
               ),
-              title: new Text(currentSelectedPalette.colorName),
+              title: Text(currentSelectedPalette.colorName),
               children: buildMaterialColors(),
             ),
           )
@@ -93,20 +93,20 @@ class _AddLabelState extends State<AddLabel> {
   }
 
   List<Widget> buildMaterialColors() {
-    List<Widget> projectWidgetList = new List();
+    List<Widget> projectWidgetList = List();
     colorsPalettes.forEach((colors) {
-      projectWidgetList.add(new ListTile(
-        leading: new Icon(
+      projectWidgetList.add(ListTile(
+        leading: Icon(
           Icons.label,
           size: 16.0,
-          color: new Color(colors.colorValue),
+          color: Color(colors.colorValue),
         ),
-        title: new Text(colors.colorName),
+        title: Text(colors.colorName),
         onTap: () {
           expansionTile.currentState.collapse();
           setState(() {
             currentSelectedPalette =
-                new ColorPalette(colors.colorName, colors.colorValue);
+                ColorPalette(colors.colorName, colors.colorValue);
           });
         },
       ));

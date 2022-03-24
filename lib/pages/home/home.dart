@@ -11,7 +11,7 @@ import 'package:flutter_app/utils/app_util.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
-  _HomeState createState() => new _HomeState();
+  _HomeState createState() => _HomeState();
 
   HomeScreen({
     AppDatabase appDatabase,
@@ -23,18 +23,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
-  final List<Tasks> taskList = new List();
-  GlobalKey<ScaffoldState> _scaffoldHomeState = new GlobalKey<ScaffoldState>();
+  final List<Tasks> taskList = List();
+  GlobalKey<ScaffoldState> _scaffoldHomeState = GlobalKey<ScaffoldState>();
   String homeTitle = "Today";
   int taskStartTime, taskEndTime;
 
   @override
   void initState() {
-    var dateTime = new DateTime.now();
-    taskStartTime = new DateTime(dateTime.year, dateTime.month, dateTime.day)
+    var dateTime = DateTime.now();
+    taskStartTime = DateTime(dateTime.year, dateTime.month, dateTime.day)
         .millisecondsSinceEpoch;
     taskEndTime =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
+        DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
             .millisecondsSinceEpoch;
     updateTasks(taskStartTime, taskEndTime);
     super.initState();
@@ -81,14 +81,14 @@ class _HomeState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldHomeState,
-      appBar: new AppBar(
-        title: new Text(homeTitle),
+      appBar: AppBar(
+        title: Text(homeTitle),
         actions: <Widget>[buildPopupMenu()],
       ),
-      floatingActionButton: new FloatingActionButton(
-        child: new Icon(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -96,8 +96,8 @@ class _HomeState extends State<HomeScreen> {
         onPressed: () async {
           bool isDataChanged = await Navigator.push(
             context,
-            new MaterialPageRoute<bool>(
-                builder: (context) => new AddTaskScreen()),
+            MaterialPageRoute<bool>(
+                builder: (context) => AddTaskScreen()),
           );
 
           if (isDataChanged) {
@@ -105,7 +105,7 @@ class _HomeState extends State<HomeScreen> {
           }
         },
       ),
-      drawer: new SideDrawer(
+      drawer: SideDrawer(
         appDatabase: database,
         projectSelection: (project) {
           updateTasksByProject(project);
@@ -122,16 +122,16 @@ class _HomeState extends State<HomeScreen> {
           updateTasks(startTime, endTime);
         },
       ),
-      body: new Padding(
+      body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: taskList.length == 0
             ? emptyView("No Task Added")
-            : new Container(
-                child: new ListView.builder(
+            : Container(
+                child: ListView.builder(
                     itemCount: taskList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return new Dismissible(
-                          key: new ObjectKey(taskList[index]),
+                      return Dismissible(
+                          key: ObjectKey(taskList[index]),
                           onDismissed: (DismissDirection direction) {
                             var taskID = taskList[index].id;
                             setState(() {
@@ -152,21 +152,21 @@ class _HomeState extends State<HomeScreen> {
                               });
                             }
                           },
-                          background: new Container(
+                          background: Container(
                             color: Colors.red,
-                            child: new ListTile(
+                            child: ListTile(
                               leading:
-                                  new Icon(Icons.delete, color: Colors.white),
+                                  Icon(Icons.delete, color: Colors.white),
                             ),
                           ),
-                          secondaryBackground: new Container(
+                          secondaryBackground: Container(
                             color: Colors.green,
-                            child: new ListTile(
+                            child: ListTile(
                               trailing:
-                                  new Icon(Icons.check, color: Colors.white),
+                                  Icon(Icons.check, color: Colors.white),
                             ),
                           ),
-                          child: new TaskRow(taskList[index]));
+                          child: TaskRow(taskList[index]));
                     }),
               ),
       ),
@@ -176,15 +176,15 @@ class _HomeState extends State<HomeScreen> {
 // This menu button widget updates a _selection field (of type WhyFarther,
 // not shown here).
   Widget buildPopupMenu() {
-    return new PopupMenuButton<MenuItem>(
+    return PopupMenuButton<MenuItem>(
       key: ValueKey('key_home_option'),
       onSelected: (MenuItem result) async {
         switch (result) {
           case MenuItem.taskCompleted:
             bool isDataChanged = await Navigator.push(
               context,
-              new MaterialPageRoute<bool>(
-                  builder: (context) => new TaskCompletedScreen()),
+              MaterialPageRoute<bool>(
+                  builder: (context) => TaskCompletedScreen()),
             );
             updateTasks(taskStartTime, taskEndTime);
             break;

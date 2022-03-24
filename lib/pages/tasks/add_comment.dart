@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 
 class AddCommentDialog extends StatefulWidget {
   @override
-  _AddCommentDialogState createState() => new _AddCommentDialogState();
+  _AddCommentDialogState createState() => _AddCommentDialogState();
 }
 
 class _AddCommentDialogState extends State<AddCommentDialog> {
   @override
   Widget build(BuildContext context) {
-    return new Container();
+    return Container();
   }
 }
 
@@ -18,20 +18,20 @@ Future<String> showCommentDialog(BuildContext context) async {
   return await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return new AlertDialog(
-          content: new TextField(),
+        return AlertDialog(
+          content: TextField(),
           actions: <Widget>[
-            new FlatButton(
+            FlatButton(
                 onPressed: () {
                   Navigator.pop(context,"");
                 },
-                child: new Text("CANCEL",
+                child: Text("CANCEL",
                     style:
-                        new TextStyle(color: Theme.of(context).accentColor))),
-            new FlatButton(
+                        TextStyle(color: Theme.of(context).accentColor))),
+            FlatButton(
                 onPressed:() {},
-                child: new Text("SAVE",
-                    style: new TextStyle(color: Theme.of(context).accentColor)))
+                child: Text("SAVE",
+                    style: TextStyle(color: Theme.of(context).accentColor)))
           ],
         );
       });

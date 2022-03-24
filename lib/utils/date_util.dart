@@ -14,6 +14,6 @@ var monthsNames = [
 ];
 
 String getFormattedDate(int dueDate) {
-  DateTime date = new DateTime.fromMillisecondsSinceEpoch(dueDate);
+  DateTime date = DateTime.fromMillisecondsSinceEpoch(dueDate);
   return "${monthsNames[date.month - 1]}  ${date.day}";
 }

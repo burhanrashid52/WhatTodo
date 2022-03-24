@@ -6,12 +6,12 @@ import 'package:flutter_app/utils/app_util.dart';
 
 class TaskCompletedScreen extends StatefulWidget {
   @override
-  _TaskCompletedScreenState createState() => new _TaskCompletedScreenState();
+  _TaskCompletedScreenState createState() => _TaskCompletedScreenState();
 }
 
 class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
-  final List<Tasks> taskList = new List();
-  GlobalKey<ScaffoldState> _scaffoldTaskState = new GlobalKey<ScaffoldState>();
+  final List<Tasks> taskList = List();
+  GlobalKey<ScaffoldState> _scaffoldTaskState = GlobalKey<ScaffoldState>();
   bool isDataChanged = false;
 
   @override
@@ -22,21 +22,21 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldTaskState,
-      appBar: new AppBar(
-        title: new Text("Task Completed"),
+      appBar: AppBar(
+        title: Text("Task Completed"),
       ),
       body: taskList.length == 0
           ? emptyView("No Task Complted Yet")
-          : new Container(
-              child: new ListView.builder(
+          : Container(
+              child: ListView.builder(
                   itemCount: taskList.length,
                   itemBuilder: (context, index) {
-                    return new Dismissible(
-                        key: new ObjectKey(taskList[index]),
+                    return Dismissible(
+                        key: ObjectKey(taskList[index]),
                         direction: DismissDirection.endToStart,
-                        background: new Container(),
+                        background: Container(),
                         onDismissed: (DismissDirection directions) {
                           if (directions == DismissDirection.endToStart) {
                             var taskID = taskList[index].id;
@@ -51,16 +51,16 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
                             });
                           }
                         },
-                        secondaryBackground: new Container(
+                        secondaryBackground: Container(
                           color: Colors.grey,
-                          child: new ListTile(
-                            trailing: new Text("UNDO",
-                                style: new TextStyle(
+                          child: ListTile(
+                            trailing: Text("UNDO",
+                                style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold)),
                           ),
                         ),
-                        child: new TaskCompletedRow(taskList[index]));
+                        child: TaskCompletedRow(taskList[index]));
                   }),
             ),
     );

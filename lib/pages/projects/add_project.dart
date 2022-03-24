@@ -6,15 +6,15 @@ import 'package:flutter_app/utils/color_utils.dart';
 
 class AddProject extends StatefulWidget {
   @override
-  _AddProjectState createState() => new _AddProjectState();
+  _AddProjectState createState() => _AddProjectState();
 }
 
 class _AddProjectState extends State<AddProject> {
   ColorPalette currentSelectedPalette =
-      new ColorPalette("Grey", Colors.grey.value);
+      ColorPalette("Grey", Colors.grey.value);
 
-  final expansionTile = new GlobalKey<CollapsibleExpansionTileState>();
-  GlobalKey<FormState> _formState = new GlobalKey<FormState>();
+  final expansionTile = GlobalKey<CollapsibleExpansionTileState>();
+  GlobalKey<FormState> _formState = GlobalKey<FormState>();
 
   String projectName = "";
 
@@ -25,12 +25,12 @@ class _AddProjectState extends State<AddProject> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Add Project"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Add Project"),
       ),
-      floatingActionButton: new FloatingActionButton(
-          child: new Icon(
+      floatingActionButton: FloatingActionButton(
+          child: Icon(
             Icons.send,
             color: Colors.white,
           ),
@@ -46,13 +46,13 @@ class _AddProjectState extends State<AddProject> {
               });
             }
           }),
-      body: new ListView(
+      body: ListView(
         children: <Widget>[
-          new Form(
-            child: new Padding(
+          Form(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new TextFormField(
-                decoration: new InputDecoration(hintText: "Project Name"),
+              child: TextFormField(
+                decoration: InputDecoration(hintText: "Project Name"),
                 maxLength: 20,
                 validator: (value) {
                   return value.isEmpty ? "Project name cannot be empty" : null;
@@ -64,18 +64,18 @@ class _AddProjectState extends State<AddProject> {
             ),
             key: _formState,
           ),
-          new Padding(
+          Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: new CollapsibleExpansionTile(
+            child: CollapsibleExpansionTile(
               key: expansionTile,
-              leading: new Container(
+              leading: Container(
                 width: 12.0,
                 height: 12.0,
-                child: new CircleAvatar(
-                  backgroundColor: new Color(currentSelectedPalette.colorValue),
+                child: CircleAvatar(
+                  backgroundColor: Color(currentSelectedPalette.colorValue),
                 ),
               ),
-              title: new Text(currentSelectedPalette.colorName),
+              title: Text(currentSelectedPalette.colorName),
               children: buildMaterialColors(),
             ),
           )
@@ -85,22 +85,22 @@ class _AddProjectState extends State<AddProject> {
   }
 
   List<Widget> buildMaterialColors() {
-    List<Widget> projectWidgetList = new List();
+    List<Widget> projectWidgetList = List();
     colorsPalettes.forEach((colors) {
-      projectWidgetList.add(new ListTile(
-        leading: new Container(
+      projectWidgetList.add(ListTile(
+        leading: Container(
           width: 12.0,
           height: 12.0,
-          child: new CircleAvatar(
-            backgroundColor: new Color(colors.colorValue),
+          child: CircleAvatar(
+            backgroundColor: Color(colors.colorValue),
           ),
         ),
-        title: new Text(colors.colorName),
+        title: Text(colors.colorName),
         onTap: () {
           expansionTile.currentState.collapse();
           setState(() {
             currentSelectedPalette =
-                new ColorPalette(colors.colorName, colors.colorValue);
+                ColorPalette(colors.colorName, colors.colorValue);
           });
         },
       ));
