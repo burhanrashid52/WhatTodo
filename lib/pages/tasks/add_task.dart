@@ -21,13 +21,11 @@ class _AddTaskState extends State<AddTaskScreen> {
   Status priorityStatus = Status.PRIORITY_4;
   Project currentSelectedProject = Project.getInbox();
   List<Label> selectedLabelList = List();
-  GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> _formState = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldState,
       appBar: AppBar(
         title: Text("Add Task"),
       ),
@@ -94,7 +92,7 @@ class _AddTaskState extends State<AddTaskScreen> {
             title: Text("Comments"),
             subtitle: Text("No Comments"),
             onTap: () {
-              showSnackbar(_scaffoldState, "Comming Soon");
+              showSnackbar(context, "Comming Soon");
             },
           ),
           ListTile(
@@ -102,7 +100,7 @@ class _AddTaskState extends State<AddTaskScreen> {
             title: Text("Reminder"),
             subtitle: Text("No Reminder"),
             onTap: () {
-              showSnackbar(_scaffoldState, "Comming Soon");
+              showSnackbar(context, "Comming Soon");
             },
           )
         ],
@@ -121,8 +119,7 @@ class _AddTaskState extends State<AddTaskScreen> {
                   dueDate: dueDate,
                   priority: priorityStatus,
                   projectId: currentSelectedProject.id);
-              AppDatabase
-                  .get()
+              AppDatabase.get()
                   .updateTask(task, labelIDs: labelIds)
                   .then((book) {
                 print(book);
@@ -221,12 +218,10 @@ class _AddTaskState extends State<AddTaskScreen> {
     List<Widget> labels = List();
     labelList.forEach((label) {
       labels.add(ListTile(
-        leading: Icon(Icons.label,
-            color: Color(label.colorValue), size: 18.0),
+        leading: Icon(Icons.label, color: Color(label.colorValue), size: 18.0),
         title: Text(label.name),
-        trailing: selectedLabelList.contains(label)
-            ? Icon(Icons.close)
-            : Container(),
+        trailing:
+            selectedLabelList.contains(label) ? Icon(Icons.close) : Container(),
         onTap: () {
           setState(() {
             if (!selectedLabelList.contains(label)) {

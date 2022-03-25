@@ -10,8 +10,7 @@ class TaskCompletedScreen extends StatefulWidget {
 }
 
 class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
-  final List<Tasks> taskList = List();
-  GlobalKey<ScaffoldState> _scaffoldTaskState = GlobalKey<ScaffoldState>();
+  final taskList = <Tasks>[];
   bool isDataChanged = false;
 
   @override
@@ -23,7 +22,6 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldTaskState,
       appBar: AppBar(
         title: Text("Task Completed"),
       ),
@@ -46,7 +44,7 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
                             AppDatabase.get()
                                 .updateTaskStatus(taskID, TaskStatus.PENDING)
                                 .then((value) {
-                              showSnackbar(_scaffoldTaskState, "Task Undo");
+                              showSnackbar(context, "Task Undo");
                             });
                           }
                         },

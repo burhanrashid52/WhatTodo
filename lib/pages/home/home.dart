@@ -23,8 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
-  final List<Tasks> taskList = List();
-  GlobalKey<ScaffoldState> _scaffoldHomeState = GlobalKey<ScaffoldState>();
+  final taskList = <Tasks>[];
   String homeTitle = "Today";
   int taskStartTime, taskEndTime;
 
@@ -33,9 +32,8 @@ class _HomeState extends State<HomeScreen> {
     var dateTime = DateTime.now();
     taskStartTime = DateTime(dateTime.year, dateTime.month, dateTime.day)
         .millisecondsSinceEpoch;
-    taskEndTime =
-        DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
-            .millisecondsSinceEpoch;
+    taskEndTime = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
+        .millisecondsSinceEpoch;
     updateTasks(taskStartTime, taskEndTime);
     super.initState();
   }
@@ -82,7 +80,6 @@ class _HomeState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldHomeState,
       appBar: AppBar(
         title: Text(homeTitle),
         actions: <Widget>[buildPopupMenu()],
@@ -142,14 +139,11 @@ class _HomeState extends State<HomeScreen> {
                           database
                               .updateTaskStatus(taskID, TaskStatus.COMPLETE)
                               .then((value) {
-                            showSnackbar(
-                                _scaffoldHomeState, "Task mark as completed",
-                                materialColor: Colors.green);
+                            showSnackbar(context, "Task mark as completed");
                           });
                         } else {
                           database.deleteTask(taskID).then((value) {
-                            showSnackbar(_scaffoldHomeState, "Task Deleted",
-                                materialColor: Colors.red);
+                            showSnackbar(context, "Task Deleted");
                           });
                         }
                       },

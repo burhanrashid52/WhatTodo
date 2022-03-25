@@ -14,11 +14,9 @@ class AddLabel extends StatefulWidget {
 }
 
 class _AddLabelState extends State<AddLabel> {
-  ColorPalette currentSelectedPalette =
-      ColorPalette("Grey", Colors.grey.value);
+  ColorPalette currentSelectedPalette = ColorPalette("Grey", Colors.grey.value);
 
   GlobalKey<FormState> _formState = GlobalKey<FormState>();
-  GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   final expansionTile = GlobalKey<CollapsibleExpansionTileState>();
 
   String labelName = "";
@@ -31,7 +29,6 @@ class _AddLabelState extends State<AddLabel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldState,
       appBar: AppBar(
         title: Text("Add Label"),
       ),
@@ -49,7 +46,7 @@ class _AddLabelState extends State<AddLabel> {
                   currentSelectedPalette.colorName);
               AppDatabase.get().isLabelExits(label).then((isExist) {
                 if (isExist) {
-                  showSnackbar(_scaffoldState, "Label Already Exists");
+                  showSnackbar(context, "Label Already Exists");
                 } else {
                   Navigator.pop(context, true);
                 }
