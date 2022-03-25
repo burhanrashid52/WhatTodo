@@ -28,7 +28,7 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
         title: Text("Task Completed"),
       ),
       body: taskList.length == 0
-          ? emptyView("No Task Complted Yet")
+          ? const NoTaskFound(message: "No Task Complted Yet")
           : Container(
               child: ListView.builder(
                   itemCount: taskList.length,
@@ -43,8 +43,7 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
                             setState(() {
                               taskList.removeAt(index);
                             });
-                            AppDatabase
-                                .get()
+                            AppDatabase.get()
                                 .updateTaskStatus(taskID, TaskStatus.PENDING)
                                 .then((value) {
                               showSnackbar(_scaffoldTaskState, "Task Undo");

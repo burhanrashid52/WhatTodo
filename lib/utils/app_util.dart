@@ -19,9 +19,24 @@ launchURL(String url) async {
   }
 }
 
-Widget emptyView(String emptyMessage) {
-  return Center(
-    child: Text(emptyMessage,
-        style: TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
-  );
+class NoTaskFound extends StatelessWidget {
+  const NoTaskFound({
+    Key key,
+    @required this.message,
+  }) : super(key: key);
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        message,
+        style: TextStyle(
+          fontSize: FONT_MEDIUM,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
 }

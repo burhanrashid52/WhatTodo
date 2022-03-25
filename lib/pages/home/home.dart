@@ -96,8 +96,7 @@ class _HomeState extends State<HomeScreen> {
         onPressed: () async {
           bool isDataChanged = await Navigator.push(
             context,
-            MaterialPageRoute<bool>(
-                builder: (context) => AddTaskScreen()),
+            MaterialPageRoute<bool>(builder: (context) => AddTaskScreen()),
           );
 
           if (isDataChanged) {
@@ -125,49 +124,59 @@ class _HomeState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: taskList.length == 0
-            ? emptyView("No Task Added")
+            ? const NoTaskFound(message: "No Task Added")
             : Container(
                 child: ListView.builder(
-                    itemCount: taskList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Dismissible(
-                          key: ObjectKey(taskList[index]),
-                          onDismissed: (DismissDirection direction) {
-                            var taskID = taskList[index].id;
-                            setState(() {
-                              taskList.removeAt(index);
-                            });
-                            if (direction == DismissDirection.endToStart) {
-                              database
-                                  .updateTaskStatus(taskID, TaskStatus.COMPLETE)
-                                  .then((value) {
-                                showSnackbar(_scaffoldHomeState,
-                                    "Task mark as completed",
-                                    materialColor: Colors.green);
-                              });
-                            } else {
-                              database.deleteTask(taskID).then((value) {
-                                showSnackbar(_scaffoldHomeState, "Task Deleted",
-                                    materialColor: Colors.red);
-                              });
-                            }
-                          },
-                          background: Container(
-                            color: Colors.red,
-                            child: ListTile(
-                              leading:
-                                  Icon(Icons.delete, color: Colors.white),
-                            ),
+                  itemCount: taskList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Dismissible(
+                      key: ObjectKey(
+                        taskList[index],
+                      ),
+                      onDismissed: (DismissDirection direction) {
+                        var taskID = taskList[index].id;
+                        setState(() {
+                          taskList.removeAt(index);
+                        });
+                        if (direction == DismissDirection.endToStart) {
+                          database
+                              .updateTaskStatus(taskID, TaskStatus.COMPLETE)
+                              .then((value) {
+                            showSnackbar(
+                                _scaffoldHomeState, "Task mark as completed",
+                                materialColor: Colors.green);
+                          });
+                        } else {
+                          database.deleteTask(taskID).then((value) {
+                            showSnackbar(_scaffoldHomeState, "Task Deleted",
+                                materialColor: Colors.red);
+                          });
+                        }
+                      },
+                      background: Container(
+                        color: Colors.red,
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.delete,
+                            color: Colors.white,
                           ),
-                          secondaryBackground: Container(
-                            color: Colors.green,
-                            child: ListTile(
-                              trailing:
-                                  Icon(Icons.check, color: Colors.white),
-                            ),
+                        ),
+                      ),
+                      secondaryBackground: Container(
+                        color: Colors.green,
+                        child: ListTile(
+                          trailing: Icon(
+                            Icons.check,
+                            color: Colors.white,
                           ),
-                          child: TaskRow(taskList[index]));
-                    }),
+                        ),
+                      ),
+                      child: TaskRow(
+                        taskList[index],
+                      ),
+                    );
+                  },
+                ),
               ),
       ),
     );
@@ -181,10 +190,11 @@ class _HomeState extends State<HomeScreen> {
       onSelected: (MenuItem result) async {
         switch (result) {
           case MenuItem.taskCompleted:
-            bool isDataChanged = await Navigator.push(
+            await Navigator.push(
               context,
               MaterialPageRoute<bool>(
-                  builder: (context) => TaskCompletedScreen()),
+                builder: (context) => TaskCompletedScreen(),
+              ),
             );
             updateTasks(taskStartTime, taskEndTime);
             break;

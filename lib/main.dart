@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/home/home.dart';
-import 'package:flutter_app/pages/tasks/add_task.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,9 +13,6 @@ class MyApp extends StatelessWidget {
     );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: <String, WidgetBuilder>{
-        '/addTask': (BuildContext context) => AddTaskScreen(),
-      },
       theme: theme.copyWith(
         colorScheme: theme.colorScheme.copyWith(
           secondary: Colors.orange,
