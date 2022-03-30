@@ -61,8 +61,8 @@ class _HomeState extends ConsumerState<HomeScreen> {
     });
   }
 
-  void updateTasksByLabel(AppDatabase database, Label label) {
-    database.getTasksByLabel(label.name).then((tasks) {
+  void updateTasksByLabel(TaskDatabase taskDb, Label label) {
+    taskDb.getTasksByLabel(label.name).then((tasks) {
       if (tasks == null) return;
       setState(() {
         homeTitle = label.name;
@@ -106,7 +106,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
           updateTasksByProject(taskDb, project);
         },
         labelSelection: (label) {
-          updateTasksByLabel(database, label);
+          updateTasksByLabel(taskDb, label);
         },
         dateSelection: (startTime, endTime) {
           var dayInMillis = 86340000;

@@ -97,6 +97,8 @@ void main() {
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(FakeAppDatabase()),
+            taskDatabaseProvider
+                .overrideWithValue(FakeTaskDatabase(FakeAppDatabase()))
           ],
         ),
       );
@@ -195,19 +197,6 @@ class FakeAppDatabase extends AppDatabase {
   }
 
   @override
-  Future<List<Tasks>> getTasksByLabel(String labelName) {
-    final tasks = Tasks.create(
-      title: 'Task Three',
-      projectId: 3,
-    );
-    tasks.projectName = 'Flutter';
-    tasks.projectColor = Colors.blue.value;
-    return Future.value([
-      tasks,
-    ]);
-  }
-
-  @override
   Future deleteTask(int taskID) {
     deletedTaskId = taskID;
     return Future.value();
@@ -235,6 +224,19 @@ class FakeTaskDatabase extends TaskDatabase {
     final tasks = Tasks.create(
       title: 'Task Two',
       projectId: 2,
+    );
+    tasks.projectName = 'Flutter';
+    tasks.projectColor = Colors.blue.value;
+    return Future.value([
+      tasks,
+    ]);
+  }
+
+  @override
+  Future<List<Tasks>> getTasksByLabel(String labelName) {
+    final tasks = Tasks.create(
+      title: 'Task Three',
+      projectId: 3,
     );
     tasks.projectName = 'Flutter';
     tasks.projectColor = Colors.blue.value;
