@@ -30,16 +30,17 @@ class _HomeState extends ConsumerState<HomeScreen> {
         .millisecondsSinceEpoch;
     taskEndTime = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
         .millisecondsSinceEpoch;
-    updateTasks(ref.read(appDatabaseProvider), taskStartTime, taskEndTime);
+    updateTasks(ref.read(taskDatabaseProvider), taskStartTime, taskEndTime);
     super.initState();
   }
 
-  void updateTasks(AppDatabase database, int taskStartTime, int taskEndTime) {
-    database
+  void updateTasks(TaskDatabase taskDb, int taskStartTime, int taskEndTime) {
+    taskDb
         .getTasks(
-            startDate: taskStartTime,
-            endDate: taskEndTime,
-            taskStatus: TaskStatus.PENDING)
+      startDate: taskStartTime,
+      endDate: taskEndTime,
+      taskStatus: TaskStatus.PENDING,
+    )
         .then((tasks) {
       if (tasks == null) return;
       setState(() {
@@ -74,10 +75,13 @@ class _HomeState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final database = ref.watch(appDatabaseProvider);
+    final taskDb = ref.watch(taskDatabaseProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(homeTitle),
-        actions: <Widget>[buildPopupMenu(database)],
+        actions: <Widget>[
+          buildPopupMenu(taskDb),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -92,7 +96,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
           );
 
           if (isDataChanged) {
-            updateTasks(database, taskStartTime, taskEndTime);
+            updateTasks(taskDb, taskStartTime, taskEndTime);
           }
         },
       ),
@@ -110,7 +114,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
               endTime - startTime > dayInMillis ? "Next 7 Days" : "Today";
           taskStartTime = startTime;
           taskEndTime = endTime;
-          updateTasks(database, startTime, endTime);
+          updateTasks(taskDb, startTime, endTime);
         },
       ),
       body: Padding(
@@ -173,7 +177,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
 
 // This menu button widget updates a _selection field (of type WhyFarther,
 // not shown here).
-  Widget buildPopupMenu(AppDatabase database) {
+  Widget buildPopupMenu(TaskDatabase taskDb) {
     return PopupMenuButton<MenuItem>(
       key: ValueKey('key_home_option'),
       onSelected: (MenuItem result) async {
@@ -185,7 +189,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
                 builder: (context) => TaskCompletedScreen(),
               ),
             );
-            updateTasks(database, taskStartTime, taskEndTime);
+            updateTasks(taskDb, taskStartTime, taskEndTime);
             break;
         }
       },

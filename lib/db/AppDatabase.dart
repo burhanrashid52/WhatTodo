@@ -250,3 +250,18 @@ class AppDatabase {
     }
   }
 }
+
+class TaskDatabase {
+  final AppDatabase appDatabase;
+
+  TaskDatabase(this.appDatabase);
+
+  Future<List<Tasks>> getTasks(
+      {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) {
+    return appDatabase.getTasks(
+      startDate: startDate,
+      endDate: endDate,
+      taskStatus: taskStatus,
+    );
+  }
+}
