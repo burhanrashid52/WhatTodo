@@ -50,8 +50,8 @@ class _HomeState extends ConsumerState<HomeScreen> {
     });
   }
 
-  void updateTasksByProject(AppDatabase database, Project project) {
-    database.getTasksByProject(project.id).then((tasks) {
+  void updateTasksByProject(TaskDatabase taskDb, Project project) {
+    taskDb.getTasksByProject(project.id).then((tasks) {
       if (tasks == null) return;
       setState(() {
         homeTitle = project.name;
@@ -103,7 +103,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
       drawer: SideDrawer(
         appDatabase: database,
         projectSelection: (project) {
-          updateTasksByProject(database, project);
+          updateTasksByProject(taskDb, project);
         },
         labelSelection: (label) {
           updateTasksByLabel(database, label);

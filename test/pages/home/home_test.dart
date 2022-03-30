@@ -77,6 +77,8 @@ void main() {
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(FakeAppDatabase()),
+            taskDatabaseProvider
+                .overrideWithValue(FakeTaskDatabase(FakeAppDatabase()))
           ],
         ),
       );
@@ -182,19 +184,6 @@ class FakeAppDatabase extends AppDatabase {
   }
 
   @override
-  Future<List<Tasks>> getTasksByProject(int projectId) {
-    final tasks = Tasks.create(
-      title: 'Task Two',
-      projectId: 2,
-    );
-    tasks.projectName = 'Flutter';
-    tasks.projectColor = Colors.blue.value;
-    return Future.value([
-      tasks,
-    ]);
-  }
-
-  @override
   Future<List<Label>> getLabels() async {
     return [
       Label.create(
@@ -235,5 +224,22 @@ class FakeNavigatorObserver extends NavigatorObserver {
     this.route = route;
     this.previousRoute = previousRoute;
     super.didPush(route, previousRoute);
+  }
+}
+
+class FakeTaskDatabase extends TaskDatabase {
+  FakeTaskDatabase(FakeAppDatabase appDatabase) : super(appDatabase);
+
+  @override
+  Future<List<Tasks>> getTasksByProject(int projectId) {
+    final tasks = Tasks.create(
+      title: 'Task Two',
+      projectId: 2,
+    );
+    tasks.projectName = 'Flutter';
+    tasks.projectColor = Colors.blue.value;
+    return Future.value([
+      tasks,
+    ]);
   }
 }
