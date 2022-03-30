@@ -135,7 +135,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
                           taskList.removeAt(index);
                         });
                         if (direction == DismissDirection.endToStart) {
-                          database
+                          taskDb
                               .updateTaskStatus(taskID, TaskStatus.COMPLETE)
                               .then((value) {
                             showSnackbar(context, "Task mark as completed");

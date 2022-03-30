@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/main.dart';
 import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/pages/tasks/row_task_completed.dart';
 import 'package:flutter_app/utils/app_util.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TaskCompletedScreen extends StatefulWidget {
+class TaskCompletedScreen extends ConsumerStatefulWidget {
   @override
   _TaskCompletedScreenState createState() => _TaskCompletedScreenState();
 }
 
-class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
+class _TaskCompletedScreenState extends ConsumerState<TaskCompletedScreen> {
   final taskList = <Tasks>[];
   bool isDataChanged = false;
 
@@ -64,7 +66,8 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
   }
 
   void updateTasks() {
-    AppDatabase.get().getTasks(taskStatus: TaskStatus.COMPLETE).then((tasks) {
+    final taskDb = ref.read(taskDatabaseProvider);
+    taskDb.getTasks(taskStatus: TaskStatus.COMPLETE).then((tasks) {
       if (tasks == null) return;
       setState(() {
         taskList.clear();

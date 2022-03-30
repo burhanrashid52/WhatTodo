@@ -63,7 +63,7 @@ void main() {
       await tester.pumpWidget(
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
-            appDatabaseProvider.overrideWithValue(FakeAppDatabase()),
+            taskDatabaseProvider.overrideWithValue(FakeTaskDatabase(null)),
           ],
         ),
       );
@@ -120,6 +120,8 @@ void main() {
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(fakeAppDatabase),
+            taskDatabaseProvider
+                .overrideWithValue(FakeTaskDatabase(fakeAppDatabase)),
           ],
         ),
       );
@@ -153,21 +155,6 @@ void main() {
 
 class FakeAppDatabase extends AppDatabase {
   TaskStatus taskStatus;
-
-  @override
-  Future<List<Tasks>> getTasks(
-      {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) {
-    final tasks = Tasks.create(
-      title: 'Task One',
-      projectId: 1,
-    );
-    tasks.id = 1;
-    tasks.projectName = 'Android';
-    tasks.projectColor = Colors.green.value;
-    return Future.value([
-      tasks,
-    ]);
-  }
 
   @override
   Future updateTaskStatus(int taskID, TaskStatus status) {
@@ -246,5 +233,20 @@ class FakeTaskDatabase extends TaskDatabase {
   Future deleteTask(int taskID) {
     deletedTaskId = taskID;
     return Future.value();
+  }
+
+  @override
+  Future<List<Tasks>> getTasks(
+      {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) {
+    final tasks = Tasks.create(
+      title: 'Task One',
+      projectId: 1,
+    );
+    tasks.id = 1;
+    tasks.projectName = 'Android';
+    tasks.projectColor = Colors.green.value;
+    return Future.value([
+      tasks,
+    ]);
   }
 }
