@@ -200,14 +200,6 @@ class AppDatabase {
     });
   }
 
-  Future deleteTask(int taskID) async {
-    var db = await _getDb();
-    await db.transaction((Transaction txn) async {
-      await txn.rawDelete(
-          'DELETE FROM ${Tasks.tblTask} WHERE ${Tasks.dbId}=$taskID;');
-    });
-  }
-
   Future updateTaskStatus(int taskID, TaskStatus status) async {
     var db = await _getDb();
     await db.transaction((Transaction txn) async {
@@ -264,5 +256,13 @@ class TaskDatabase {
         'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label.dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
         'INNER JOIN ${Project.tblProject} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project.tblProject}.${Project.dbId} WHERE ${Tasks.tblTask}.${Tasks.dbProjectID}=${Project.tblProject}.${Project.dbId} GROUP BY ${Tasks.tblTask}.${Tasks.dbId} having labelNames LIKE "%$labelName%" ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
     return appDatabase.bindData(result);
+  }
+
+  Future deleteTask(int taskID) async {
+    var db = await appDatabase._getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawDelete(
+          'DELETE FROM ${Tasks.tblTask} WHERE ${Tasks.dbId}=$taskID;');
+    });
   }
 }

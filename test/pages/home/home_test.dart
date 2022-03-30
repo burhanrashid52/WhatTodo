@@ -132,10 +132,12 @@ void main() {
     });
     testWidgets('right to left to delete', (tester) async {
       final fakeAppDatabase = FakeAppDatabase();
+      final fakeTaskDatabase = FakeTaskDatabase(fakeAppDatabase);
       await tester.pumpWidget(
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(fakeAppDatabase),
+            taskDatabaseProvider.overrideWithValue(fakeTaskDatabase),
           ],
         ),
       );
@@ -144,14 +146,13 @@ void main() {
       await tester.drag(find.byType(Dismissible), const Offset(500.0, 0.0));
       await tester.pumpAndSettle();
 
-      expect(fakeAppDatabase.deletedTaskId, 1);
+      expect(fakeTaskDatabase.deletedTaskId, 1);
     });
   });
 }
 
 class FakeAppDatabase extends AppDatabase {
   TaskStatus taskStatus;
-  int deletedTaskId;
 
   @override
   Future<List<Tasks>> getTasks(
@@ -195,12 +196,6 @@ class FakeAppDatabase extends AppDatabase {
       ),
     ];
   }
-
-  @override
-  Future deleteTask(int taskID) {
-    deletedTaskId = taskID;
-    return Future.value();
-  }
 }
 
 class FakeNavigatorObserver extends NavigatorObserver {
@@ -243,5 +238,13 @@ class FakeTaskDatabase extends TaskDatabase {
     return Future.value([
       tasks,
     ]);
+  }
+
+  int deletedTaskId;
+
+  @override
+  Future deleteTask(int taskID) {
+    deletedTaskId = taskID;
+    return Future.value();
   }
 }

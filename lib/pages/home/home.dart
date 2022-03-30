@@ -141,7 +141,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
                             showSnackbar(context, "Task mark as completed");
                           });
                         } else {
-                          database.deleteTask(taskID).then((value) {
+                          taskDb.deleteTask(taskID).then((value) {
                             showSnackbar(context, "Task Deleted");
                           });
                         }
