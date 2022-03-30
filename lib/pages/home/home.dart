@@ -12,16 +12,10 @@ import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({Key key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
-
-  HomeScreen({
-    AppDatabase appDatabase,
-  }) : this.appDatabase = appDatabase ??
-            AppDatabase
-                .get(); //This will be backward compatible with all other dependencies
-
-  final AppDatabase appDatabase;
 }
 
 class _HomeState extends ConsumerState<HomeScreen> {
@@ -36,11 +30,11 @@ class _HomeState extends ConsumerState<HomeScreen> {
         .millisecondsSinceEpoch;
     taskEndTime = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59)
         .millisecondsSinceEpoch;
-    updateTasks(taskStartTime, taskEndTime);
+    updateTasks(ref.read(appDatabaseProvider), taskStartTime, taskEndTime);
     super.initState();
   }
 
-  void updateTasks(int taskStartTime, int taskEndTime) {
+  void updateTasks(AppDatabase database, int taskStartTime, int taskEndTime) {
     database
         .getTasks(
             startDate: taskStartTime,
@@ -55,7 +49,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
     });
   }
 
-  void updateTasksByProject(Project project) {
+  void updateTasksByProject(AppDatabase database, Project project) {
     database.getTasksByProject(project.id).then((tasks) {
       if (tasks == null) return;
       setState(() {
@@ -66,7 +60,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
     });
   }
 
-  void updateTasksByLabel(Label label) {
+  void updateTasksByLabel(AppDatabase database, Label label) {
     database.getTasksByLabel(label.name).then((tasks) {
       if (tasks == null) return;
       setState(() {
@@ -77,14 +71,13 @@ class _HomeState extends ConsumerState<HomeScreen> {
     });
   }
 
-  AppDatabase get database => ref.read(appDatabaseProvider);
-
   @override
   Widget build(BuildContext context) {
+    final database = ref.watch(appDatabaseProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(homeTitle),
-        actions: <Widget>[buildPopupMenu()],
+        actions: <Widget>[buildPopupMenu(database)],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -99,17 +92,17 @@ class _HomeState extends ConsumerState<HomeScreen> {
           );
 
           if (isDataChanged) {
-            updateTasks(taskStartTime, taskEndTime);
+            updateTasks(database, taskStartTime, taskEndTime);
           }
         },
       ),
       drawer: SideDrawer(
         appDatabase: database,
         projectSelection: (project) {
-          updateTasksByProject(project);
+          updateTasksByProject(database, project);
         },
         labelSelection: (label) {
-          updateTasksByLabel(label);
+          updateTasksByLabel(database, label);
         },
         dateSelection: (startTime, endTime) {
           var dayInMillis = 86340000;
@@ -117,7 +110,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
               endTime - startTime > dayInMillis ? "Next 7 Days" : "Today";
           taskStartTime = startTime;
           taskEndTime = endTime;
-          updateTasks(startTime, endTime);
+          updateTasks(database, startTime, endTime);
         },
       ),
       body: Padding(
@@ -180,7 +173,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
 
 // This menu button widget updates a _selection field (of type WhyFarther,
 // not shown here).
-  Widget buildPopupMenu() {
+  Widget buildPopupMenu(AppDatabase database) {
     return PopupMenuButton<MenuItem>(
       key: ValueKey('key_home_option'),
       onSelected: (MenuItem result) async {
@@ -192,7 +185,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
                 builder: (context) => TaskCompletedScreen(),
               ),
             );
-            updateTasks(taskStartTime, taskEndTime);
+            updateTasks(database, taskStartTime, taskEndTime);
             break;
         }
       },

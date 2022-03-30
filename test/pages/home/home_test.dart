@@ -61,9 +61,7 @@ void main() {
 
     testWidgets('Show task item in list', (tester) async {
       await tester.pumpWidget(
-        HomeScreen(
-          appDatabase: FakeAppDatabase(),
-        ).wrapWithMaterialApp().wrapWithProviderScope(
+        HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(FakeAppDatabase()),
           ],
@@ -76,9 +74,7 @@ void main() {
 
     testWidgets('Filter task based on project', (tester) async {
       await tester.pumpWidget(
-        HomeScreen(
-          appDatabase: FakeAppDatabase(),
-        ).wrapWithMaterialApp().wrapWithProviderScope(
+        HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(FakeAppDatabase()),
           ],
@@ -96,9 +92,7 @@ void main() {
 
     testWidgets('Filter task based on label', (tester) async {
       await tester.pumpWidget(
-        HomeScreen(
-          appDatabase: FakeAppDatabase(),
-        ).wrapWithMaterialApp().wrapWithProviderScope(
+        HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(FakeAppDatabase()),
           ],
@@ -119,9 +113,7 @@ void main() {
     testWidgets('Left to right to mark as completed', (tester) async {
       final fakeAppDatabase = FakeAppDatabase();
       await tester.pumpWidget(
-        HomeScreen(
-          appDatabase: fakeAppDatabase,
-        ).wrapWithMaterialApp().wrapWithProviderScope(
+        HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(fakeAppDatabase),
           ],
@@ -137,9 +129,7 @@ void main() {
     testWidgets('right to left to delete', (tester) async {
       final fakeAppDatabase = FakeAppDatabase();
       await tester.pumpWidget(
-        HomeScreen(
-          appDatabase: fakeAppDatabase,
-        ).wrapWithMaterialApp().wrapWithProviderScope(
+        HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(fakeAppDatabase),
           ],

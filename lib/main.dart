@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           primary: primaryColor,
         ),
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
