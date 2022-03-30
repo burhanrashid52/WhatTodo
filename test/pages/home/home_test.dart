@@ -63,7 +63,7 @@ void main() {
       await tester.pumpWidget(
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
-            taskDatabaseProvider.overrideWithValue(FakeTaskDatabase(null)),
+            taskDatabaseProvider.overrideWithValue(FakeTaskDatabase()),
           ],
         ),
       );
@@ -77,8 +77,7 @@ void main() {
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(FakeAppDatabase()),
-            taskDatabaseProvider
-                .overrideWithValue(FakeTaskDatabase(FakeAppDatabase()))
+            taskDatabaseProvider.overrideWithValue(FakeTaskDatabase())
           ],
         ),
       );
@@ -97,8 +96,7 @@ void main() {
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
             appDatabaseProvider.overrideWithValue(FakeAppDatabase()),
-            taskDatabaseProvider
-                .overrideWithValue(FakeTaskDatabase(FakeAppDatabase()))
+            taskDatabaseProvider.overrideWithValue(FakeTaskDatabase())
           ],
         ),
       );
@@ -115,13 +113,11 @@ void main() {
 
   group('Swipe Tasks', () {
     testWidgets('Left to right to mark as completed', (tester) async {
-      final fakeAppDatabase = FakeAppDatabase();
+      var fakeTaskDatabase = FakeTaskDatabase();
       await tester.pumpWidget(
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
-            appDatabaseProvider.overrideWithValue(fakeAppDatabase),
-            taskDatabaseProvider
-                .overrideWithValue(FakeTaskDatabase(fakeAppDatabase)),
+            taskDatabaseProvider.overrideWithValue(fakeTaskDatabase),
           ],
         ),
       );
@@ -130,15 +126,13 @@ void main() {
       await tester.drag(find.byType(Dismissible), const Offset(-500.0, 0.0));
       await tester.pumpAndSettle();
 
-      expect(fakeAppDatabase.taskStatus, TaskStatus.COMPLETE);
+      expect(fakeTaskDatabase.taskStatus, TaskStatus.COMPLETE);
     });
     testWidgets('right to left to delete', (tester) async {
-      final fakeAppDatabase = FakeAppDatabase();
-      final fakeTaskDatabase = FakeTaskDatabase(fakeAppDatabase);
+      final fakeTaskDatabase = FakeTaskDatabase();
       await tester.pumpWidget(
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
-            appDatabaseProvider.overrideWithValue(fakeAppDatabase),
             taskDatabaseProvider.overrideWithValue(fakeTaskDatabase),
           ],
         ),
@@ -154,14 +148,6 @@ void main() {
 }
 
 class FakeAppDatabase extends AppDatabase {
-  TaskStatus taskStatus;
-
-  @override
-  Future updateTaskStatus(int taskID, TaskStatus status) {
-    this.taskStatus = status;
-    return Future.value();
-  }
-
   @override
   Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
     return [
@@ -199,7 +185,7 @@ class FakeNavigatorObserver extends NavigatorObserver {
 }
 
 class FakeTaskDatabase extends TaskDatabase {
-  FakeTaskDatabase(FakeAppDatabase appDatabase) : super(appDatabase);
+  FakeTaskDatabase() : super(null);
 
   @override
   Future<List<Tasks>> getTasksByProject(int projectId) {
@@ -248,5 +234,13 @@ class FakeTaskDatabase extends TaskDatabase {
     return Future.value([
       tasks,
     ]);
+  }
+
+  TaskStatus taskStatus;
+
+  @override
+  Future updateTaskStatus(int taskID, TaskStatus status) {
+    this.taskStatus = status;
+    return Future.value();
   }
 }

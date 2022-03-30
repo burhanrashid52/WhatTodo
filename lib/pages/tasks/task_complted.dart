@@ -23,6 +23,7 @@ class _TaskCompletedScreenState extends ConsumerState<TaskCompletedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final taskDb = ref.watch(taskDatabaseProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text("Task Completed"),
@@ -43,7 +44,7 @@ class _TaskCompletedScreenState extends ConsumerState<TaskCompletedScreen> {
                             setState(() {
                               taskList.removeAt(index);
                             });
-                            AppDatabase.get()
+                            taskDb
                                 .updateTaskStatus(taskID, TaskStatus.PENDING)
                                 .then((value) {
                               showSnackbar(context, "Task Undo");

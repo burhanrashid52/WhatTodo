@@ -161,14 +161,6 @@ class AppDatabase {
     });
   }
 
-  Future updateTaskStatus(int taskID, TaskStatus status) async {
-    var db = await _getDb();
-    await db.transaction((Transaction txn) async {
-      await txn.rawQuery(
-          "UPDATE ${Tasks.tblTask} SET ${Tasks.dbStatus} = '${status.index}' WHERE ${Tasks.dbId} = '$taskID'");
-    });
-  }
-
   Future<bool> isLabelExits(Label label) async {
     var db = await _getDb();
     var result = await db.rawQuery(
@@ -242,7 +234,11 @@ class TaskDatabase {
   }
 
   Future updateTaskStatus(int taskID, TaskStatus status) async {
-    return appDatabase.updateTaskStatus(taskID, status);
+    var db = await appDatabase._getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawQuery(
+          "UPDATE ${Tasks.tblTask} SET ${Tasks.dbStatus} = '${status.index}' WHERE ${Tasks.dbId} = '$taskID'");
+    });
   }
 
   List<Tasks> bindData(List<Map<String, dynamic>> result) {
