@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/main.dart';
 import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/models/Tasks.dart';
@@ -8,8 +9,9 @@ import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/row_task.dart';
 import 'package:flutter_app/pages/tasks/task_complted.dart';
 import 'package:flutter_app/utils/app_util.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 
@@ -22,7 +24,7 @@ class HomeScreen extends StatefulWidget {
   final AppDatabase appDatabase;
 }
 
-class _HomeState extends State<HomeScreen> {
+class _HomeState extends ConsumerState<HomeScreen> {
   final taskList = <Tasks>[];
   String homeTitle = "Today";
   int taskStartTime, taskEndTime;
@@ -75,7 +77,7 @@ class _HomeState extends State<HomeScreen> {
     });
   }
 
-  AppDatabase get database => widget.appDatabase;
+  AppDatabase get database => ref.read(appDatabaseProvider);
 
   @override
   Widget build(BuildContext context) {

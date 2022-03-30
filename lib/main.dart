@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/db/AppDatabase.dart';
 import 'package:flutter_app/pages/home/home.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
+}
+
+final appDatabaseProvider = Provider<AppDatabase>(
+  (_) => AppDatabase.get(),
+);
 
 class MyApp extends StatelessWidget {
   @override

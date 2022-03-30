@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 extension WidgetWrapperExtension on Widget {
@@ -6,6 +7,13 @@ extension WidgetWrapperExtension on Widget {
     return MaterialApp(
       home: this,
       navigatorObservers: [...?navigatorObservers],
+    );
+  }
+
+  Widget wrapWithProviderScope({List<Override> overrides}) {
+    return ProviderScope(
+      child: this,
+      overrides: [...?overrides],
     );
   }
 
