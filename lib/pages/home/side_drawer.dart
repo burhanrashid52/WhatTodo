@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/main.dart';
 import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/labels/add_label.dart';
 import 'package:flutter_app/pages/projects/add_project.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SideDrawer extends StatefulWidget {
-  ProjectSelection projectSelection;
-  LabelSelection labelSelection;
-  DateSelection dateSelection;
+class SideDrawer extends ConsumerStatefulWidget {
+  final ProjectSelection projectSelection;
+  final LabelSelection labelSelection;
+  final DateSelection dateSelection;
 
   SideDrawer({
     AppDatabase appDatabase,
@@ -25,7 +27,7 @@ class SideDrawer extends StatefulWidget {
       _SideDrawerState(projectSelection, labelSelection, dateSelection);
 }
 
-class _SideDrawerState extends State<SideDrawer> {
+class _SideDrawerState extends ConsumerState<SideDrawer> {
   final List<Project> projectList = List();
   final List<Label> labelList = List();
   ProjectSelection projectSelectionListener;
@@ -56,6 +58,7 @@ class _SideDrawerState extends State<SideDrawer> {
   }
 
   void updateLabels() {
+    final database = ref.read(labelDatabaseProvider);
     database.getLabels().then((projects) {
       if (projects != null) {
         setState(() {
@@ -169,10 +172,8 @@ class _SideDrawerState extends State<SideDrawer> {
       title: Text("Add Project"),
       onTap: () async {
         Navigator.pop(context);
-        bool isDataChanged = await Navigator.push(
-            context,
-            MaterialPageRoute<bool>(
-                builder: (context) => AddProject()));
+        bool isDataChanged = await Navigator.push(context,
+            MaterialPageRoute<bool>(builder: (context) => AddProject()));
 
         if (isDataChanged) {
           updateProjects();
@@ -194,10 +195,8 @@ class _SideDrawerState extends State<SideDrawer> {
         title: Text("Add Label"),
         onTap: () async {
           Navigator.pop(context);
-          bool isDataChanged = await Navigator.push(
-              context,
-              MaterialPageRoute<bool>(
-                  builder: (context) => AddLabel()));
+          bool isDataChanged = await Navigator.push(context,
+              MaterialPageRoute<bool>(builder: (context) => AddLabel()));
 
           if (isDataChanged) {
             updateLabels();

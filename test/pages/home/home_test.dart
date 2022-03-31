@@ -95,7 +95,7 @@ void main() {
       await tester.pumpWidget(
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
-            appDatabaseProvider.overrideWithValue(FakeAppDatabase()),
+            labelDatabaseProvider.overrideWithValue(FakeLabelDatabase()),
             taskDatabaseProvider.overrideWithValue(FakeTaskDatabase())
           ],
         ),
@@ -155,17 +155,6 @@ class FakeAppDatabase extends AppDatabase {
         'Flutter',
         Colors.blue.value,
         "Blue",
-      ),
-    ];
-  }
-
-  @override
-  Future<List<Label>> getLabels() async {
-    return [
-      Label.create(
-        'Mobile',
-        Colors.blueGrey.value,
-        "Blue Grey",
       ),
     ];
   }
@@ -242,5 +231,20 @@ class FakeTaskDatabase extends TaskDatabase {
   Future updateTaskStatus(int taskID, TaskStatus status) {
     this.taskStatus = status;
     return Future.value();
+  }
+}
+
+class FakeLabelDatabase extends LabelDatabase {
+  FakeLabelDatabase() : super(null);
+
+  @override
+  Future<List<Label>> getLabels() async {
+    return [
+      Label.create(
+        'Mobile',
+        Colors.blueGrey.value,
+        "Blue Grey",
+      ),
+    ];
   }
 }

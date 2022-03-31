@@ -180,14 +180,17 @@ class _AddTaskState extends ConsumerState<AddTaskScreen> {
   }
 
   Future<Status> _showLabelsDialog(BuildContext context) async {
-    return AppDatabase.get().getLabels().then((label) {
-      showDialog<Status>(
-          context: context,
-          builder: (BuildContext context) {
-            return SimpleDialog(
-                title: const Text('Select Labels'),
-                children: buildLabels(label));
-          });
+    final labelDb = ref.read(labelDatabaseProvider);
+    return labelDb.getLabels().then((label) {
+      return showDialog<Status>(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: const Text('Select Labels'),
+            children: buildLabels(label),
+          );
+        },
+      );
     });
   }
 

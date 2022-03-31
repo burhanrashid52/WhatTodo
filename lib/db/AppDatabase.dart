@@ -107,17 +107,6 @@ class AppDatabase {
     return projects;
   }
 
-  Future<List<Label>> getLabels() async {
-    var db = await _getDb();
-    var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
-    List<Label> projects = List();
-    for (Map<String, dynamic> item in result) {
-      var myProject = Label.fromMap(item);
-      projects.add(myProject);
-    }
-    return projects;
-  }
-
   Future updateProject(Project project) async {
     var db = await _getDb();
     await db.transaction((Transaction txn) async {
@@ -254,5 +243,22 @@ class TaskDatabase {
         });
       }
     });
+  }
+}
+
+class LabelDatabase {
+  final AppDatabase appDatabase;
+
+  LabelDatabase(this.appDatabase);
+
+  Future<List<Label>> getLabels() async {
+    var db = await appDatabase._getDb();
+    var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
+    List<Label> projects = List();
+    for (Map<String, dynamic> item in result) {
+      var myProject = Label.fromMap(item);
+      projects.add(myProject);
+    }
+    return projects;
   }
 }
