@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/main.dart';
 import 'package:flutter_app/models/Project.dart';
 import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddProject extends StatefulWidget {
+class AddProject extends ConsumerStatefulWidget {
   @override
   _AddProjectState createState() => _AddProjectState();
 }
 
-class _AddProjectState extends State<AddProject> {
-  ColorPalette currentSelectedPalette =
-      ColorPalette("Grey", Colors.grey.value);
+class _AddProjectState extends ConsumerState<AddProject> {
+  ColorPalette currentSelectedPalette = ColorPalette("Grey", Colors.grey.value);
 
   final expansionTile = GlobalKey<CollapsibleExpansionTileState>();
   GlobalKey<FormState> _formState = GlobalKey<FormState>();
@@ -25,6 +26,7 @@ class _AddProjectState extends State<AddProject> {
 
   @override
   Widget build(BuildContext context) {
+    final projectDb = ref.watch(projectDatabaseProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Project"),
@@ -38,10 +40,11 @@ class _AddProjectState extends State<AddProject> {
             if (_formState.currentState.validate()) {
               _formState.currentState.save();
               var project = Project.create(
-                  projectName,
-                  currentSelectedPalette.colorValue,
-                  currentSelectedPalette.colorName);
-              AppDatabase.get().updateProject(project).then((value) {
+                projectName,
+                currentSelectedPalette.colorValue,
+                currentSelectedPalette.colorName,
+              );
+              projectDb.updateProject(project).then((value) {
                 Navigator.pop(context, true);
               });
             }

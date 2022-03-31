@@ -93,23 +93,6 @@ class AppDatabase {
         "${Tasks.dbStatus} LONG,"
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project.tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
-
-  Future updateProject(Project project) async {
-    var db = await _getDb();
-    await db.transaction((Transaction txn) async {
-      await txn.rawInsert('INSERT OR REPLACE INTO '
-          '${Project.tblProject}(${Project.dbId},${Project.dbName},${Project.dbColorCode},${Project.dbColorName})'
-          ' VALUES(${project.id},"${project.name}", ${project.colorValue}, "${project.colorName}")');
-    });
-  }
-
-  Future deleteProject(int projectID) async {
-    var db = await _getDb();
-    await db.transaction((Transaction txn) async {
-      await txn.rawDelete(
-          'DELETE FROM ${Project.tblProject} WHERE ${Project.dbId}==$projectID;');
-    });
-  }
 }
 
 class TaskDatabase {
@@ -266,5 +249,22 @@ class ProjectDatabase {
       projects.add(myProject);
     }
     return projects;
+  }
+
+  Future updateProject(Project project) async {
+    var db = await appDatabase._getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawInsert('INSERT OR REPLACE INTO '
+          '${Project.tblProject}(${Project.dbId},${Project.dbName},${Project.dbColorCode},${Project.dbColorName})'
+          ' VALUES(${project.id},"${project.name}", ${project.colorValue}, "${project.colorName}")');
+    });
+  }
+
+  Future deleteProject(int projectID) async {
+    var db = await appDatabase._getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawDelete(
+          'DELETE FROM ${Project.tblProject} WHERE ${Project.dbId}==$projectID;');
+    });
   }
 }
