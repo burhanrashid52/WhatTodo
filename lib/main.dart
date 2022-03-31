@@ -29,6 +29,13 @@ final labelDatabaseProvider = Provider<LabelDatabase>(
   },
 );
 
+final projectDatabaseProvider = Provider<ProjectDatabase>(
+      (ref) {
+    final appDatabase = ref.watch(appDatabaseProvider);
+    return ProjectDatabase(appDatabase);
+  },
+);
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -47,7 +47,8 @@ class _SideDrawerState extends ConsumerState<SideDrawer> {
   AppDatabase get database => widget.appDatabase;
 
   void updateProjects() {
-    database.getProjects(isInboxVisible: false).then((projects) {
+    final projectDb = ref.read(projectDatabaseProvider);
+    projectDb.getProjects(isInboxVisible: false).then((projects) {
       if (projects != null) {
         setState(() {
           projectList.clear();
@@ -58,8 +59,8 @@ class _SideDrawerState extends ConsumerState<SideDrawer> {
   }
 
   void updateLabels() {
-    final database = ref.read(labelDatabaseProvider);
-    database.getLabels().then((projects) {
+    final labelDb = ref.read(labelDatabaseProvider);
+    labelDb.getLabels().then((projects) {
       if (projects != null) {
         setState(() {
           labelList.clear();

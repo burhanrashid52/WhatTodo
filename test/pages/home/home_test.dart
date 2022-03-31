@@ -76,7 +76,7 @@ void main() {
       await tester.pumpWidget(
         HomeScreen().wrapWithMaterialApp().wrapWithProviderScope(
           overrides: [
-            appDatabaseProvider.overrideWithValue(FakeAppDatabase()),
+            projectDatabaseProvider.overrideWithValue(FakeProjectDatabase()),
             taskDatabaseProvider.overrideWithValue(FakeTaskDatabase())
           ],
         ),
@@ -145,19 +145,6 @@ void main() {
       expect(fakeTaskDatabase.deletedTaskId, 1);
     });
   });
-}
-
-class FakeAppDatabase extends AppDatabase {
-  @override
-  Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
-    return [
-      Project.create(
-        'Flutter',
-        Colors.blue.value,
-        "Blue",
-      ),
-    ];
-  }
 }
 
 class FakeNavigatorObserver extends NavigatorObserver {
@@ -244,6 +231,21 @@ class FakeLabelDatabase extends LabelDatabase {
         'Mobile',
         Colors.blueGrey.value,
         "Blue Grey",
+      ),
+    ];
+  }
+}
+
+class FakeProjectDatabase extends ProjectDatabase {
+  FakeProjectDatabase() : super(null);
+
+  @override
+  Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
+    return [
+      Project.create(
+        'Flutter',
+        Colors.blue.value,
+        "Blue",
       ),
     ];
   }

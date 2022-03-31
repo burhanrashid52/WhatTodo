@@ -94,19 +94,6 @@ class AppDatabase {
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project.tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
 
-  Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
-    var db = await _getDb();
-    var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";
-    var result =
-        await db.rawQuery('SELECT * FROM ${Project.tblProject} $whereClause');
-    List<Project> projects = List();
-    for (Map<String, dynamic> item in result) {
-      var myProject = Project.fromMap(item);
-      projects.add(myProject);
-    }
-    return projects;
-  }
-
   Future updateProject(Project project) async {
     var db = await _getDb();
     await db.transaction((Transaction txn) async {
@@ -260,5 +247,24 @@ class LabelDatabase {
     } else {
       return true;
     }
+  }
+}
+
+class ProjectDatabase {
+  final AppDatabase appDatabase;
+
+  ProjectDatabase(this.appDatabase);
+
+  Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
+    var db = await appDatabase._getDb();
+    var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";
+    var result =
+        await db.rawQuery('SELECT * FROM ${Project.tblProject} $whereClause');
+    List<Project> projects = List();
+    for (Map<String, dynamic> item in result) {
+      var myProject = Project.fromMap(item);
+      projects.add(myProject);
+    }
+    return projects;
   }
 }

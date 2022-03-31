@@ -168,15 +168,20 @@ class _AddTaskState extends ConsumerState<AddTaskScreen> {
   }
 
   Future<Status> _showProjectsDialog(BuildContext context) async {
-    return AppDatabase.get().getProjects().then((projects) {
-      showDialog<Status>(
+    final projectDb = ref.read(projectDatabaseProvider);
+    return projectDb.getProjects().then(
+      (projects) {
+        return showDialog<Status>(
           context: context,
           builder: (BuildContext context) {
             return SimpleDialog(
-                title: const Text('Select Project'),
-                children: buildProjects(projects));
-          });
-    });
+              title: const Text('Select Project'),
+              children: buildProjects(projects),
+            );
+          },
+        );
+      },
+    );
   }
 
   Future<Status> _showLabelsDialog(BuildContext context) async {
