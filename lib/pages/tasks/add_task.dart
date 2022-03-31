@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/AppDatabase.dart';
+import 'package:flutter_app/main.dart';
 import 'package:flutter_app/models/Label.dart';
 import 'package:flutter_app/models/Priority.dart';
 import 'package:flutter_app/models/Project.dart';
@@ -9,13 +10,14 @@ import 'package:flutter_app/models/Tasks.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddTaskScreen extends StatefulWidget {
+class AddTaskScreen extends ConsumerStatefulWidget {
   @override
   _AddTaskState createState() => _AddTaskState();
 }
 
-class _AddTaskState extends State<AddTaskScreen> {
+class _AddTaskState extends ConsumerState<AddTaskScreen> {
   String text = "";
   int dueDate = DateTime.now().millisecondsSinceEpoch;
   Status priorityStatus = Status.PRIORITY_4;
@@ -25,6 +27,7 @@ class _AddTaskState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final taskDb = ref.watch(taskDatabaseProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Task"),
@@ -119,10 +122,7 @@ class _AddTaskState extends State<AddTaskScreen> {
                   dueDate: dueDate,
                   priority: priorityStatus,
                   projectId: currentSelectedProject.id);
-              AppDatabase.get()
-                  .updateTask(task, labelIDs: labelIds)
-                  .then((book) {
-                print(book);
+              taskDb.updateTask(task, labelIDs: labelIds).then((_) {
                 Navigator.pop(context, true);
               });
             }
