@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/utils/app_constant.dart';
 import 'package:flutter_app/utils/keys.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:developer';
 
 showSnackbar(context, String message, {MaterialColor? materialColor}) {
   if (message.isEmpty) return;
@@ -11,10 +12,13 @@ showSnackbar(context, String message, {MaterialColor? materialColor}) {
 }
 
 launchURL(String url) async {
+  
   if (url.isEmpty) return;
-  if (await canLaunch(url)) {
+  try {
+    log('data: $url');
+
     await launch(url);
-  } else {
+  } catch (e) {
     throw 'Could not launch $url';
   }
 }

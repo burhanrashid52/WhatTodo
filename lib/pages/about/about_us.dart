@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/utils/app_constant.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/keys.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 class AboutUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -110,6 +110,41 @@ class AboutUsScreen extends StatelessWidget {
                             icon: Image.asset("assets/facebook_logo.png"),
                             onPressed: () => launchURL(FACEBOOK_URL),
                           )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0, left: 16.0),
+                      child: Text("Settings",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_MEDIUM)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                         IconButton(
+                            icon: const Icon(Icons.settings),
+                            tooltip: 'settings',
+                            onPressed: () {
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.volume_up),
+                            tooltip: 'song management',
+                            onPressed: () {
+                            },
+                          ),
                         ],
                       ),
                     ),

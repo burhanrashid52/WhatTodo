@@ -16,6 +16,8 @@ dependencies:
   url_launcher : ^6.0.2
   path_provider: ^2.0.1
   rxdart: ^0.26.0
+  settings_ui: ^2.0.2
+  permission_handler: ^9.2.0
 
 dev_dependencies:
   flutter_driver:
