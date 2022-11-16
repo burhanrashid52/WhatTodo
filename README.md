@@ -68,7 +68,7 @@ You can sort your task with date i.e today and next 7 days and also acoording to
 
 ## What's next?
 
- - Editiable Project,label and Task
+ - Editable Project,label and Task
  - Deletable Project and Label
  - Comment/Description in Task
  - Reminder with notification
