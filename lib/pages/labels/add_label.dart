@@ -20,9 +20,10 @@ class AddLabel extends StatelessWidget {
     late ColorPalette currentSelectedPalette;
     LabelBloc labelBloc = BlocProvider.of(context);
     String labelName = "";
+
     scheduleMicrotask(() {
-      labelBloc.labelsExist.listen((isExist) {
-        if (isExist) {
+      labelBloc.labelExist.listen((exists) {
+        if (exists) {
           showSnackbar(context, "Label already exists");
         } else {
           context.safePop();
@@ -50,10 +51,11 @@ class AddLabel extends StatelessWidget {
             if (_formState.currentState?.validate() ?? false) {
               _formState.currentState?.save();
               var label = Label.create(
-                  labelName,
-                  currentSelectedPalette.colorValue,
-                  currentSelectedPalette.colorName);
-              labelBloc.checkIfLabelExist(label);
+                labelName,
+                currentSelectedPalette.colorValue,
+                currentSelectedPalette.colorName,
+              );
+              labelBloc.createOrExists(label);
             }
           }),
       body: ListView(

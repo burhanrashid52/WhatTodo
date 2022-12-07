@@ -23,22 +23,34 @@ void main() {
     final FakeLabelDb fakeLabelDb = FakeLabelDb();
     final LabelBloc labelBloc = LabelBloc(fakeLabelDb);
 
-    expect(labelBloc.labelsExist, emitsInOrder([false]));
-    labelBloc.checkIfLabelExist(testLabel3);
+    expect(labelBloc.labelExist, emitsInOrder([false]));
+    await labelBloc.createOrExists(testLabel3);
 
     await expectLater(
-        labelBloc.labels,
-        emitsInOrder([
+      labelBloc.labels,
+      emitsInAnyOrder(
+        [
+          [testLabel1, testLabel2],
+        ],
+      ),
+    );
+
+    await expectLater(
+      labelBloc.labels,
+      emitsInAnyOrder(
+        [
           [testLabel1, testLabel2, testLabel3],
-        ]));
+        ],
+      ),
+    );
   });
 
   test("Don't Add label if exist in the label db test", () async {
     final FakeLabelDb fakeLabelDb = FakeLabelDb();
     final LabelBloc labelBloc = LabelBloc(fakeLabelDb);
 
-    expect(labelBloc.labelsExist, emitsInOrder([true]));
-    labelBloc.checkIfLabelExist(testLabel1);
+    expect(labelBloc.labelExist, emitsInOrder([true]));
+    labelBloc.createOrExists(testLabel1);
 
     await expectLater(
         labelBloc.labels,
@@ -67,19 +79,20 @@ void main() {
   test("Refresh Label list test", () async {
     final FakeLabelDb fakeLabelDb = FakeLabelDb();
     final LabelBloc labelBloc = LabelBloc(fakeLabelDb);
+
     await expectLater(
         labelBloc.labels,
         emitsInOrder([
           [testLabel1, testLabel2],
         ]));
 
-    fakeLabelDb.isLabelExits(testLabel3);
+    fakeLabelDb.isLabelExists(testLabel3);
     labelBloc.refresh();
+
     await expectLater(
         labelBloc.labels,
         emitsInOrder([
           [testLabel1, testLabel2],
-          [testLabel1, testLabel2, testLabel3],
         ]));
   });
 }
@@ -99,11 +112,20 @@ class FakeLabelDb extends Fake implements LabelDB {
   }
 
   @override
-  Future<bool> isLabelExits(Label label) async {
+  Future<bool> isLabelExists(Label label) async {
     var isExist = labelList.contains(label);
-    if (!isExist) {
+    return Future.value(isExist);
+  }
+
+  @override
+  Future updateLabels(Label label) async {
+    var exists = await isLabelExists(label);
+    if (exists) {
+      var idx = labelList.indexOf(label);
+      labelList.remove(label);
+      labelList.insert(idx, label);
+    } else {
       labelList.add(label);
     }
-    return Future.value(isExist);
   }
 }

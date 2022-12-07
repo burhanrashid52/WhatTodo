@@ -70,27 +70,35 @@ class ProjectRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
-    return ListTile(
-      key: ValueKey("tile_${project.name}_${project.id}"),
-      onTap: () {
-        homeBloc.applyFilter(project.name, Filter.byProject(project.id!));
-        context.safePop();
+    return Dismissible(
+      onDismissed: (direction) {
+        if (project.id != null) {
+          context.bloc<ProjectBloc>().deleteProject(project.id!);
+        }
       },
-      leading: Container(
-        key: ValueKey("space_${project.name}_${project.id}"),
-        width: 24.0,
-        height: 24.0,
-      ),
-      title: Text(
-        project.name,
-        key: ValueKey("${project.name}_${project.id}"),
-      ),
-      trailing: Container(
-        height: 10.0,
-        width: 10.0,
-        child: CircleAvatar(
-          key: ValueKey("dot_${project.name}_${project.id}"),
-          backgroundColor: Color(project.colorValue),
+      key: ValueKey("${project.name}_${project.id}"),
+      child: ListTile(
+        key: ValueKey("tile_${project.name}_${project.id}"),
+        onTap: () {
+          homeBloc.applyFilter(project.name, Filter.byProject(project.id!));
+          context.safePop();
+        },
+        leading: Container(
+          key: ValueKey("space_${project.name}_${project.id}"),
+          width: 24.0,
+          height: 24.0,
+        ),
+        title: Text(
+          project.name,
+          key: ValueKey("${project.name}_${project.id}"),
+        ),
+        trailing: Container(
+          height: 10.0,
+          width: 10.0,
+          child: CircleAvatar(
+            key: ValueKey("dot_${project.name}_${project.id}"),
+            backgroundColor: Color(project.colorValue),
+          ),
         ),
       ),
     );
