@@ -47,7 +47,7 @@ class LabelBloc implements BlocBase {
     _loadLabels();
   }
 
-  Future createOrExists(Label label) async {
+  void createOrExists(Label label) async {
     _labelDB.isLabelExists(label).then((exist) {
       _labelExistController.sink.add(exist);
       if (!exist) {
@@ -59,5 +59,11 @@ class LabelBloc implements BlocBase {
 
   void updateColorSelection(ColorPalette colorPalette) {
     _colorController.sink.add(colorPalette);
+  }
+
+  void deleteLabel(int labelID) async {
+    _labelDB.deleteLabel(labelID).then((value) {
+      _loadLabels();
+    });
   }
 }

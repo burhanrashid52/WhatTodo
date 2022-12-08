@@ -24,7 +24,7 @@ void main() {
     final LabelBloc labelBloc = LabelBloc(fakeLabelDb);
 
     expect(labelBloc.labelExist, emitsInOrder([false]));
-    await labelBloc.createOrExists(testLabel3);
+    labelBloc.createOrExists(testLabel3);
 
     await expectLater(
       labelBloc.labels,

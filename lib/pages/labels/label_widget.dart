@@ -8,6 +8,7 @@ import 'package:flutter_app/pages/labels/add_label.dart';
 import 'package:flutter_app/pages/labels/label_bloc.dart';
 import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_app/utils/extension.dart';
+import 'package:flutter_app/utils/app_util.dart';
 
 class LabelPage extends StatelessWidget {
   @override
@@ -70,29 +71,45 @@ class LabelRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homeBloc = context.bloc<HomeBloc>();
-    return ListTile(
-      key: ValueKey("tile_${label.name}_${label.id}"),
-      onTap: () {
-        homeBloc.applyFilter("@ ${label.name}", Filter.byLabel(label.name));
-        context.safePop();
+    return Dismissible(
+      key: ValueKey("dismissible_${label.name}_${label.id}"),
+      confirmDismiss: (direction) async {
+        final _labelBloc = context.bloc<LabelBloc>();
+        return confirmAlert(
+          context,
+          onConfirm: () {
+            if (label.id != null) {
+              _labelBloc.deleteLabel(label.id!);
+            }
+          },
+          desc:
+              'You are about de delete a label. Everything that depends on it will be deleted as well.',
+        );
       },
-      leading: Container(
-        width: 24.0,
-        height: 24.0,
-        key: ValueKey("space_${label.name}_${label.id}"),
-      ),
-      title: Text(
-        "@ ${label.name}",
-        key: ValueKey("${label.name}_${label.id}"),
-      ),
-      trailing: Container(
-        height: 10.0,
-        width: 10.0,
-        child: Icon(
-          Icons.label,
-          size: 16.0,
-          key: ValueKey("icon_${label.name}_${label.id}"),
-          color: Color(label.colorValue),
+      child: ListTile(
+        key: ValueKey("tile_${label.name}_${label.id}"),
+        onTap: () {
+          homeBloc.applyFilter("@ ${label.name}", Filter.byLabel(label.name));
+          context.safePop();
+        },
+        leading: Container(
+          width: 24.0,
+          height: 24.0,
+          key: ValueKey("space_${label.name}_${label.id}"),
+        ),
+        title: Text(
+          "@ ${label.name}",
+          key: ValueKey("${label.name}_${label.id}"),
+        ),
+        trailing: Container(
+          height: 10.0,
+          width: 10.0,
+          child: Icon(
+            Icons.label,
+            size: 16.0,
+            key: ValueKey("icon_${label.name}_${label.id}"),
+            color: Color(label.colorValue),
+          ),
         ),
       ),
     );

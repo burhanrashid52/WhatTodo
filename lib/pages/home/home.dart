@@ -63,6 +63,11 @@ class HomePage extends StatelessWidget {
         },
       ),
       drawer: isWiderScreen ? null : SideDrawer(),
+      onDrawerChanged: (isOpened) {
+        if (!isOpened) {
+          _taskBloc.refresh();
+        }
+      },
       body: BlocProvider(
         bloc: _taskBloc,
         child: TasksPage(),

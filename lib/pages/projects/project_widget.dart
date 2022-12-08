@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
@@ -8,6 +6,7 @@ import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
+import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_app/utils/extension.dart';
 
@@ -71,12 +70,20 @@ class ProjectRow extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
     return Dismissible(
-      onDismissed: (direction) {
-        if (project.id != null) {
-          context.bloc<ProjectBloc>().deleteProject(project.id!);
-        }
+      confirmDismiss: (direction) async {
+        final _projectBloc = context.bloc<ProjectBloc>();
+        return confirmAlert(
+          context,
+          onConfirm: () {
+            if (project.id != null) {
+              _projectBloc.deleteProject(project.id!);
+            }
+          },
+          desc:
+              'You are about de delete an entire project. Everything that depends on it will be deleted as well.',
+        );
       },
-      key: ValueKey("${project.name}_${project.id}"),
+      key: ValueKey("dismissible_${project.name}_${project.id}"),
       child: ListTile(
         key: ValueKey("tile_${project.name}_${project.id}"),
         onTap: () {

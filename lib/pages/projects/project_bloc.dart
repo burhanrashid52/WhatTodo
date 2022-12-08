@@ -61,7 +61,6 @@ class ProjectBloc implements BlocBase {
 
   void deleteProject(int projectId) {
     _projectDB.deleteProject(projectId).then((value) {
-      if (value == null) return;
       _loadProjects(isInboxVisible);
     });
   }
