@@ -47,9 +47,9 @@ class LabelExpansionTileWidget extends StatelessWidget {
 
   List<Widget> buildLabels(BuildContext context) {
     final _labelBloc = context.bloc<LabelBloc>();
-    List<Widget> projectWidgetList = [];
-    _labels.forEach((label) => projectWidgetList.add(LabelRow(label)));
-    projectWidgetList.add(ListTile(
+    List<Widget> labelWidgetList = [];
+    _labels.forEach((label) => labelWidgetList.add(LabelRow(label)));
+    labelWidgetList.add(ListTile(
         leading: Icon(Icons.add),
         title: Text(
           "Add Label",
@@ -59,7 +59,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
           await context.adaptiveNavigate(SCREEN.ADD_LABEL, AddLabelPage());
           _labelBloc.refresh();
         }));
-    return projectWidgetList;
+    return labelWidgetList;
   }
 }
 
@@ -72,7 +72,7 @@ class LabelRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final homeBloc = context.bloc<HomeBloc>();
     return Dismissible(
-      key: ValueKey("dismissible_${label.name}_${label.id}"),
+      key: ValueKey("swipe_${label.name}_${label.id}"),
       confirmDismiss: (direction) async {
         final _labelBloc = context.bloc<LabelBloc>();
         return confirmAlert(
