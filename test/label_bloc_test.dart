@@ -95,19 +95,34 @@ void main() {
           [testLabel1, testLabel2],
         ]));
   });
+
+  test("Delete label in label list test", () async {
+    final FakeLabelDb fakeLabelDb = FakeLabelDb();
+    final LabelBloc labelBloc = LabelBloc(fakeLabelDb);
+
+    labelBloc.deleteLabel(testLabel1.id!);
+
+    labelBloc.refresh();
+
+    // emits 3 times because:
+    // deleteLabel emits,
+    // refresh emits and
+    // labelBloc.labels emits
+    expectLater(
+        labelBloc.labels,
+        emitsInAnyOrder([
+          [testLabel2],
+          [testLabel2],
+          [testLabel2],
+        ]));
+  });
 }
 
 class FakeLabelDb extends Fake implements LabelDB {
-  List<Label> labelList = List.empty(growable: true);
+  List<Label> labelList = List.of([testLabel1, testLabel2], growable: true);
 
   @override
   Future<List<Label>> getLabels() async {
-    if (!labelList.contains(testLabel1)) {
-      labelList.add(testLabel1);
-    }
-    if (!labelList.contains(testLabel2)) {
-      labelList.add(testLabel2);
-    }
     return Future.value(labelList);
   }
 
@@ -126,6 +141,15 @@ class FakeLabelDb extends Fake implements LabelDB {
       labelList.insert(idx, label);
     } else {
       labelList.add(label);
+    }
+  }
+
+  @override
+  Future deleteLabel(int id) async {
+    final foundLabel = labelList.firstWhere((element) => element.id == id,
+        orElse: () => Label.create("NotFound", 0, "GREEN"));
+    if (foundLabel.name != "NotFound") {
+      labelList.remove(foundLabel);
     }
   }
 }

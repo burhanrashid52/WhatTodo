@@ -38,6 +38,13 @@ class FakeProjectDb extends Fake implements ProjectDB {
     return Future.value();
   }
 
+  @override
+  Future<bool> projectExists(Project project) async {
+    return Future.value(false).then((value) {
+      return projectList.contains(project);
+    });
+  }
+
   void addProjectForRefresh(Project project) {
     projectList.add(project);
   }
@@ -114,6 +121,21 @@ void main() {
         projectBloc.projects,
         emitsInOrder([
           [testProject2, testProject3, testProject4],
+        ]));
+  });
+
+  test("Don't Add project if exist in the project db test", () async {
+    final FakeProjectDb fakeProjectDb = FakeProjectDb();
+    final ProjectBloc projectBloc = ProjectBloc(fakeProjectDb);
+
+    projectBloc.createOrExists(testProject2);
+
+    expect(projectBloc.projectExist, emitsInOrder([true]));
+
+    await expectLater(
+        projectBloc.projects,
+        emitsInOrder([
+          [testProject2, testProject3],
         ]));
   });
 }

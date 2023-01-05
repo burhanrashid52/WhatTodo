@@ -38,53 +38,54 @@ class MessageInCenterWidget extends StatelessWidget {
   }
 }
 
-bool confirmAlert(
+_defaultDialogAction() {}
+
+Future<bool> confirmAlert(
   BuildContext context, {
-  Function()? onConfirm,
-  Function()? onCancel,
-  String title = 'CONFIRMATION',
-  String desc =
-      'You are about de delete an entire project. Everything that depends on it will be deleted as well.',
+  required String title,
+  required String desc,
+  Function() onConfirm = _defaultDialogAction,
+  Function() onCancel = _defaultDialogAction,
 }) {
-  var confirm = false;
-  Alert(
-    style: alertStyle,
-    context: context,
-    type: AlertType.none,
-    title: title,
-    desc: desc,
-    buttons: [
-      DialogButton(
-        color: priorityColor[0],
-        child: Text(
-          "Confirm",
-          style: TextStyle(color: Colors.white, fontSize: FONT_SIZE_LABEL),
-        ),
-        radius: BorderRadius.all(Radius.zero),
-        onPressed: () {
-          confirm = true;
-          if (onConfirm != null) {
+  return Future<bool>.value(false).then((value) {
+    bool confirm = false;
+    Alert(
+      style: alertStyle,
+      context: context,
+      type: AlertType.none,
+      title: title,
+      desc: desc,
+      buttons: [
+        DialogButton(
+          key: ValueKey(DialogKeys.CONFIRM_BUTTON),
+          color: priorityColor[0],
+          child: Text(
+            "Confirm",
+            style: TextStyle(color: Colors.white, fontSize: FONT_SIZE_LABEL),
+          ),
+          radius: BorderRadius.all(Radius.zero),
+          onPressed: () {
+            confirm = true;
             onConfirm();
-          }
-          Navigator.pop(context);
-        },
-      ),
-      DialogButton(
-        color: priorityColor[1],
-        child: Text(
-          "Cancel",
-          style: TextStyle(color: Colors.white, fontSize: FONT_SIZE_LABEL),
+            Navigator.pop(context);
+          },
         ),
-        radius: BorderRadius.all(Radius.zero),
-        onPressed: () {
-          confirm = false;
-          if (onCancel != null) {
+        DialogButton(
+          key: ValueKey(DialogKeys.CANCEL_BUTTON),
+          color: priorityColor[1],
+          child: Text(
+            "Cancel",
+            style: TextStyle(color: Colors.white, fontSize: FONT_SIZE_LABEL),
+          ),
+          radius: BorderRadius.all(Radius.zero),
+          onPressed: () {
+            confirm = false;
             onCancel();
-          }
-          Navigator.pop(context);
-        },
-      )
-    ],
-  ).show();
-  return confirm;
+            Navigator.pop(context);
+          },
+        )
+      ],
+    ).show();
+    return confirm;
+  });
 }

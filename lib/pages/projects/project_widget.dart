@@ -74,16 +74,17 @@ class ProjectRow extends StatelessWidget {
         final _projectBloc = context.bloc<ProjectBloc>();
         return confirmAlert(
           context,
+          title: "CONFIRM",
+          desc:
+              'You are about de delete an entire project. Everything that depends on it will be deleted as well.',
           onConfirm: () {
             if (project.id != null) {
               _projectBloc.deleteProject(project.id!);
             }
           },
-          desc:
-              'You are about de delete an entire project. Everything that depends on it will be deleted as well.',
         );
       },
-      key: ValueKey("dismissible_${project.name}_${project.id}"),
+      key: ValueKey("swipe_${project.name}_${project.id}"),
       child: ListTile(
         key: ValueKey("tile_${project.name}_${project.id}"),
         onTap: () {

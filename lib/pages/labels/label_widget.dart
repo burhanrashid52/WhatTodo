@@ -77,13 +77,14 @@ class LabelRow extends StatelessWidget {
         final _labelBloc = context.bloc<LabelBloc>();
         return confirmAlert(
           context,
+          title: "CONFIRM",
+          desc:
+              'You are about de delete a label. Everything that depends on it will be deleted as well.',
           onConfirm: () {
             if (label.id != null) {
               _labelBloc.deleteLabel(label.id!);
             }
           },
-          desc:
-              'You are about de delete a label. Everything that depends on it will be deleted as well.',
         );
       },
       child: ListTile(
