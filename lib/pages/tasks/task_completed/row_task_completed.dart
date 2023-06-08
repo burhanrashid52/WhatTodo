@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
 import 'package:flutter_app/utils/color_utils.dart';
@@ -7,7 +6,7 @@ import 'package:flutter_app/utils/app_constant.dart';
 
 class TaskCompletedRow extends StatelessWidget {
   final Tasks tasks;
-  static final date_label = "Date";
+  static final dateLabel = "Date";
   final List<String> labelNames = [];
 
   TaskCompletedRow(this.tasks);
@@ -55,7 +54,7 @@ class TaskCompletedRow extends StatelessWidget {
                           getFormattedDate(tasks.dueDate),
                           style: TextStyle(
                               color: Colors.grey, fontSize: FONT_SIZE_DATE),
-                          key: Key(date_label),
+                          key: Key(dateLabel),
                         ),
                         Expanded(
                           child: Column(

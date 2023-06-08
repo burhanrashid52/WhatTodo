@@ -117,23 +117,23 @@ class TaskBloc implements BlocBase {
 
   void refresh() {
     switch (_lastFilterStatus.filterStatus!) {
-      case FILTER_STATUS.BY_TODAY:
+      case FilterStatus.BY_TODAY:
         filterTodayTasks();
         break;
 
-      case FILTER_STATUS.BY_WEEK:
+      case FilterStatus.BY_WEEK:
         filterTasksForNextWeek();
         break;
 
-      case FILTER_STATUS.BY_LABEL:
+      case FilterStatus.BY_LABEL:
         filterByLabel(_lastFilterStatus.labelName!);
         break;
 
-      case FILTER_STATUS.BY_PROJECT:
+      case FilterStatus.BY_PROJECT:
         filterByProject(_lastFilterStatus.projectId!);
         break;
 
-      case FILTER_STATUS.BY_STATUS:
+      case FilterStatus.BY_STATUS:
         filterByStatus(_lastFilterStatus.status!);
         break;
     }
@@ -145,32 +145,32 @@ class TaskBloc implements BlocBase {
   }
 }
 
-enum FILTER_STATUS { BY_TODAY, BY_WEEK, BY_PROJECT, BY_LABEL, BY_STATUS }
+enum FilterStatus { BY_TODAY, BY_WEEK, BY_PROJECT, BY_LABEL, BY_STATUS }
 
 class Filter {
   String? labelName;
   int? projectId;
-  FILTER_STATUS? filterStatus;
+  FilterStatus? filterStatus;
   TaskStatus? status;
 
   Filter.byToday() {
-    filterStatus = FILTER_STATUS.BY_TODAY;
+    filterStatus = FilterStatus.BY_TODAY;
   }
 
   Filter.byNextWeek() {
-    filterStatus = FILTER_STATUS.BY_WEEK;
+    filterStatus = FilterStatus.BY_WEEK;
   }
 
   Filter.byProject(this.projectId) {
-    filterStatus = FILTER_STATUS.BY_PROJECT;
+    filterStatus = FilterStatus.BY_PROJECT;
   }
 
   Filter.byLabel(this.labelName) {
-    filterStatus = FILTER_STATUS.BY_LABEL;
+    filterStatus = FilterStatus.BY_LABEL;
   }
 
   Filter.byStatus(this.status) {
-    filterStatus = FILTER_STATUS.BY_STATUS;
+    filterStatus = FilterStatus.BY_STATUS;
   }
 
   bool operator ==(o) =>
