@@ -11,10 +11,10 @@ class CollapsibleExpansionTile extends StatefulWidget {
     required this.title,
     this.backgroundColor,
     this.onExpansionChanged,
-    this.children: const <Widget>[],
+    this.children = const <Widget>[],
     this.trailing,
-    this.initiallyExpanded: false,
-  })  : super(key: key);
+    this.initiallyExpanded = false,
+  }) : super(key: key);
 
   final Widget? leading;
   final Widget title;
@@ -53,8 +53,7 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
     _borderColor = ColorTween();
     _headerColor = ColorTween();
     _iconColor = ColorTween();
-    _iconTurns =
-        Tween<double>(begin: 0.0, end: 0.5).animate(_easeInAnimation);
+    _iconTurns = Tween<double>(begin: 0.0, end: 0.5).animate(_easeInAnimation);
     _backgroundColor = ColorTween();
 
     _isExpanded =
@@ -117,16 +116,14 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           IconTheme.merge(
-            data:
-                IconThemeData(color: _iconColor.evaluate(_easeInAnimation)),
+            data: IconThemeData(color: _iconColor.evaluate(_easeInAnimation)),
             child: ListTile(
               onTap: toggle,
               leading: widget.leading,
               title: DefaultTextStyle(
-                style: Theme
-                    .of(context)
+                style: Theme.of(context)
                     .textTheme
-                    .subtitle1!
+                    .titleMedium!
                     .copyWith(color: titleColor),
                 child: widget.title,
               ),
@@ -153,11 +150,11 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
     final ThemeData theme = Theme.of(context);
     _borderColor.end = theme.dividerColor;
     _headerColor
-      ..begin = theme.textTheme.subtitle1!.color
-      ..end = theme.accentColor;
+      ..begin = theme.textTheme.titleMedium!.color
+      ..end = theme.colorScheme.secondary;
     _iconColor
       ..begin = theme.unselectedWidgetColor
-      ..end = theme.accentColor;
+      ..end = theme.colorScheme.secondary;
     _backgroundColor.end = widget.backgroundColor;
 
     final bool closed = !_isExpanded && _controller.isDismissed;

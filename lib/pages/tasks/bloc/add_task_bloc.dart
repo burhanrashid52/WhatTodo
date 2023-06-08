@@ -9,7 +9,6 @@ import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:rxdart/subjects.dart';
 
 class AddTaskBloc implements BlocBase {
   final TaskDB _taskDB;
