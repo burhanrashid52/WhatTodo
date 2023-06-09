@@ -13,7 +13,10 @@ showSnackbar(context, String message, {MaterialColor? materialColor}) {
 launchURL(String url) async {
   if (url.isEmpty) return;
   if (await canLaunchUrl(Uri.parse(url))) {
-    await launchUrl(Uri.parse(url));
+    await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
   } else {
     throw 'Could not launch $url';
   }
