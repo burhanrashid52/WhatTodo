@@ -57,7 +57,7 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
     _backgroundColor = ColorTween();
 
     _isExpanded =
-        PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
+        PageStorage.of(context).readState(context) ?? widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
   }
 
@@ -91,7 +91,7 @@ class CollapsibleExpansionTileState extends State<CollapsibleExpansionTile>
               // Rebuild without widget.children.
             });
           });
-        PageStorage.of(context)?.writeState(context, _isExpanded);
+        PageStorage.of(context).writeState(context, _isExpanded);
       });
       if (widget.onExpansionChanged != null) {
         widget.onExpansionChanged!(_isExpanded);

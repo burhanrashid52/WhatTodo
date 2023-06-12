@@ -1,5 +1,4 @@
 
-import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart' as app;
 import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_test/flutter_test.dart';
