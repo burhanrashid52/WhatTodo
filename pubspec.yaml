@@ -3,7 +3,7 @@ description: A new Flutter application.
 version: 0.0.1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -13,7 +13,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   sqflite: ^2.0.0+2
-  url_launcher : ^6.0.2
+  url_launcher: ^6.1.11
   path_provider: ^2.0.1
   rxdart: ^0.26.0
 
@@ -26,7 +26,7 @@ dev_dependencies:
     sdk: flutter
   test: ^1.19.5
   mockito: ^5.1.0
-  build_runner: ^2.1.7
+  build_runner: ^2.4.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

@@ -1,4 +1,4 @@
-// @dart=2.9
+
 import 'package:flutter_app/main.dart' as app;
 import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_test/flutter_test.dart';

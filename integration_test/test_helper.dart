@@ -1,4 +1,4 @@
-// @dart=2.9
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/pages/labels/label.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
@@ -45,18 +45,18 @@ cleanDb() async {
   var projectDB = ProjectDB.get();
   List<Project> projects = await projectDB.getProjects(isInboxVisible: false);
   projects.forEach((project) {
-    projectDB.deleteProject(project.id);
+    projectDB.deleteProject(project.id!);
   });
 
   var labelDB = LabelDB.get();
   List<Label> labels = await labelDB.getLabels();
   labels.forEach((label) {
-    labelDB.deleteLabel(label.id);
+    labelDB.deleteLabel(label.id!);
   });
 
   var taskDb = TaskDB.get();
   List<Tasks> tasks = await taskDb.getTasks();
   tasks.forEach((task) {
-    taskDb.deleteTask(task.id);
+    taskDb.deleteTask(task.id!);
   });
 }
