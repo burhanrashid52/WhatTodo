@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_app/utils/collapsable_expand_tile.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_app/utils/extension.dart';
+import 'package:flutter_app/utils/app_util.dart';
 
 class AddProject extends StatelessWidget {
   final expansionTile = GlobalKey<CollapsibleExpansionTileState>();
@@ -17,6 +20,20 @@ class AddProject extends StatelessWidget {
     ProjectBloc _projectBloc = BlocProvider.of(context);
     late ColorPalette currentSelectedPalette;
     String projectName = "";
+
+    scheduleMicrotask(() {
+      _projectBloc.projectExist.listen((exists) {
+        if (exists) {
+          showSnackbar(context, "Project already exists");
+        } else {
+          context.safePop();
+          if (context.isWiderScreen()) {
+            context.bloc<HomeBloc>().updateScreen(SCREEN.HOME);
+          }
+        }
+      });
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -34,15 +51,11 @@ class AddProject extends StatelessWidget {
             if (_formState.currentState!.validate()) {
               _formState.currentState!.save();
               var project = Project.create(
-                  projectName,
-                  currentSelectedPalette.colorValue,
-                  currentSelectedPalette.colorName);
-              _projectBloc.createProject(project);
-              if (context.isWiderScreen()) {
-                context.bloc<HomeBloc>().updateScreen(SCREEN.HOME);
-              }
-              context.safePop();
-              _projectBloc.refresh();
+                projectName,
+                currentSelectedPalette.colorValue,
+                currentSelectedPalette.colorName,
+              );
+              _projectBloc.createOrExists(project);
             }
           }),
       body: ListView(

@@ -6,6 +6,7 @@ import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
+import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_app/utils/extension.dart';
 
@@ -68,27 +69,44 @@ class ProjectRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
-    return ListTile(
-      key: ValueKey("tile_${project.name}_${project.id}"),
-      onTap: () {
-        homeBloc.applyFilter(project.name, Filter.byProject(project.id!));
-        context.safePop();
+    return Dismissible(
+      confirmDismiss: (direction) async {
+        final _projectBloc = context.bloc<ProjectBloc>();
+        return confirmAlert(
+          context,
+          title: "CONFIRM",
+          desc:
+              'You are about de delete an entire project. Everything that depends on it will be deleted as well.',
+          onConfirm: () {
+            if (project.id != null) {
+              _projectBloc.deleteProject(project.id!);
+            }
+          },
+        );
       },
-      leading: Container(
-        key: ValueKey("space_${project.name}_${project.id}"),
-        width: 24.0,
-        height: 24.0,
-      ),
-      title: Text(
-        project.name,
-        key: ValueKey("${project.name}_${project.id}"),
-      ),
-      trailing: Container(
-        height: 10.0,
-        width: 10.0,
-        child: CircleAvatar(
-          key: ValueKey("dot_${project.name}_${project.id}"),
-          backgroundColor: Color(project.colorValue),
+      key: ValueKey("swipe_${project.name}_${project.id}"),
+      child: ListTile(
+        key: ValueKey("tile_${project.name}_${project.id}"),
+        onTap: () {
+          homeBloc.applyFilter(project.name, Filter.byProject(project.id!));
+          context.safePop();
+        },
+        leading: Container(
+          key: ValueKey("space_${project.name}_${project.id}"),
+          width: 24.0,
+          height: 24.0,
+        ),
+        title: Text(
+          project.name,
+          key: ValueKey("${project.name}_${project.id}"),
+        ),
+        trailing: Container(
+          height: 10.0,
+          width: 10.0,
+          child: CircleAvatar(
+            key: ValueKey("dot_${project.name}_${project.id}"),
+            backgroundColor: Color(project.colorValue),
+          ),
         ),
       ),
     );

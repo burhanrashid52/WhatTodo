@@ -23,22 +23,34 @@ void main() {
     final FakeLabelDb fakeLabelDb = FakeLabelDb();
     final LabelBloc labelBloc = LabelBloc(fakeLabelDb);
 
-    expect(labelBloc.labelsExist, emitsInOrder([false]));
-    labelBloc.checkIfLabelExist(testLabel3);
+    expect(labelBloc.labelExist, emitsInOrder([false]));
+    labelBloc.createOrExists(testLabel3);
 
     await expectLater(
-        labelBloc.labels,
-        emitsInOrder([
+      labelBloc.labels,
+      emitsInAnyOrder(
+        [
+          [testLabel1, testLabel2],
+        ],
+      ),
+    );
+
+    await expectLater(
+      labelBloc.labels,
+      emitsInAnyOrder(
+        [
           [testLabel1, testLabel2, testLabel3],
-        ]));
+        ],
+      ),
+    );
   });
 
   test("Don't Add label if exist in the label db test", () async {
     final FakeLabelDb fakeLabelDb = FakeLabelDb();
     final LabelBloc labelBloc = LabelBloc(fakeLabelDb);
 
-    expect(labelBloc.labelsExist, emitsInOrder([true]));
-    labelBloc.checkIfLabelExist(testLabel1);
+    expect(labelBloc.labelExist, emitsInOrder([true]));
+    labelBloc.createOrExists(testLabel1);
 
     await expectLater(
         labelBloc.labels,
@@ -67,43 +79,77 @@ void main() {
   test("Refresh Label list test", () async {
     final FakeLabelDb fakeLabelDb = FakeLabelDb();
     final LabelBloc labelBloc = LabelBloc(fakeLabelDb);
+
     await expectLater(
         labelBloc.labels,
         emitsInOrder([
           [testLabel1, testLabel2],
         ]));
 
-    fakeLabelDb.isLabelExits(testLabel3);
+    fakeLabelDb.isLabelExists(testLabel3);
     labelBloc.refresh();
+
     await expectLater(
         labelBloc.labels,
         emitsInOrder([
           [testLabel1, testLabel2],
-          [testLabel1, testLabel2, testLabel3],
+        ]));
+  });
+
+  test("Delete label in label list test", () async {
+    final FakeLabelDb fakeLabelDb = FakeLabelDb();
+    final LabelBloc labelBloc = LabelBloc(fakeLabelDb);
+
+    labelBloc.deleteLabel(testLabel1.id!);
+
+    labelBloc.refresh();
+
+    // emits 3 times because:
+    // deleteLabel emits,
+    // refresh emits and
+    // labelBloc.labels emits
+    expectLater(
+        labelBloc.labels,
+        emitsInAnyOrder([
+          [testLabel2],
+          [testLabel2],
+          [testLabel2],
         ]));
   });
 }
 
 class FakeLabelDb extends Fake implements LabelDB {
-  List<Label> labelList = List.empty(growable: true);
+  List<Label> labelList = List.of([testLabel1, testLabel2], growable: true);
 
   @override
   Future<List<Label>> getLabels() async {
-    if (!labelList.contains(testLabel1)) {
-      labelList.add(testLabel1);
-    }
-    if (!labelList.contains(testLabel2)) {
-      labelList.add(testLabel2);
-    }
     return Future.value(labelList);
   }
 
   @override
-  Future<bool> isLabelExits(Label label) async {
+  Future<bool> isLabelExists(Label label) async {
     var isExist = labelList.contains(label);
-    if (!isExist) {
+    return Future.value(isExist);
+  }
+
+  @override
+  Future updateLabels(Label label) async {
+    var exists = await isLabelExists(label);
+    if (exists) {
+      var idx = labelList.indexOf(label);
+      labelList.remove(label);
+      labelList.insert(idx, label);
+    } else {
       labelList.add(label);
     }
-    return Future.value(isExist);
+  }
+
+  @override
+  Future deleteLabel(int id) async {
+    final foundLabel = labelList.firstWhere((element) => element.id == id,
+        orElse: () => Label.create("NotFound", 0, "GREEN"));
+    if (foundLabel.name != "NotFound") {
+      labelList.remove(foundLabel);
+    }
   }
 }
