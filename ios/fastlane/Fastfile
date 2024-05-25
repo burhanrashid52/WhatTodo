@@ -20,6 +20,6 @@ platform :ios do
   lane :beta do
     match(app_identifier: "burhanrashid52.whattodo", type: "appstore")
     build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
-    upload_to_testflight
+    pilot(api_key_path: "fastlane/store.json", skip_waiting_for_build_processing: true)
   end
 end
