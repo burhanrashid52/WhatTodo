@@ -19,7 +19,14 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     match(app_identifier: "burhanrashid52.whattodo", type: "appstore")
+    updated_version_number = bump_build_number()
+    increment_build_number(build_number: updated_version_number)
     build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
     pilot(api_key_path: "fastlane/store.json", skip_waiting_for_build_processing: true)
+  end
+
+  def bump_build_number()
+    latest_build_number = latest_testflight_build_number(initial_build_number: 0)
+    return (latest_build_number + 1)
   end
 end
