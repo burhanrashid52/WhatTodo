@@ -24,7 +24,7 @@ jobs:
           bundler-cache: true
           working-directory: ios
       - name: Setup app store connect
-        run: echo "$ASC_JSON_KEY" >> ./fastlane/store.json
+        run: echo "$ASC_JSON_KEY" >> ./ios/fastlane/store.json
       - name: Build and Deploy to TestFlight
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
