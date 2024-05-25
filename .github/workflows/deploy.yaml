@@ -5,6 +5,8 @@ on:
 jobs:
   deployIos:
     runs-on: macos-latest
+    env:
+      ASC_JSON_KEY: ${{ secrets.ASC_JSON_KEY }}
     steps:
       - name: ⬇️ Checkout repository
         uses: actions/checkout@v3
@@ -21,10 +23,11 @@ jobs:
           ruby-version: "3.3"
           bundler-cache: true
           working-directory: ios
+      - name: Setup app store connect
+        run: echo "$ASC_JSON_KEY" >> ./fastlane/store.json
       - name: Build and Deploy to TestFlight
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-          ASC_JSON_KEY: ${{ secrets.ASC_JSON_KEY }}
           MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
         run: |
           cd ./ios
