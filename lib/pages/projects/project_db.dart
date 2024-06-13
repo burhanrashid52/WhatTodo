@@ -14,6 +14,17 @@ class ProjectDB {
     return _projectDb;
   }
 
+  Future<bool> projectExists(Project project) async {
+    var db = await _appDatabase.getDb();
+    var result = await db.rawQuery(
+        "SELECT * FROM ${Project.tblProject} WHERE ${Project.dbName} LIKE '${project.name}'");
+    if (result.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
     var db = await _appDatabase.getDb();
     var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";

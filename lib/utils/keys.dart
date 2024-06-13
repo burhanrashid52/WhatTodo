@@ -47,3 +47,8 @@ class CompletedTaskPageKeys {
   static const POPUP_ACTION = 'popup_action';
   static const COMPLETED_TASKS = 'completed_tasks';
 }
+
+class DialogKeys {
+  static const CONFIRM_BUTTON = 'dialogConfirmKey';
+  static const CANCEL_BUTTON = 'dialogCancelKey';
+}
