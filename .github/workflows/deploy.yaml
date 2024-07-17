@@ -1,6 +1,9 @@
-name: Deploy WhatTodo app to appstore
+name: 🍏🚀 Deploy to appstore
+
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   deployIos:
@@ -19,6 +22,17 @@ jobs:
           channel: 'stable'
           cache: true
         id: flutter
+      - name: Update version number from tag
+        run: |
+          # Extract the version components from refs tag (e.g., 1.2.3)
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "FLUTTER_BUILD_NAME=$TAG_NAME" >> $GITHUB_ENV
+          VERSION=${TAG_NAME#v} # Remove the 'v' prefix if it exists
+          MAJOR=$(echo $VERSION | cut -d. -f1)
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          PATCH=$(echo $VERSION | cut -d. -f3)
+          NUMBER=$MAJOR$MINOR$PATCH
+          echo "FLUTTER_BUILD_NUMBER=$NUMBER" >> $GITHUB_ENV
       - name: 📦 Get Packages
         run: flutter pub get
       - name: Setup Fastlane
