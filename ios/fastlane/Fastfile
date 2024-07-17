@@ -27,7 +27,7 @@ platform :ios do
   end
 
   def bump_build_number()
-    latest_build_number = latest_testflight_build_number(initial_build_number: 0)
+    latest_build_number = latest_testflight_build_number(initial_build_number: 0,api_key_path: "fastlane/store.json")
     return (latest_build_number + 1)
   end
 end
