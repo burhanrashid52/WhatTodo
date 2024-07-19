@@ -8,3 +8,5 @@
 /build
 /captures
 GeneratedPluginRegistrant.java
+key.properties
+app/whattodo_keystore.jks
