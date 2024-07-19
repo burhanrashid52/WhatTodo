@@ -1,0 +1,9 @@
+A Simple To-do app design in flutter to keep track of your task on daily basis. You can add project, labels and due-date to your tasks.
+
+- Build on BLoC Architecture Pattern
+- Add Projects by specifying a unique color to it
+- Add Labels by specifying a unique color to it
+- Add Task by defining its priority
+- Swipe to delete or complete the task
+- Sorting Task
+- Works offline using Sqflite database
