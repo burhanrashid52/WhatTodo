@@ -19,6 +19,8 @@ platform :android do
   desc "Deploy a new version to the Google Play"
   lane :beta do
     gradle(task: "clean assembleRelease")
-    #upload_to_play_store
+    upload_to_play_store(
+      apk: "../build/app/outputs/flutter-apk/app-release.apk",
+    )
   end
 end
