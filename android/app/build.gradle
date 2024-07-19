@@ -1,3 +1,9 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -6,13 +12,18 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+Integer getCommitCount() {
+    def commitCount = Integer.parseInt("git rev-list --count HEAD".execute().text.trim())
+    println "Commit count was $commitCount"
+    return commitCount
 }
 
-apply plugin: 'com.android.application'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+def flutterVersionCode = getCommitCount()
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
 
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
@@ -21,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 34
 
     lintOptions {
         disable 'InvalidPackage'
@@ -29,11 +40,23 @@ android {
 
     defaultConfig {
         applicationId "ja.burhanrashid52.whattodo"
-        minSdkVersion 16
-        targetSdkVersion 31
-        versionCode 6
-        versionName "1.0.3"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion 24 //flutter.minSdkVersion
+        targetSdkVersion 34
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 
     signingConfigs {
@@ -66,6 +89,10 @@ android {
             }
         }
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 flutter {
@@ -73,7 +100,5 @@ flutter {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test:runner:1.4.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation 'com.android.support:support-annotations:28.0.0'
 }
