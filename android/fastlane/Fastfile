@@ -18,7 +18,7 @@ default_platform(:android)
 platform :android do
   desc "Deploy a new version to the Google Play"
   lane :beta do
-    gradle(task: "clean assembleRelease")
+    sh "flutter build apk --release"
     upload_to_play_store(
       apk: "../build/app/outputs/flutter-apk/app-release.apk",
     )
