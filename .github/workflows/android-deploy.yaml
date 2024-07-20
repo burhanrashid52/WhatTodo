@@ -52,4 +52,4 @@ jobs:
       - name: Build and Deploy to Play store
         run: |
           cd ./android
-          bundle exec fastlane ios beta
+          fastlane android beta
