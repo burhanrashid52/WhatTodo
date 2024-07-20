@@ -1,0 +1,54 @@
+name: 🍏🚀 Deploy to appstore
+
+on:
+  push:
+    branches:
+      - android-deploy-ci
+    tags:
+      - 'v.[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  deployAndroid:
+    runs-on: ubuntu-latest
+    env:
+      GPS_JSON_KEY: ${{ secrets.GPS_JSON_KEY }}
+      RELEASE_KEYSTORE_FILE: ${{ secrets.RELEASE_KEYSTORE_FILE }}
+      STORE_KEY_PROPERTIES: ${{ secrets.STORE_KEY_PROPERTIES }}
+    steps:
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v3
+      - name: ⚙️ Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.22.0"
+          channel: 'stable'
+          cache: true
+        id: flutter
+      - name: Update version number from tag
+        run: |
+          # Extract the version components from refs tag (e.g., 1.2.3)
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "FLUTTER_BUILD_NAME=$TAG_NAME" >> $GITHUB_ENV
+          VERSION=${TAG_NAME#v} # Remove the 'v' prefix if it exists
+          MAJOR=$(echo $VERSION | cut -d. -f1)
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          PATCH=$(echo $VERSION | cut -d. -f3)
+          NUMBER=$MAJOR$MINOR$PATCH
+          echo "FLUTTER_BUILD_NUMBER=$NUMBER" >> $GITHUB_ENV
+      - name: 📦 Get Packages
+        run: flutter pub get
+      - name: Setup Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Setup play store service
+        run: echo "$GPS_JSON_KEY" >> ./android/play-store.json
+      - name: Setup store key properties
+        run: echo "STORE_KEY_PROPERTIES" >> ./android/key.properties
+      - name: Setup release keystore
+        run: echo "$RELEASE_KEYSTORE_FILE" >> ./android/app/whattodo_keystore.jks
+      - name: Build and Deploy to Play store
+        run: |
+          cd ./android
+          bundle exec fastlane ios beta
