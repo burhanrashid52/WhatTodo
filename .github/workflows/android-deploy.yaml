@@ -1,4 +1,4 @@
-name: 🍏🚀 Deploy to appstore
+name: 🍏🤖 Deploy to play store
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     env:
       GPS_JSON_KEY: ${{ secrets.GPS_JSON_KEY }}
       RELEASE_KEYSTORE_FILE: ${{ secrets.RELEASE_KEYSTORE_FILE }}
-      STORE_KEY_PROPERTIES: ${{ secrets.STORE_KEY_PROPERTIES }}
+      KEYSTORE_PROPERTIES: ${{ secrets.KEYSTORE_PROPERTIES }}
     steps:
       - name: ⬇️ Checkout repository
         uses: actions/checkout@v3
@@ -45,9 +45,10 @@ jobs:
       - name: Setup play store service
         run: echo "$GPS_JSON_KEY" >> ./android/play-store.json
       - name: Setup store key properties
-        run: echo "STORE_KEY_PROPERTIES" >> ./android/key.properties
-      - name: Setup release keystore
-        run: echo "$RELEASE_KEYSTORE_FILE" >> ./android/app/whattodo_keystore.jks
+        run: echo "$KEYSTORE_PROPERTIES" >> ./android/key.properties
+      - name: Get the release keystore
+        run: |
+          echo $RELEASE_KEYSTORE_FILE | base64 --decode > android/app/whattodo_keystore.jks
       - name: Build and Deploy to Play store
         run: |
           cd ./android
