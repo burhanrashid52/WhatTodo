@@ -21,6 +21,7 @@ platform :android do
     updated_version_name = ENV["FLUTTER_BUILD_NAME"]
     sh "flutter build apk --release --build-name=#{updated_version_name}"
     upload_to_play_store(
+      track: "internal",
       apk: "../build/app/outputs/flutter-apk/app-release.apk",
     )
   end
