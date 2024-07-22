@@ -28,8 +28,8 @@ jobs:
         run: |
           # Extract the version components from refs tag (e.g., 1.2.3)
           TAG_NAME=${GITHUB_REF#refs/tags/}
-          echo "FLUTTER_BUILD_NAME=$TAG_NAME" >> $GITHUB_ENV
           VERSION=${TAG_NAME#v} # Remove the 'v' prefix if it exists
+          echo "FLUTTER_BUILD_NAME=$VERSION" >> $GITHUB_ENV
           MAJOR=$(echo $VERSION | cut -d. -f1)
           MINOR=$(echo $VERSION | cut -d. -f2)
           PATCH=$(echo $VERSION | cut -d. -f3)
