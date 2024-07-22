@@ -27,7 +27,7 @@ jobs:
       - name: Update version number from tag
         run: |
           # Extract the version components from refs tag (e.g., 1.2.3)
-          TAG_NAME=${GITHUB_REF#refs/tags/}
+          TAG_NAME=${{  github.ref_name }}
           VERSION=${TAG_NAME#v} # Remove the 'v' prefix if it exists
           echo "FLUTTER_BUILD_NAME=$VERSION" >> $GITHUB_ENV
           MAJOR=$(echo $VERSION | cut -d. -f1)
