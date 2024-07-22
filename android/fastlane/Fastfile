@@ -19,7 +19,8 @@ platform :android do
   desc "Deploy a new version to the Google Play"
   lane :beta do
     updated_version_name = ENV["FLUTTER_BUILD_NAME"]
-    sh "flutter build apk --release --build-name=#{updated_version_name}"
+    updated_version_number = ENV["FLUTTER_BUILD_NUMBER"]
+    sh "flutter build apk --release --build-name=#{updated_version_name} --build-number=#{updated_version_number}"
     upload_to_play_store(
       track: "internal",
       apk: "../build/app/outputs/flutter-apk/app-release.apk",
