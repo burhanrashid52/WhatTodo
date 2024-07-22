@@ -12,13 +12,10 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-Integer getCommitCount() {
-    def commitCount = Integer.parseInt("git rev-list --count HEAD".execute().text.trim())
-    println "Commit count was $commitCount"
-    return commitCount
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
 }
-
-def flutterVersionCode = getCommitCount()
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {

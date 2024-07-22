@@ -2,8 +2,6 @@ name: 🍏🤖 Deploy to play store
 
 on:
   push:
-    branches:
-      - android-deploy-ci
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
 
