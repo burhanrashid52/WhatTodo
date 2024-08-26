@@ -15,7 +15,7 @@ class LabelBloc implements BlocBase {
   StreamController<bool> _labelExistController =
       StreamController<bool>.broadcast();
 
-  Stream<bool> get labelsExist => _labelExistController.stream;
+  Stream<bool> get labelExist => _labelExistController.stream;
 
   StreamController<ColorPalette> _colorController =
       StreamController<ColorPalette>.broadcast();
@@ -47,13 +47,23 @@ class LabelBloc implements BlocBase {
     _loadLabels();
   }
 
-  void checkIfLabelExist(Label label) async {
-    _labelDB.isLabelExits(label).then((isExist) {
-      _labelExistController.sink.add(isExist);
+  void createOrExists(Label label) async {
+    _labelDB.isLabelExists(label).then((exist) {
+      _labelExistController.sink.add(exist);
+      if (!exist) {
+        _labelDB.updateLabels(label);
+        _loadLabels();
+      }
     });
   }
 
   void updateColorSelection(ColorPalette colorPalette) {
     _colorController.sink.add(colorPalette);
+  }
+
+  void deleteLabel(int labelID) async {
+    _labelDB.deleteLabel(labelID).then((value) {
+      _loadLabels();
+    });
   }
 }
