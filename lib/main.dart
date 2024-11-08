@@ -10,7 +10,10 @@ import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
 import 'package:flutter_app/utils/extension.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

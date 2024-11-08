@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/utils/app_constant.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/keys.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutUsScreen extends StatelessWidget {
   @override
@@ -35,9 +36,15 @@ class AboutUsScreen extends StatelessWidget {
                     ListTile(
                       leading: Icon(Icons.update, color: Colors.black),
                       title: Text("Version"),
-                      subtitle: Text(
-                        "1.0.0",
-                        key: ValueKey(AboutUsKeys.VERSION_NUMBER),
+                      subtitle: FutureBuilder<PackageInfo>(
+                        future: PackageInfo.fromPlatform(),
+                        builder: (context, snapshot) {
+                          final versionName = snapshot.data?.version ?? '1.0.0';
+                          return Text(
+                            versionName,
+                            key: ValueKey(AboutUsKeys.VERSION_NUMBER),
+                          );
+                        },
                       ),
                     )
                   ],
