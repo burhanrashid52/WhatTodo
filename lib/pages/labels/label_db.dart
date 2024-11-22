@@ -14,14 +14,12 @@ class LabelDB {
     return _labelDb;
   }
 
-  Future<bool> isLabelExits(Label label) async {
+  Future<bool> isLabelExists(Label label) async {
     var db = await _appDatabase.getDb();
     var result = await db.rawQuery(
         "SELECT * FROM ${Label.tblLabel} WHERE ${Label.dbName} LIKE '${label.name}'");
     if (result.length == 0) {
-      return await updateLabels(label).then((value) {
-        return false;
-      });
+      return false;
     } else {
       return true;
     }

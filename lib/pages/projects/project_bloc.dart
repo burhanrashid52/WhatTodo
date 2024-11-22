@@ -11,6 +11,11 @@ class ProjectBloc implements BlocBase {
 
   Stream<List<Project>> get projects => _projectController.stream;
 
+  StreamController<bool> _projectExistController =
+      StreamController<bool>.broadcast();
+
+  Stream<bool> get projectExist => _projectExistController.stream;
+
   StreamController<ColorPalette> _colorController =
       StreamController<ColorPalette>.broadcast();
 
@@ -25,6 +30,7 @@ class ProjectBloc implements BlocBase {
 
   @override
   void dispose() {
+    _projectExistController.close();
     _projectController.close();
     _colorController.close();
   }
@@ -37,9 +43,24 @@ class ProjectBloc implements BlocBase {
     });
   }
 
+  void createOrExists(Project project) async {
+    _projectDB.projectExists(project).then((exist) {
+      _projectExistController.sink.add(exist);
+      if (!exist) {
+        _projectDB.insertOrReplace(project);
+      }
+    });
+  }
+
   void createProject(Project project) {
     _projectDB.insertOrReplace(project).then((value) {
       if (value == null) return;
+      _loadProjects(isInboxVisible);
+    });
+  }
+
+  void deleteProject(int projectId) {
+    _projectDB.deleteProject(projectId).then((value) {
       _loadProjects(isInboxVisible);
     });
   }
