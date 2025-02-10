@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/db/app_db.dart';
 import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/home/home.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
@@ -9,11 +10,40 @@ import 'package:flutter_app/pages/projects/project_widget.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
 import 'package:flutter_app/utils/extension.dart';
+import 'package:go_router/go_router.dart';
+import 'package:vyuh_core/vyuh_core.dart' as vc;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  vc.runApp(
+    initialLocation: '/home',
+    features: () => [
+      mainFeature,
+    ],
+  );
 }
+
+final mainFeature = vc.FeatureDescriptor(
+  name: 'home',
+  title: 'Today Task List',
+  description: 'A Task list to be shown due today',
+  icon: Icons.task,
+  init: () async {
+    final database = await AppDatabase.get().getDb();
+    vc.vyuh.di.register(database);
+  },
+  routes: () async {
+    return [
+      GoRoute(
+        path: '/home',
+        builder: (context, state) => BlocProvider(
+          bloc: HomeBloc(),
+          child: AdaptiveHome(),
+        ),
+      ),
+    ];
+  },
+);
 
 class MyApp extends StatelessWidget {
   @override

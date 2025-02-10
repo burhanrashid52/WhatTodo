@@ -15,7 +15,15 @@ dependencies:
   sqflite: ^2.0.0+2
   url_launcher: ^6.1.11
   path_provider: ^2.0.1
-  rxdart: ^0.26.0
+  rxdart: ^0.28.0
+  go_router: ^14.8.0
+  mobx: ^2.5.0
+  flutter_mobx: ^2.3.0
+  sanity_client: ^1.0.0
+  vyuh_core: ^1.39.3
+  vyuh_feature_developer: ^1.13.1
+  vyuh_feature_system: ^1.38.1
+  vyuh_plugin_content_provider_sanity: ^1.11.1
 
 dev_dependencies:
   flutter_driver:

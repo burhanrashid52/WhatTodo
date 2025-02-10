@@ -9,8 +9,8 @@ import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/pages/tasks/task_widgets.dart';
-import 'package:flutter_app/utils/keys.dart';
 import 'package:flutter_app/utils/extension.dart';
+import 'package:flutter_app/utils/keys.dart';
 
 class HomePage extends StatelessWidget {
   final TaskBloc _taskBloc = TaskBloc(TaskDB.get());

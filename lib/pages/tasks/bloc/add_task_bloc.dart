@@ -123,7 +123,7 @@ class AddTaskBloc implements BlocBase {
       );
 
       _taskDB.updateTask(task, labelIDs: labelIds).then((task) {
-        Notification.onDone();
+        StreamNotification.done();
       });
     });
   }
