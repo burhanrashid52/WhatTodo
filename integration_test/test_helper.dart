@@ -24,7 +24,7 @@ extension TestWidgetTester on WidgetTester {
 }
 
 seedDataInDb() async {
-  var projectDB = ProjectDB.get();
+  var projectDB = projectDbStore;
   await projectDB.insertOrReplace(testProject1);
   await projectDB.insertOrReplace(testProject2);
   await projectDB.insertOrReplace(testProject3);
@@ -42,7 +42,7 @@ seedDataInDb() async {
 }
 
 cleanDb() async {
-  var projectDB = ProjectDB.get();
+  var projectDB = projectDbStore;
   List<Project> projects = await projectDB.getProjects(isInboxVisible: false);
   projects.forEach((project) {
     projectDB.deleteProject(project.id!);

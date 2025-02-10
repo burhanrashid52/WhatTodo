@@ -1,19 +1,16 @@
-import 'package:flutter_app/db/app_db.dart';
 import 'package:flutter_app/pages/projects/project.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:vyuh_core/runtime/platform/vyuh_platform.dart';
+
+ProjectDB get projectDbStore => vyuh.di.get<ProjectDB>();
 
 class ProjectDB {
-  static final ProjectDB _projectDb = ProjectDB._internal();
+  ProjectDB(this._dbStore);
 
-  //private internal constructor to make it singleton
-  ProjectDB._internal();
-
-  static ProjectDB get() {
-    return _projectDb;
-  }
+  final Database _dbStore;
 
   Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
-    var db = dbStore;
+    var db = _dbStore;
     var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";
     var result =
         await db.rawQuery('SELECT * FROM ${Project.tblProject} $whereClause');
@@ -26,7 +23,7 @@ class ProjectDB {
   }
 
   Future insertOrReplace(Project project) async {
-    var db = dbStore;
+    var db = _dbStore;
     await db.transaction((Transaction txn) async {
       await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Project.tblProject}(${Project.dbId},${Project.dbName},${Project.dbColorCode},${Project.dbColorName})'
@@ -35,7 +32,7 @@ class ProjectDB {
   }
 
   Future deleteProject(int projectID) async {
-    var db = dbStore;
+    var db = _dbStore;
     await db.transaction((Transaction txn) async {
       await txn.rawDelete(
           'DELETE FROM ${Project.tblProject} WHERE ${Project.dbId}==$projectID;');

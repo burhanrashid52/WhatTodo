@@ -99,7 +99,7 @@ class AddProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      bloc: ProjectBloc(ProjectDB.get()),
+      bloc: ProjectBloc(projectDbStore),
       child: AddProject(),
     );
   }

@@ -75,7 +75,7 @@ class SideDrawer extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            bloc: ProjectBloc(ProjectDB.get()),
+            bloc: ProjectBloc(projectDbStore),
             child: ProjectPage(),
           ),
           BlocProvider(

@@ -9,7 +9,6 @@ import 'package:flutter_app/pages/tasks/models/tasks.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:vyuh_core/runtime/platform/vyuh_platform.dart';
 
 /// This is the singleton database class which handlers all database transactions
 /// All the task raw queries is handle here and return a Future<T> with result
@@ -21,8 +20,7 @@ class AppDatabase {
     // Get a location using path_provider
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "tasks.db");
-    return await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) async {
+    return await openDatabase(path, version: 1, onCreate: (db, version) async {
       // When creating the db, create the table
       await _createProjectTable(db);
       await _createTaskTable(db);
@@ -79,5 +77,3 @@ class AppDatabase {
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project.tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
 }
-
-Database get dbStore => vyuh.di.get<Database>();
