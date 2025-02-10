@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/db/app_db.dart';
-import 'package:flutter_app/pages/about/about_us.dart';
-import 'package:flutter_app/pages/home/home.dart';
+import 'package:flutter_app/pages/about/about_us.dart' as about;
+import 'package:flutter_app/pages/home/adpative_home.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
-import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
-import 'package:flutter_app/pages/labels/label_widget.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
-import 'package:flutter_app/pages/projects/project_widget.dart';
-import 'package:flutter_app/pages/tasks/add_task.dart';
-import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
-import 'package:flutter_app/utils/extension.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sanity_client/sanity_client.dart';
 import 'package:vyuh_core/vyuh_core.dart' as vc;
+import 'package:vyuh_extension_content/vyuh_extension_content.dart';
+import 'package:vyuh_feature_developer/vyuh_feature_developer.dart'
+    as developer;
+import 'package:vyuh_feature_system/vyuh_feature_system.dart' as system;
+import 'package:vyuh_plugin_content_provider_sanity/vyuh_plugin_content_provider_sanity.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,23 @@ void main() {
     initialLocation: '/home',
     features: () => [
       mainFeature,
+      about.feature,
+      developer.feature,
+      system.feature,
     ],
+    plugins: vc.PluginDescriptor(
+      content: DefaultContentPlugin(
+        provider: SanityContentProvider(
+          SanityClient(
+            SanityConfig(
+              projectId: '1bnautyt',
+              dataset: 'production',
+              token: 'skDFNiIjQtd9XVdmEwEa9nyGcEJbA29Uq9ur1UHfJDTI4u0M2HrsgHTii5anp3burFY7m6wDhrENx18jwpDPZfmej6p78SUxCC7LhbNqY8OpUaA5uN6yzWvtk8aYHLl2Ljg5Ncnwqabnc4inJhEckWBOcemTltkmwBTsaKdblFeFKnYnBIBK',
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 }
 
@@ -70,61 +86,6 @@ class MyApp extends StatelessWidget {
         bloc: HomeBloc(),
         child: AdaptiveHome(),
       ),
-    );
-  }
-}
-
-class AdaptiveHome extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return context.isWiderScreen() ? WiderHomePage() : HomePage();
-  }
-}
-
-class WiderHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final homeBloc = context.bloc<HomeBloc>();
-    return Row(
-      children: [
-        Expanded(
-          child: StreamBuilder<SCREEN>(
-              stream: homeBloc.screens,
-              builder: (context, snapshot) {
-                //Refresh side drawer whenever screen is updated
-                return SideDrawer();
-              }),
-          flex: 2,
-        ),
-        SizedBox(
-          width: 0.5,
-        ),
-        Expanded(
-          child: StreamBuilder<SCREEN>(
-              stream: homeBloc.screens,
-              builder: (context, snapshot) {
-                if (snapshot.data != null) {
-                  // ignore: missing_enum_constant_in_switch
-                  switch (snapshot.data) {
-                    case SCREEN.ABOUT:
-                      return AboutUsScreen();
-                    case SCREEN.ADD_TASK:
-                      return AddTaskProvider();
-                    case SCREEN.COMPLETED_TASK:
-                      return TaskCompletedPage();
-                    case SCREEN.ADD_PROJECT:
-                      return AddProjectPage();
-                    case SCREEN.ADD_LABEL:
-                      return AddLabelPage();
-                    case SCREEN.HOME:
-                      return HomePage();
-                  }
-                }
-                return HomePage();
-              }),
-          flex: 5,
-        )
-      ],
     );
   }
 }

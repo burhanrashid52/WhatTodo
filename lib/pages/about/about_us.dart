@@ -2,7 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/utils/app_constant.dart';
 import 'package:flutter_app/utils/app_util.dart';
 import 'package:flutter_app/utils/keys.dart';
+import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:vyuh_core/vyuh_core.dart';
+
+final feature = FeatureDescriptor(
+  name: 'about',
+  title: 'About Me',
+  description: 'show about me details with social media links',
+  icon: Icons.pages,
+  routes: () async {
+    return [
+      GoRoute(
+        path: '/about',
+        pageBuilder: defaultRoutePageBuilder,
+      ),
+    ];
+  },
+);
 
 class AboutUsScreen extends StatelessWidget {
   @override
@@ -132,11 +149,14 @@ class AboutUsScreen extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0, left: 16.0),
-                      child: Text("Apache Licensee",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: FONT_MEDIUM)),
+                      child: Text(
+                        "Apache Licensee",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: FONT_MEDIUM,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),

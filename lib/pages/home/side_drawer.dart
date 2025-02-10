@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
-import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
-import 'package:flutter_app/pages/labels/label_db.dart';
-import 'package:flutter_app/pages/projects/project_db.dart';
-import 'package:flutter_app/pages/projects/project.dart';
-import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/labels/label_bloc.dart';
+import 'package:flutter_app/pages/labels/label_db.dart';
 import 'package:flutter_app/pages/labels/label_widget.dart';
+import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/projects/project_bloc.dart';
+import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/projects/project_widget.dart';
-import 'package:flutter_app/utils/keys.dart';
+import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 import 'package:flutter_app/utils/extension.dart';
+import 'package:flutter_app/utils/keys.dart';
+import 'package:go_router/go_router.dart';
 
 class SideDrawer extends StatelessWidget {
   @override
@@ -26,15 +26,16 @@ class SideDrawer extends StatelessWidget {
             accountEmail: Text("burhanrashid5253@gmail.com"),
             otherAccountsPictures: <Widget>[
               IconButton(
-                  icon: Icon(
-                    Icons.info,
-                    color: Colors.white,
-                    size: 36.0,
-                  ),
-                  onPressed: () async {
-                    await context.adaptiveNavigate(
-                        SCREEN.ABOUT, AboutUsScreen());
-                  })
+                icon: Icon(
+                  Icons.info,
+                  color: Colors.white,
+                  size: 36.0,
+                ),
+                onPressed: () async {
+                  context.go('/about');
+                  //await context.adaptiveNavigate(SCREEN.ABOUT, AboutUsScreen());
+                },
+              )
             ],
             currentAccountPicture: CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.primary,
