@@ -103,7 +103,7 @@ class AddLabelPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      bloc: LabelBloc(LabelDB.get()),
+      bloc: LabelBloc(labelDbStore),
       child: AddLabel(),
     );
   }

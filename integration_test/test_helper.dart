@@ -30,12 +30,12 @@ seedDataInDb() async {
   await projectDB.insertOrReplace(testProject3);
   await projectDB.insertOrReplace(testProject4);
 
-  var labelDB = LabelDB.get();
+  var labelDB = labelDbStore;
   await labelDB.updateLabels(testLabel1);
   await labelDB.updateLabels(testLabel2);
   await labelDB.updateLabels(testLabel3);
 
-  var taskDB = TaskDB.get();
+  var taskDB = taskDbStore;
   await taskDB.updateTask(testTask1);
   await taskDB.updateTask(testTask2);
   await taskDB.updateTask(testTask3);
@@ -48,13 +48,13 @@ cleanDb() async {
     projectDB.deleteProject(project.id!);
   });
 
-  var labelDB = LabelDB.get();
+  var labelDB = labelDbStore;
   List<Label> labels = await labelDB.getLabels();
   labels.forEach((label) {
     labelDB.deleteLabel(label.id!);
   });
 
-  var taskDb = TaskDB.get();
+  var taskDb = taskDbStore;
   List<Tasks> tasks = await taskDb.getTasks();
   tasks.forEach((task) {
     taskDb.deleteTask(task.id!);

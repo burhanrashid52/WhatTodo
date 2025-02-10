@@ -5,10 +5,12 @@ import 'package:flutter_app/pages/about/about_us.dart';
 import 'package:flutter_app/pages/home/home.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
+import 'package:flutter_app/pages/labels/label_db.dart';
 import 'package:flutter_app/pages/labels/label_widget.dart';
 import 'package:flutter_app/pages/projects/project_widget.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
 import 'package:flutter_app/pages/tasks/task_completed/task_complted.dart';
+import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/utils/extension.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vyuh_core/vyuh_core.dart' as vc;
@@ -29,8 +31,9 @@ final mainFeature = vc.FeatureDescriptor(
   description: 'A Task list to be shown due today',
   icon: Icons.task,
   init: () async {
-    final database = await AppDatabase.get().getDb();
-    vc.vyuh.di.register(database);
+    final database = await AppDatabase.init();
+    vc.vyuh.di.register(TaskDB(database));
+    vc.vyuh.di.register(LabelDB(database));
   },
   routes: () async {
     return [

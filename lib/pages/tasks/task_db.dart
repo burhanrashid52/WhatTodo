@@ -1,27 +1,23 @@
-import 'package:flutter_app/db/app_db.dart';
-import 'package:flutter_app/pages/tasks/models/tasks.dart';
-import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/labels/label.dart';
+import 'package:flutter_app/pages/projects/project.dart';
 import 'package:flutter_app/pages/tasks/models/task_labels.dart';
+import 'package:flutter_app/pages/tasks/models/tasks.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:vyuh_core/runtime/platform/vyuh_platform.dart';
+
+TaskDB get taskDbStore => vyuh.di.get<TaskDB>();
 
 class TaskDB {
-  static final TaskDB _taskDb = TaskDB._internal(AppDatabase.get());
+  TaskDB(this._dbStore);
 
-  AppDatabase _appDatabase;
+  final Database _dbStore;
 
-  //private internal constructor to make it singleton
-  TaskDB._internal(this._appDatabase);
-
-  //static TaskDB get taskDb => _taskDb;
-
-  static TaskDB get() {
-    return _taskDb;
-  }
-
-  Future<List<Tasks>> getTasks(
-      {int startDate = 0, int endDate = 0, TaskStatus? taskStatus}) async {
-    var db = await _appDatabase.getDb();
+  Future<List<Tasks>> getTasks({
+    int startDate = 0,
+    int endDate = 0,
+    TaskStatus? taskStatus,
+  }) async {
+    var db = _dbStore;
     var whereClause = startDate > 0 && endDate > 0
         ? "WHERE ${Tasks.tblTask}.${Tasks.dbDueDate} BETWEEN $startDate AND $endDate"
         : "";
@@ -58,9 +54,11 @@ class TaskDB {
     return tasks;
   }
 
-  Future<List<Tasks>> getTasksByProject(int projectId,
-      {TaskStatus? status}) async {
-    var db = await _appDatabase.getDb();
+  Future<List<Tasks>> getTasksByProject(
+    int projectId, {
+    TaskStatus? status,
+  }) async {
+    var db = _dbStore;
     String whereStatus = status != null
         ? "AND ${Tasks.tblTask}.${Tasks.dbStatus}=${status.index}"
         : "";
@@ -73,9 +71,11 @@ class TaskDB {
     return _bindData(result);
   }
 
-  Future<List<Tasks>> getTasksByLabel(String labelName,
-      {TaskStatus? status}) async {
-    var db = await _appDatabase.getDb();
+  Future<List<Tasks>> getTasksByLabel(
+    String labelName, {
+    TaskStatus? status,
+  }) async {
+    var db = _dbStore;
     String whereStatus = status != null
         ? "AND ${Tasks.tblTask}.${Tasks.dbStatus}=${TaskStatus.PENDING.index}"
         : "";
@@ -88,7 +88,7 @@ class TaskDB {
   }
 
   Future deleteTask(int taskID) async {
-    var db = await _appDatabase.getDb();
+    var db = _dbStore;
     await db.transaction((Transaction txn) async {
       await txn.rawDelete(
           'DELETE FROM ${Tasks.tblTask} WHERE ${Tasks.dbId}=$taskID;');
@@ -96,7 +96,7 @@ class TaskDB {
   }
 
   Future updateTaskStatus(int taskID, TaskStatus status) async {
-    var db = await _appDatabase.getDb();
+    var db = _dbStore;
     await db.transaction((Transaction txn) async {
       await txn.rawQuery(
           "UPDATE ${Tasks.tblTask} SET ${Tasks.dbStatus} = '${status.index}' WHERE ${Tasks.dbId} = '$taskID'");
@@ -105,7 +105,7 @@ class TaskDB {
 
   /// Inserts or replaces the task.
   Future updateTask(Tasks task, {List<int>? labelIDs}) async {
-    var db = await _appDatabase.getDb();
+    var db = _dbStore;
     await db.transaction((Transaction txn) async {
       int id = await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks.dbProjectID},${Tasks.dbComment},${Tasks.dbDueDate},${Tasks.dbPriority},${Tasks.dbStatus})'

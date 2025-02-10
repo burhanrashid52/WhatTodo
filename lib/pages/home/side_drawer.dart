@@ -79,7 +79,7 @@ class SideDrawer extends StatelessWidget {
             child: ProjectPage(),
           ),
           BlocProvider(
-            bloc: LabelBloc(LabelDB.get()),
+            bloc: LabelBloc(labelDbStore),
             child: LabelPage(),
           )
         ],

@@ -1,19 +1,16 @@
-import 'package:flutter_app/db/app_db.dart';
 import 'package:flutter_app/pages/labels/label.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:vyuh_core/runtime/platform/vyuh_platform.dart';
+
+LabelDB get labelDbStore => vyuh.di.get<LabelDB>();
 
 class LabelDB {
-  static final LabelDB _labelDb = LabelDB._internal();
+  LabelDB(this._dbStore);
 
-  //private internal constructor to make it singleton
-  LabelDB._internal();
-
-  static LabelDB get() {
-    return _labelDb;
-  }
+  final Database _dbStore;
 
   Future<bool> isLabelExits(Label label) async {
-    var db = dbStore;
+    var db = _dbStore;
     var result = await db.rawQuery(
         "SELECT * FROM ${Label.tblLabel} WHERE ${Label.dbName} LIKE '${label.name}'");
     if (result.length == 0) {
@@ -26,7 +23,7 @@ class LabelDB {
   }
 
   Future updateLabels(Label label) async {
-    var db = dbStore;
+    var db = _dbStore;
     await db.transaction((Transaction txn) async {
       await txn.rawInsert('INSERT OR REPLACE INTO '
           '${Label.tblLabel}(${Label.dbName},${Label.dbColorCode},${Label.dbColorName})'
@@ -35,7 +32,7 @@ class LabelDB {
   }
 
   Future<List<Label>> getLabels() async {
-    var db = dbStore;
+    var db = _dbStore;
     var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
     List<Label> labels = [];
     for (Map<String, dynamic> item in result) {
@@ -46,7 +43,7 @@ class LabelDB {
   }
 
   Future deleteLabel(int labelId) async {
-    var db = dbStore;
+    var db = _dbStore;
     await db.transaction((Transaction txn) async {
       await txn.rawDelete(
           'DELETE FROM ${Label.tblLabel} WHERE ${Label.dbId}==$labelId;');

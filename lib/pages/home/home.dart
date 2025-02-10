@@ -13,7 +13,7 @@ import 'package:flutter_app/utils/extension.dart';
 import 'package:flutter_app/utils/keys.dart';
 
 class HomePage extends StatelessWidget {
-  final TaskBloc _taskBloc = TaskBloc(TaskDB.get());
+  final TaskBloc _taskBloc = TaskBloc(taskDbStore);
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override

@@ -6,7 +6,7 @@ import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/pages/tasks/task_completed/row_task_completed.dart';
 
 class TaskCompletedPage extends StatelessWidget {
-  final TaskBloc _taskBloc = TaskBloc(TaskDB.get());
+  final TaskBloc _taskBloc = TaskBloc(taskDbStore);
 
   @override
   Widget build(BuildContext context) {

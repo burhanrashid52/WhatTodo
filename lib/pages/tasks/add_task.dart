@@ -286,7 +286,7 @@ class AddTaskProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      bloc: AddTaskBloc(TaskDB.get(), ProjectDB.get(), LabelDB.get()),
+      bloc: AddTaskBloc(taskDbStore, ProjectDB.get(), labelDbStore),
       child: AddTaskScreen(),
     );
   }
