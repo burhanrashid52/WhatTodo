@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/db/app_db.dart';
-import 'package:flutter_app/pages/about/about_us.dart' as about;
 import 'package:flutter_app/pages/home/adpative_home.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
+import 'package:flutter_package/flutter_package.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sanity_client/sanity_client.dart';
 import 'package:vyuh_core/vyuh_core.dart' as vc;
@@ -21,10 +21,10 @@ void main() {
   vc.runApp(
     initialLocation: '/home',
     features: () => [
-      mainFeature,
-      about.feature,
+      homeFeature,
       developer.feature,
       system.feature,
+      aboutFeature,
     ],
     plugins: vc.PluginDescriptor(
       content: DefaultContentPlugin(
@@ -33,7 +33,8 @@ void main() {
             SanityConfig(
               projectId: '1bnautyt',
               dataset: 'production',
-              token: 'skDFNiIjQtd9XVdmEwEa9nyGcEJbA29Uq9ur1UHfJDTI4u0M2HrsgHTii5anp3burFY7m6wDhrENx18jwpDPZfmej6p78SUxCC7LhbNqY8OpUaA5uN6yzWvtk8aYHLl2Ljg5Ncnwqabnc4inJhEckWBOcemTltkmwBTsaKdblFeFKnYnBIBK',
+              token:
+                  'skDFNiIjQtd9XVdmEwEa9nyGcEJbA29Uq9ur1UHfJDTI4u0M2HrsgHTii5anp3burFY7m6wDhrENx18jwpDPZfmej6p78SUxCC7LhbNqY8OpUaA5uN6yzWvtk8aYHLl2Ljg5Ncnwqabnc4inJhEckWBOcemTltkmwBTsaKdblFeFKnYnBIBK',
             ),
           ),
         ),
@@ -42,7 +43,7 @@ void main() {
   );
 }
 
-final mainFeature = vc.FeatureDescriptor(
+final homeFeature = vc.FeatureDescriptor(
   name: 'home',
   title: 'Today Task List',
   description: 'A Task list to be shown due today',

@@ -13,6 +13,8 @@ import 'package:flutter_app/utils/extension.dart';
 import 'package:flutter_app/utils/keys.dart';
 import 'package:go_router/go_router.dart';
 
+import '../about/about_us.dart';
+
 class SideDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class SideDrawer extends StatelessWidget {
                   size: 36.0,
                 ),
                 onPressed: () async {
-                  context.go('/about');
+                  context.push('/about');
                   //await context.adaptiveNavigate(SCREEN.ABOUT, AboutUsScreen());
                 },
               )

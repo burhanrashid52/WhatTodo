@@ -3,7 +3,7 @@ description: A new Flutter application.
 version: 0.0.1
 
 environment:
-  sdk: '>=2.14.0 <3.0.0'
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -24,6 +24,8 @@ dependencies:
   vyuh_feature_developer: ^1.13.1
   vyuh_feature_system: ^1.38.1
   vyuh_plugin_content_provider_sanity: ^1.11.1
+  flutter_package:
+    path: features/tile/flutter_package
 
 dev_dependencies:
   flutter_driver:
