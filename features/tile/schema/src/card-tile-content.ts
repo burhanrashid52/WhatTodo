@@ -23,20 +23,32 @@ export class CardTileContentSchemaBuilder extends ContentSchemaBuilder {
                 type: 'string',
             }),
             defineField({
-                name: 'subtitle',
-                title: 'subtitle',
-                type: 'string',
+                name: 'items',
+                title: 'Tile Items',
+                type: 'array',
+                of: [
+                    defineField({
+                        name: 'title',
+                        title: 'Title',
+                        type: 'string',
+                    }),
+                    defineField({
+                        name: 'subtitle',
+                        title: 'Subtitle',
+                        type: 'string',
+                    }),
+                ],
             }),
         ],
         preview: {
             select: {
                 title: 'title',
-                subtitle: 'subtitle',
+                items: 'items',
             },
             prepare(selection: any) {
                 return {
                     title: `Tile: (${selection.title ?? 'N/A'})`,
-                    subtitle: `Subtitle: (${selection.subtitle ?? 'N/A'})`,
+                    items: `Items: (${selection.items ?? 'N/A'})`,
                 };
             },
         },

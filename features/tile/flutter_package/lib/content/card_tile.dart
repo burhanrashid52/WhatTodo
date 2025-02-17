@@ -9,15 +9,15 @@ part 'card_tile.g.dart';
 class CardTiles extends ContentItem {
   static const schemaName = 'schema.tile.content';
 
-  final String title;
+  final String? title;
 
   final Action? onTap;
 
-  final String? subtitle;
+  final List<CardTileItem>? items;
 
   CardTiles({
-    required this.title,
-    this.subtitle,
+    this.title,
+    this.items,
     this.onTap,
     super.layout,
     super.modifiers,
@@ -66,12 +66,12 @@ class CardTileItem {
 
   final String? subtitle;
 
-  final Action? action;
+  final Action? onTap;
 
   CardTileItem({
     required this.title,
     this.subtitle,
-    this.action,
+    this.onTap,
   });
 
   factory CardTileItem.fromJson(Map<String, dynamic> json) =>
@@ -88,13 +88,28 @@ class CardTilesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final onTap = content.onTap;
-    final subtitle = content.subtitle;
+    //final onTap = content.onTap;
+    final theme = Theme.of(context);
+    final items = content.items ?? [];
     return Card(
-      child: ListTile(
-        title: Text(content.title),
-        onTap: onTap != null ? () => onTap.execute(context) : null,
-        subtitle: subtitle != null ? Text(subtitle) : null,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            if (content.title != null)
+              Text(
+                content.title!,
+                style: theme.textTheme.titleMedium,
+              ),
+            for (final e in items)
+              ListTile(
+                title: Text(e.title),
+                onTap: e.onTap != null ? () => e.onTap!.execute(context) : null,
+                subtitle: e.subtitle != null ? Text(e.subtitle!) : null,
+              )
+          ],
+        ),
       ),
     );
   }
