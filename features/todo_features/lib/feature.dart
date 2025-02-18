@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todo_features/group_card_info.dart';
 import 'package:vyuh_core/vyuh_core.dart';
+import 'package:vyuh_extension_content/content_extension_descriptor.dart';
 
 final aboutFeature = FeatureDescriptor(
   name: 'about',
@@ -15,4 +17,12 @@ final aboutFeature = FeatureDescriptor(
       ),
     ];
   },
+  extensions: [
+    ContentExtensionDescriptor(
+      contentBuilders: [
+        GroupCard.contentBuilder,
+        GroupCardItem.contentBuilder,
+      ],
+    )
+  ],
 );
