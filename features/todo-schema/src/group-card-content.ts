@@ -18,6 +18,11 @@ export class GroupCardContentSchemaBuilder extends ContentSchemaBuilder {
         icon: Icon,
         fields: [
             defineField({
+                type: 'string',
+                name: 'title',
+                title: 'Title',
+            }),
+            defineField({
                 type: 'array',
                 name: 'items',
                 title: 'Items',
@@ -48,10 +53,11 @@ export class GroupCardContentSchemaBuilder extends ContentSchemaBuilder {
         preview: {
             select: {
                 title: 'title',
+                items: 'items',
             },
             prepare(selection: any) {
                 return {
-                    title: `Group Card: (${selection.title ?? 'N/A'})`,
+                    title: `Group Card: Items : (${selection.items.length}) (${selection.title ?? 'N/A'})`,
                 };
             },
         },

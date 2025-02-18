@@ -31,7 +31,7 @@ final class GroupCardLayout extends LayoutConfiguration<GroupCard> {
           if (content.title != null)
             Text(
               content.title!,
-              style: theme.textTheme.headlineMedium,
+              style: theme.textTheme.titleLarge,
             ),
           for (final item in content.items ?? <GroupCardItem>[])
             VyuhBinding.instance.content.buildContent(context, item),
