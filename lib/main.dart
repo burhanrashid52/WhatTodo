@@ -6,9 +6,9 @@ import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
 import 'package:flutter_app/pages/projects/project_db.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
-import 'package:flutter_package/flutter_package.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sanity_client/sanity_client.dart';
+import 'package:todo_features/todo_features.dart' as todo;
 import 'package:vyuh_core/vyuh_core.dart' as vc;
 import 'package:vyuh_extension_content/vyuh_extension_content.dart';
 import 'package:vyuh_feature_developer/vyuh_feature_developer.dart'
@@ -24,7 +24,7 @@ void main() {
       homeFeature,
       developer.feature,
       system.feature,
-      aboutFeature,
+      todo.aboutFeature,
     ],
     plugins: vc.PluginDescriptor(
       content: DefaultContentPlugin(

@@ -24,8 +24,8 @@ dependencies:
   vyuh_feature_developer: ^1.13.1
   vyuh_feature_system: ^1.38.1
   vyuh_plugin_content_provider_sanity: ^1.11.1
-  flutter_package:
-    path: features/tile/flutter_package
+  todo_features:
+    path: features/todo_features
 
 dev_dependencies:
   flutter_driver:
