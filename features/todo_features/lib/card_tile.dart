@@ -1,8 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:todo_features/card_tile_layout.dart';
-import 'package:vyuh_core/plugin/content/content_item.dart';
-import 'package:vyuh_core/plugin/content/serialization.dart';
-import 'package:vyuh_core/plugin/content/type_descriptor.dart';
+import 'package:vyuh_core/vyuh_core.dart';
 import 'package:vyuh_extension_content/vyuh_extension_content.dart';
 
 part 'card_tile.g.dart';
@@ -31,14 +29,22 @@ class CardTile extends ContentItem {
   final String title;
   final String? subtitle;
   final Action? action;
+  final ImageReference? icon;
+  final Uri? iconUrl;
 
   CardTile({
     required this.title,
     this.subtitle,
     this.action,
+    this.icon,
+    this.iconUrl,
     super.layout,
     super.modifiers,
   }) : super(schemaType: schemaName);
+
+  bool get hasIcon => icon != null || iconUrl != null;
+
+  bool get hasAction => action != null;
 
   factory CardTile.fromJson(Map<String, dynamic> json) =>
       _$CardTileFromJson(json);
