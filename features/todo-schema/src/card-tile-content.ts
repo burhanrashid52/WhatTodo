@@ -20,7 +20,8 @@ export class CardTileContentSchemaBuilder extends ContentSchemaBuilder {
             defineField({
                 type: 'string',
                 name: 'title',
-                title: 'Title'
+                title: 'Title',
+                validation: (Rule: any) => Rule.required(),
             }),
             defineField({
                 type: 'string',
@@ -31,7 +32,13 @@ export class CardTileContentSchemaBuilder extends ContentSchemaBuilder {
                 type: 'image',
                 name: 'icon',
                 title: 'Icon'
-            })
+            }),
+            defineField({
+                name: 'action',
+                title: 'On Tap Action',
+                description: 'Action to invoke on tile tap',
+                type: 'vyuh.action',
+            }),
         ],
         preview: {
             select: {

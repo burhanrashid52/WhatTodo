@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:todo_features/card_tile_layout.dart';
 import 'package:vyuh_core/plugin/content/content_item.dart';
 import 'package:vyuh_core/plugin/content/serialization.dart';
 import 'package:vyuh_core/plugin/content/type_descriptor.dart';
-import 'package:vyuh_extension_content/content/content_builder.dart';
-import 'package:vyuh_extension_content/content/content_descriptor.dart';
+import 'package:vyuh_extension_content/vyuh_extension_content.dart';
 
 part 'card_tile.g.dart';
 
@@ -31,38 +30,16 @@ class CardTile extends ContentItem {
 
   final String title;
   final String? subtitle;
+  final Action? action;
 
   CardTile({
     required this.title,
     this.subtitle,
+    this.action,
     super.layout,
     super.modifiers,
   }) : super(schemaType: schemaName);
 
   factory CardTile.fromJson(Map<String, dynamic> json) =>
       _$CardTileFromJson(json);
-}
-
-@JsonSerializable()
-final class CardTileLayout extends LayoutConfiguration<CardTile> {
-  static const schemaName = '${CardTile.schemaName}.layout.default';
-
-  static final typeDescriptor = TypeDescriptor(
-    schemaType: schemaName,
-    fromJson: CardTileLayout.fromJson,
-    title: 'Card Tile Item Layout',
-  );
-
-  CardTileLayout() : super(schemaType: schemaName);
-
-  factory CardTileLayout.fromJson(Map<String, dynamic> json) =>
-      _$CardTileLayoutFromJson(json);
-
-  @override
-  Widget build(BuildContext context, CardTile content) {
-    return ListTile(
-      title: Text(content.title),
-      subtitle: content.subtitle != null ? Text(content.subtitle!) : null,
-    );
-  }
 }
