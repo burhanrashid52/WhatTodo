@@ -26,14 +26,14 @@ class CardTile extends ContentItem {
     title: 'CardTile',
   );
 
-  final String title;
+  final String? title;
   final String? subtitle;
   final Action? action;
   final ImageReference? icon;
   final Uri? iconUrl;
 
   CardTile({
-    required this.title,
+    this.title,
     this.subtitle,
     this.action,
     this.icon,
@@ -43,6 +43,10 @@ class CardTile extends ContentItem {
   }) : super(schemaType: schemaName);
 
   bool get hasIcon => icon != null || iconUrl != null;
+
+  bool get hasTitle => title != null;
+
+  bool get hasSubtitle => subtitle != null;
 
   bool get hasAction => action != null;
 

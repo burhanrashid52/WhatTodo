@@ -21,7 +21,6 @@ export class CardTileContentSchemaBuilder extends ContentSchemaBuilder {
                 type: 'string',
                 name: 'title',
                 title: 'Title',
-                validation: (Rule: any) => Rule.required(),
             }),
             defineField({
                 type: 'string',

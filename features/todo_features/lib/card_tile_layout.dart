@@ -25,7 +25,6 @@ final class CardTileLayout extends LayoutConfiguration<CardTile> {
 
   @override
   Widget build(BuildContext context, CardTile content) {
-    final theme = Theme.of(context);
     return ListTile(
       leading: content.hasIcon
           ? ContentImage(
@@ -34,12 +33,11 @@ final class CardTileLayout extends LayoutConfiguration<CardTile> {
               url: content.iconUrl?.toString(),
               ref: content.icon,
               fit: BoxFit.cover,
-              color: theme.colorScheme.secondary,
             )
           : null,
       onTap: content.hasAction ? () => content.action!.execute(context) : null,
-      title: Text(content.title),
-      subtitle: content.subtitle != null ? Text(content.subtitle!) : null,
+      title: content.hasTitle ? Text(content.title!) : null,
+      subtitle: content.hasSubtitle ? Text(content.subtitle!) : null,
     );
   }
 }
