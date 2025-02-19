@@ -29,7 +29,7 @@ class GroupCard extends ContentItem {
   );
 
   final String? title;
-  final List<CardTileItem>? items;
+  final List<CardTile>? items;
 
   GroupCard({
     this.title,
@@ -76,7 +76,7 @@ final class GroupCardLayout extends LayoutConfiguration<GroupCard> {
                   ),
                 ),
               ),
-            for (final item in content.items ?? <CardTileItem>[])
+            for (final item in content.items ?? <CardTile>[])
               VyuhBinding.instance.content.buildContent(context, item),
           ],
         ),

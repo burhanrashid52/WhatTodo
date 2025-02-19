@@ -9,57 +9,57 @@ import 'package:vyuh_extension_content/content/content_descriptor.dart';
 part 'card_tile.g.dart';
 
 @JsonSerializable()
-class CardTileItem extends ContentItem {
-  static const schemaName = 'todo.card.tile.item';
+class CardTile extends ContentItem {
+  static const schemaName = 'todo.card.tile';
 
   static final typeDescriptor = TypeDescriptor(
     schemaType: schemaName,
-    fromJson: CardTileItem.fromJson,
-    title: 'CardTileItem',
+    fromJson: CardTile.fromJson,
+    title: 'CardTile',
   );
 
   static final contentBuilder = ContentBuilder(
     content: typeDescriptor,
-    defaultLayout: CardITileLayout(),
-    defaultLayoutDescriptor: CardITileLayout.typeDescriptor,
+    defaultLayout: CardTileLayout(),
+    defaultLayoutDescriptor: CardTileLayout.typeDescriptor,
   );
 
   static final descriptor = ContentDescriptor.createDefault(
     schemaType: schemaName,
-    title: 'CardTileItem',
+    title: 'CardTile',
   );
 
   final String title;
   final String? subtitle;
 
-  CardTileItem({
+  CardTile({
     required this.title,
     this.subtitle,
     super.layout,
     super.modifiers,
   }) : super(schemaType: schemaName);
 
-  factory CardTileItem.fromJson(Map<String, dynamic> json) =>
-      _$CardTileItemFromJson(json);
+  factory CardTile.fromJson(Map<String, dynamic> json) =>
+      _$CardTileFromJson(json);
 }
 
 @JsonSerializable()
-final class CardITileLayout extends LayoutConfiguration<CardTileItem> {
-  static const schemaName = '${CardTileItem.schemaName}.layout.default';
+final class CardTileLayout extends LayoutConfiguration<CardTile> {
+  static const schemaName = '${CardTile.schemaName}.layout.default';
 
   static final typeDescriptor = TypeDescriptor(
     schemaType: schemaName,
-    fromJson: CardITileLayout.fromJson,
+    fromJson: CardTileLayout.fromJson,
     title: 'Card Tile Item Layout',
   );
 
-  CardITileLayout() : super(schemaType: schemaName);
+  CardTileLayout() : super(schemaType: schemaName);
 
-  factory CardITileLayout.fromJson(Map<String, dynamic> json) =>
-      _$CardITileLayoutFromJson(json);
+  factory CardTileLayout.fromJson(Map<String, dynamic> json) =>
+      _$CardTileLayoutFromJson(json);
 
   @override
-  Widget build(BuildContext context, CardTileItem content) {
+  Widget build(BuildContext context, CardTile content) {
     return ListTile(
       title: Text(content.title),
       subtitle: content.subtitle != null ? Text(content.subtitle!) : null,

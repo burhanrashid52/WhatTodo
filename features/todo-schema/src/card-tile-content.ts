@@ -1,50 +1,52 @@
 import {ContentDescriptor, ContentSchemaBuilder,} from '@vyuh/sanity-schema-core';
 import {defineField, defineType, SchemaTypeDefinition} from 'sanity';
 import {IoMdCard as Icon} from 'react-icons/io';
-import {CardTileContentDescriptor} from "./card-tile-content.ts";
 
-export class GroupCardContentDescriptor extends ContentDescriptor {
-    static schemaName = 'todo.group.card';
+export class CardTileContentDescriptor extends ContentDescriptor {
+    static schemaName = 'todo.card.tile';
 
     constructor() {
-        super(GroupCardContentDescriptor.schemaName, {});
+        super(CardTileContentDescriptor.schemaName, {});
     }
 }
 
-export class GroupCardContentSchemaBuilder extends ContentSchemaBuilder {
+export class CardTileContentSchemaBuilder extends ContentSchemaBuilder {
     schema: SchemaTypeDefinition = defineType({
-        name: GroupCardContentDescriptor.schemaName,
-        title: 'GroupCard',
+        name: CardTileContentDescriptor.schemaName,
+        title: 'CardTile',
         type: 'object',
         icon: Icon,
         fields: [
             defineField({
                 type: 'string',
                 name: 'title',
-                title: 'Title',
+                title: 'Title'
             }),
             defineField({
-                type: 'array',
-                name: 'items',
-                title: 'Items',
-                of: [{type: CardTileContentDescriptor.schemaName}],
+                type: 'string',
+                name: 'subtitle',
+                title: 'Subtitle'
             }),
+            defineField({
+                type: 'image',
+                name: 'icon',
+                title: 'Icon'
+            })
         ],
         preview: {
             select: {
                 title: 'title',
-                items: 'items',
             },
             prepare(selection: any) {
                 return {
-                    title: `Group Card: Items : (${selection.items.length}) (${selection.title ?? 'N/A'})`,
+                    title: `Card Tile: (${selection.title ?? 'N/A'})`,
                 };
             },
         },
     });
 
     constructor() {
-        super(GroupCardContentDescriptor.schemaName);
+        super(CardTileContentDescriptor.schemaName);
     }
 
     build(descriptors: ContentDescriptor[]) {

@@ -22,7 +22,7 @@ final aboutFeature = FeatureDescriptor(
     ContentExtensionDescriptor(
       contentBuilders: [
         GroupCard.contentBuilder,
-        CardTileItem.contentBuilder,
+        CardTile.contentBuilder,
       ],
     )
   ],
