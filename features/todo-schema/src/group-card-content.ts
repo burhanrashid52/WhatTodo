@@ -6,8 +6,8 @@ import {CardTileContentDescriptor} from "./card-tile-content.ts";
 export class GroupCardContentDescriptor extends ContentDescriptor {
     static schemaName = 'todo.group.card';
 
-    constructor() {
-        super(GroupCardContentDescriptor.schemaName, {});
+    constructor(props: Partial<GroupCardContentDescriptor>) {
+        super(GroupCardContentDescriptor.schemaName, props);
     }
 }
 
@@ -45,6 +45,40 @@ export class GroupCardContentSchemaBuilder extends ContentSchemaBuilder {
 
     constructor() {
         super(GroupCardContentDescriptor.schemaName);
+    }
+
+    build(descriptors: ContentDescriptor[]) {
+        return this.schema;
+    }
+}
+
+export class GroupIconContentSchemaBuilder extends ContentSchemaBuilder {
+    schema: SchemaTypeDefinition = defineType({
+        name: 'todo.group.icon.horizontal',
+        title: 'GroupIcon',
+        type: 'object',
+        icon: Icon,
+        fields: [
+            defineField({
+                type: 'string',
+                name: 'title',
+                title: 'Title',
+            }),
+        ],
+        preview: {
+            select: {
+                title: 'title',
+            },
+            prepare(selection: any) {
+                return {
+                    title: `Group Icon Layout`,
+                };
+            },
+        },
+    });
+
+    constructor() {
+        super('todo.group.icon.horizontal');
     }
 
     build(descriptors: ContentDescriptor[]) {

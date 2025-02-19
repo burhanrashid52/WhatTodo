@@ -20,6 +20,14 @@ final aboutFeature = FeatureDescriptor(
   },
   extensions: [
     ContentExtensionDescriptor(
+      contents: [
+        GroupCardDescriptor(
+          layouts: [
+            GroupCardLayout.typeDescriptor,
+            GroupIconLayout.typeDescriptor,
+          ],
+        )
+      ],
       contentBuilders: [
         GroupCard.contentBuilder,
         CardTile.contentBuilder,

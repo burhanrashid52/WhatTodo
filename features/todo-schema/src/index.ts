@@ -1,6 +1,10 @@
-import {FeatureDescriptor} from '@vyuh/sanity-schema-core';
+import {defaultLayoutConfiguration, FeatureDescriptor} from '@vyuh/sanity-schema-core';
 import {RouteDescriptor} from '@vyuh/sanity-schema-system';
-import {GroupCardContentDescriptor, GroupCardContentSchemaBuilder} from './group-card-content.ts';
+import {
+    GroupCardContentDescriptor,
+    GroupCardContentSchemaBuilder,
+    GroupIconContentSchemaBuilder
+} from './group-card-content.ts';
 import {CardTileContentDescriptor, CardTileContentSchemaBuilder} from "./card-tile-content.ts";
 
 export const todoSchema = new FeatureDescriptor({
@@ -14,7 +18,14 @@ export const todoSchema = new FeatureDescriptor({
                 {type: CardTileContentDescriptor.schemaName},
             ],
         }),
-        new GroupCardContentDescriptor(),
+        new GroupCardContentDescriptor({
+            layouts: [
+                defaultLayoutConfiguration(
+                    `${GroupCardContentDescriptor.schemaName}.layout.default`,
+                ),
+                new GroupIconContentSchemaBuilder().schema,
+            ],
+        }),
         new CardTileContentDescriptor(),
     ],
     contentSchemaBuilders: [
